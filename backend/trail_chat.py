@@ -9,7 +9,7 @@ import os
 import boto3
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(override=False)
 MODEL = os.getenv("BEDROCK_MODEL_ID", "us.anthropic.claude-sonnet-4-5-20250929-v1:0")
 bedrock = boto3.client(
     "bedrock-runtime",

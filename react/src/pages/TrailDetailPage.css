@@ -1,0 +1,187 @@
+.detail-page { background: #f5f3ee; min-height: 100vh; }
+
+.detail-header {
+  padding: 28px 48px 0;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.back-link {
+  background: none;
+  border: none;
+  color: #6b7a3f;
+  font-size: .88rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 10px;
+  font-family: inherit;
+}
+
+.back-link:hover { text-decoration: underline; }
+
+.detail-header h1 { font-size: 1.8rem; font-weight: 800; color: #1a1a1a; margin: 0 0 6px; }
+.detail-sub { font-size: .9rem; color: #777; margin-bottom: 20px; }
+
+/* ── Stats bar ─────────────────────────────────────────────────────────────── */
+.stats-bar {
+  display: flex;
+  gap: 0;
+  background: #1a2416;
+  padding: 20px 48px;
+  flex-wrap: wrap;
+}
+
+.stat {
+  flex: 1;
+  min-width: 100px;
+  text-align: center;
+  padding: 8px 0;
+  border-right: 1px solid rgba(255,255,255,.1);
+}
+
+.stat:last-child { border-right: none; }
+
+.stat-value { font-size: 1.5rem; font-weight: 800; color: #fff; }
+.stat-label { font-size: .76rem; color: rgba(255,255,255,.55); margin-top: 2px; }
+.stat-hint  { font-size: .68rem; color: rgba(255,255,255,.3); margin-top: 2px; }
+
+.stats-note {
+  padding: 10px 48px;
+  font-size: .84rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.stats-note.warn { color: #856404; background: #fff8e1; }
+.stats-note.ok   { color: #155724; background: #d4edda; }
+
+/* ── Detail layout ─────────────────────────────────────────────────────────── */
+.detail-layout {
+  display: flex;
+  gap: 24px;
+  padding: 24px 48px 48px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.detail-left  { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+.detail-right { width: 460px; flex-shrink: 0; }
+
+.detail-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px 22px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.06);
+}
+
+.detail-card-title {
+  font-size: .9rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 10px;
+}
+
+.detail-card p { font-size: .88rem; color: #555; margin: 0; line-height: 1.6; }
+
+.safety-flag {
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  color: #856404;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: .82rem;
+  margin-top: 8px;
+}
+
+/* ── Chat ──────────────────────────────────────────────────────────────────── */
+.chat-card { display: flex; flex-direction: column; }
+.chat-hint { font-size: .8rem; color: #aaa; margin-bottom: 12px; }
+
+.chat-log {
+  max-height: 320px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding-right: 4px;
+}
+
+.chat-empty { font-size: .84rem; color: #ccc; text-align: center; padding: 20px 0; }
+
+.detail-chat-msg { display: flex; }
+.detail-chat-msg.user { justify-content: flex-end; }
+
+.detail-chat-bubble {
+  background: #f0ede6;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: .86rem;
+  line-height: 1.55;
+  color: #1a1a1a;
+  max-width: 80%;
+}
+
+.detail-chat-msg.user .detail-chat-bubble {
+  background: #6b7a3f;
+  color: #fff;
+}
+
+.detail-chat-bubble.thinking { color: #aaa; font-style: italic; }
+
+.chat-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.chat-input-row input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  font-size: .88rem;
+  font-family: inherit;
+}
+
+.chat-input-row input:focus { outline: none; border-color: #6b7a3f; }
+
+.chat-input-row button {
+  background: #6b7a3f;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background .2s;
+}
+
+.chat-input-row button:hover:not(:disabled) { background: #8a9c52; }
+.chat-input-row button:disabled { opacity: .5; cursor: not-allowed; }
+
+.clear-chat {
+  background: none;
+  border: none;
+  color: #bbb;
+  font-size: .78rem;
+  cursor: pointer;
+  margin-top: 6px;
+  font-family: inherit;
+}
+
+.clear-chat:hover { color: #888; }
+
+/* ── POI legend ────────────────────────────────────────────────────────────── */
+.poi-legend { margin-top: 14px; display: flex; flex-direction: column; gap: 6px; }
+
+.poi-legend-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: .8rem;
+}
+
+.poi-legend-row span:first-child { flex-shrink: 0; color: #444; }
+.poi-names { color: #999; }

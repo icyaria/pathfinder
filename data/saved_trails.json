@@ -1,3 +1,70 @@
 {
-  "USR-2D946D8FD7C9": []
+  "USR-2D946D8FD7C9": [
+    {
+      "trail_name": "Ι. Μ. Κωσταμονίτου - Ι. Μ. Βατοπαιδίου",
+      "region": "Greece",
+      "trail_data": {
+        "name": "Ι. Μ. Κωσταμονίτου - Ι. Μ. Βατοπαιδίου",
+        "region": "Greece",
+        "terrain": "mountain",
+        "difficulty": "moderate",
+        "duration_hours": 4.0,
+        "lat": 40.2997894,
+        "lon": 24.1930657,
+        "crowd_level": 3,
+        "local_economy_score": 6,
+        "highlights": [
+          "Mount Athos monasteries",
+          "Byzantine architecture",
+          "Spiritual pilgrimage route"
+        ],
+        "osm_id": 4249856,
+        "osm_source": "relation"
+      },
+      "profile": {
+        "terrain": "mountain",
+        "duration_days": 2,
+        "fitness_level": "medium",
+        "difficulty": "moderate",
+        "interests": [],
+        "group_size": 1
+      },
+      "planned_date": "2026-05-23",
+      "saved_at": "2026-05-16T14:18:55.738729"
+    },
+    {
+      "trail_name": "Ios Kalamos Psathi (Coast Range Trail)",
+      "region": "Greece",
+      "trail_data": {
+        "name": "Ios Kalamos Psathi (Coast Range Trail)",
+        "region": "Greece",
+        "terrain": "coastal",
+        "difficulty": "moderate",
+        "duration_hours": 2.7,
+        "lat": 36.7160253,
+        "lon": 25.3744782,
+        "crowd_level": 1,
+        "local_economy_score": 2,
+        "highlights": [
+          "Coastal scenery",
+          "Traditional village Kalamos",
+          "Secluded beaches"
+        ],
+        "osm_id": 4069857,
+        "osm_source": "relation"
+      },
+      "profile": {
+        "terrain": "coastal",
+        "duration_days": 3,
+        "fitness_level": "medium",
+        "difficulty": "hard",
+        "interests": [
+          "history"
+        ],
+        "group_size": 1
+      },
+      "planned_date": "2026-05-23",
+      "saved_at": "2026-05-16T16:12:02.662727"
+    }
+  ]
 }

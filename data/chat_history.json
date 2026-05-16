@@ -289,5 +289,29 @@
     ],
     "QuickSelectPromptsChosen": [],
     "CreatedAt": "2026-05-16T14:07:21.357616+00:00"
+  },
+  {
+    "UserUniqueID": "USR-2D946D8FD7C9",
+    "HistoryUniqueID": "HIS-432D3DEE6E80",
+    "KeyData": {
+      "duration_days": 2,
+      "difficulty": "moderate",
+      "terrain": "mountain",
+      "interests": [],
+      "fitness_level": "medium",
+      "start_date": "2026-05-23",
+      "matched_trail_count": 5
+    },
+    "UserMessages": [
+      "🏔️ Mountain",
+      "2 days",
+      "Next week",
+      "🚶 Average",
+      "Moderate",
+      "No preference",
+      "Just me 🧍"
+    ],
+    "QuickSelectPromptsChosen": [],
+    "CreatedAt": "2026-05-16T14:18:04.154692+00:00"
   }
 ]

@@ -8,8 +8,8 @@ import os
 import boto3
 from dotenv import load_dotenv
 
-load_dotenv()
-MODEL = os.getenv("BEDROCK_MODEL_ID", "anthropic.claude-3-5-sonnet-20241022-v2:0")
+load_dotenv(override=False)
+MODEL = os.getenv("BEDROCK_MODEL_ID", "us.anthropic.claude-sonnet-4-5-20250929-v1:0")
 bedrock = boto3.client(
     "bedrock-runtime",
     region_name=os.getenv("AWS_REGION", "us-east-1"),
