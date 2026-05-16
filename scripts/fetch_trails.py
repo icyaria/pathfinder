@@ -30,33 +30,44 @@ bedrock = boto3.client(
     aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
 )
 
-# Greece bounding box
-GREECE_BBOX = "34.8, 19.3, 41.8, 29.6"
+# ── Overpass queries (scoped to Greece's official OSM boundary) ─────────────
 
-# ── Overpass queries ────────────────────────────────────────────────────────
-
-RELATION_QUERY = f"""
+RELATION_QUERY = """
 [out:json][timeout:60];
+area["ISO3166-1"="GR"][admin_level=2]->.greece;
 (
-  relation["route"="hiking"]["name"]({GREECE_BBOX});
-  relation["route"="foot"]["name"]({GREECE_BBOX});
+  relation["route"="hiking"]["name"](area.greece);
+  relation["route"="foot"]["name"](area.greece);
 );
 out center tags;
 """
 
-WAY_QUERY = f"""
+WAY_QUERY = """
 [out:json][timeout:60];
+area["ISO3166-1"="GR"][admin_level=2]->.greece;
 (
-  way["highway"~"path|footway|track"]["name"]["foot"!="no"]({GREECE_BBOX});
+  way["highway"~"path|footway|track"]["name"]["foot"!="no"](area.greece);
 );
 out center tags;
 """
 
+import unicodedata
+
+def is_greek_or_latin(text: str) -> bool:
+    """Return True if the name is written in Greek or Latin script (no Cyrillic, Arabic, etc.)."""
+    for ch in text:
+        cat = unicodedata.name(ch, "")
+        if "CYRILLIC" in cat or "ARABIC" in cat or "HEBREW" in cat or "CJK" in cat:
+            return False
+    return True
+
+
+HEADERS = {"User-Agent": "Pathfinder/1.0 (Deloitte Makeathon 2026; hiking trail discovery)"}
 
 def fetch(query: str, label: str) -> list:
     print(f"  Querying Overpass for {label}…")
     try:
-        r = requests.post(OVERPASS_URL, data={"data": query}, timeout=90)
+        r = requests.post(OVERPASS_URL, data={"data": query}, headers=HEADERS, timeout=90)
         r.raise_for_status()
         elements = r.json().get("elements", [])
         print(f"  → {len(elements)} {label} found")
@@ -106,10 +117,12 @@ def parse_elements(elements, source):
     trails, seen = [], set()
     for el in elements:
         tags   = el.get("tags", {})
-        name   = tags.get("name") or tags.get("name:en")
+        name   = tags.get("name:en") or tags.get("name")
         center = el.get("center", {})
         lat, lon = center.get("lat"), center.get("lon")
         if not name or not lat or not lon or name in seen:
+            continue
+        if not is_greek_or_latin(name):
             continue
         seen.add(name)
         trails.append({
