@@ -22,6 +22,8 @@ from backend.profiler       import extract_profile
 from backend.trail_engine   import load_trails, match_trails
 from backend.weather        import get_weather
 from backend.biodiversity   import get_biodiversity
+from backend.routing        import get_route_summary
+from backend.elevation      import get_elevation_profile
 from backend.sustainability import sustainability_score
 from backend.itinerary      import generate_itinerary
 
@@ -66,8 +68,8 @@ def run_pathfinder(user_input: str, verbose: bool = True) -> dict:
             ),
         }
 
-    # ── 3–5. Enrich each matched trail ────────────────────────────────────
-    log("3/5  Fetching weather, biodiversity & sustainability…")
+    # ── 3–6. Enrich each matched trail ────────────────────────────────────
+    log("3/6  Fetching weather, biodiversity, route & elevation…")
     enriched = []
     for i, trail in enumerate(matched, 1):
         log(f"     [{i}/{len(matched)}] {trail['name']}…")
@@ -78,17 +80,30 @@ def run_pathfinder(user_input: str, verbose: bool = True) -> dict:
         bio  = get_biodiversity(trail["lat"], trail["lon"])
         time.sleep(0.2)
 
+        route = get_route_summary(trail["lat"], trail["lon"])
+        time.sleep(0.2)
+
+        elevation = get_elevation_profile(trail["lat"], trail["lon"])
+        time.sleep(0.2)
+
         sust = sustainability_score(trail, bio_count=bio["total_observations"])
 
         enriched.append(
-            {**trail, "_weather": weather, "_biodiversity": bio, "_sustainability": sust}
+            {
+                **trail,
+                "_weather": weather,
+                "_biodiversity": bio,
+                "_route": route,
+                "_elevation": elevation,
+                "_sustainability": sust,
+            }
         )
 
     # ── 6. Itinerary ───────────────────────────────────────────────────────
-    log("4/5  Generating itinerary with LLM…")
+    log("5/6  Generating itinerary with LLM…")
     itinerary = generate_itinerary(profile, enriched)
 
-    log("5/5  Done ✓\n")
+    log("6/6  Done ✓\n")
 
     return {
         "profile":         profile,

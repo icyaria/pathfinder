@@ -11,8 +11,15 @@ Pathfinder is a conversational AI that:
 1. **Profiles** the traveller through natural language
 2. **Matches** them to real Greek trails (difficulty, terrain, duration)
 3. **Checks** live weather and flags safety concerns
-4. **Scores** each trail for sustainability (crowd avoidance, biodiversity, local economy)
-5. **Generates** a personalised day-by-day itinerary
+4. **Builds route + terrain context** using OpenRouteService and NASA SRTM elevation
+5. **Scores** each trail for sustainability (crowd avoidance, biodiversity, local economy)
+6. **Generates** a personalised day-by-day itinerary
+
+This implementation is aligned to the Makeathon challenge:
+- Conversational AI intake for traveller profiling
+- Open data trail intelligence and route generation
+- Real-time weather and safety checks
+- Sustainability-first ranking to avoid overtouristed hotspots
 
 ---
 
@@ -41,6 +48,7 @@ cp .env.example .env
 # Edit .env and add your keys:
 #   ANTHROPIC_API_KEY   — get at console.anthropic.com
 #   OPENWEATHER_API_KEY — get at openweathermap.org/api (free tier)
+#   OPENROUTESERVICE_API_KEY — get at openrouteservice.org/dev
 ```
 
 ### 5. Fetch real trail data from OpenStreetMap
@@ -97,8 +105,9 @@ pathfinder/
 |-----|-------------|-----------|
 | `ANTHROPIC_API_KEY` | console.anthropic.com | Yes (limited) |
 | `OPENWEATHER_API_KEY` | openweathermap.org/api | Yes (1000 calls/day) |
+| `OPENROUTESERVICE_API_KEY` | openrouteservice.org/dev | Yes |
 
-iNaturalist and OpenStreetMap (Overpass) require **no API key**.
+iNaturalist, OpenStreetMap (Overpass), and NASA SRTM (via OpenTopodata) require **no API key**.
 
 ---
 
@@ -107,9 +116,20 @@ iNaturalist and OpenStreetMap (Overpass) require **no API key**.
 | Source | What it provides |
 |--------|-----------------|
 | OpenStreetMap / Overpass API | Trail names, coordinates, distance |
+| OpenRouteService | Hiking route distance and time estimates |
 | OpenWeatherMap | Real-time weather per trail location |
 | iNaturalist API | Biodiversity observations near each trail |
+| NASA SRTM (OpenTopodata) | Elevation baseline and trail gain |
 | Claude (Anthropic) | Profile extraction, trail enrichment, itinerary generation |
+
+---
+
+## Expected deliverables checklist
+
+- Codebase: this repository (or ZIP export) with setup README
+- Presentation/report: use [docs/presentation_outline.md](docs/presentation_outline.md) as a 10-slide template
+- Demo: Streamlit app with real Greek trail data from OSM
+- Optional comparison: sustainability score per trail is shown side-by-side in the UI
 
 ---
 

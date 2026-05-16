@@ -51,6 +51,11 @@ st.markdown("""
 # ── Input ────────────────────────────────────────────────────────────────────
 st.subheader("Tell us about your ideal hike")
 
+if "user_input" not in st.session_state:
+    st.session_state["user_input"] = ""
+if "latest_result" not in st.session_state:
+    st.session_state["latest_result"] = None
+
 example_prompts = [
     "3-day hard mountain hike far from tourists, I love wildlife and remote landscapes",
     "Easy 1-day coastal walk with great views, small group of 2",
@@ -59,25 +64,27 @@ example_prompts = [
 
 col1, col2 = st.columns([3, 1])
 with col1:
-    user_input = st.text_area(
+    st.text_area(
         label="Describe your hike",
         placeholder=example_prompts[0],
         height=100,
         label_visibility="collapsed",
+        key="user_input",
     )
 with col2:
     st.markdown("**Quick examples:**")
     for p in example_prompts:
         if st.button(p[:55] + "…", use_container_width=True):
-            user_input = p
+            st.session_state["user_input"] = p
 
 run_btn = st.button("🔍 Find my trails", type="primary", use_container_width=True)
 
 # ── Run pipeline ─────────────────────────────────────────────────────────────
-if run_btn and user_input.strip():
+if run_btn and st.session_state["user_input"].strip():
     with st.spinner("Searching trails, checking weather, scoring sustainability…"):
         try:
-            result = run_pathfinder(user_input, verbose=False)
+            result = run_pathfinder(st.session_state["user_input"], verbose=False)
+            st.session_state["latest_result"] = result
         except FileNotFoundError:
             st.error(
                 "⚠️ Trail database not found. "
@@ -87,6 +94,9 @@ if run_btn and user_input.strip():
         except Exception as e:
             st.error(f"Something went wrong: {e}")
             st.stop()
+
+if st.session_state["latest_result"]:
+    result = st.session_state["latest_result"]
 
     # ── Layout: left = results, right = map ──────────────────────────────────
     left, right = st.columns([3, 2])
@@ -137,6 +147,20 @@ if run_btn and user_input.strip():
                         f"🦎 **Nearby species:** {', '.join(bio['notable_species'])}"
                     )
 
+                route = t.get("_route", {})
+                if route.get("distance_km") is not None:
+                    st.markdown(
+                        f"🥾 **Route estimate:** {route['distance_km']} km · "
+                        f"{route['duration_h']} h (source: {route.get('source', 'n/a')})"
+                    )
+
+                elev = t.get("_elevation", {})
+                if elev.get("min_m") is not None:
+                    st.markdown(
+                        f"⛰️ **Elevation (SRTM):** {elev['min_m']}-{elev['max_m']} m · "
+                        f"gain {elev['gain_m']} m"
+                    )
+
         # Itinerary
         st.markdown("---")
         st.markdown("#### Your Itinerary")
@@ -163,6 +187,8 @@ if run_btn and user_input.strip():
                     {t['region']}<br>
                     Difficulty: {t['difficulty']}<br>
                     Duration: {t['duration_hours']}h<br>
+                    Route: {t.get('_route', {}).get('distance_km', '?')} km<br>
+                    Elev gain: {t.get('_elevation', {}).get('gain_m', '?')} m<br>
                     Sustainability: {score}/100
                 """
                 folium.Marker(
@@ -181,6 +207,6 @@ elif run_btn:
 st.markdown(
     "<hr><p style='text-align:center;color:#aaa;font-size:0.8rem'>"
     "Pathfinder · Deloitte Makeathon 2026 · Data: OpenStreetMap, "
-    "OpenWeatherMap, iNaturalist</p>",
+    "OpenRouteService, OpenWeatherMap, iNaturalist, NASA SRTM</p>",
     unsafe_allow_html=True,
 )
