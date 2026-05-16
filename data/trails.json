@@ -1,1 +1,902 @@
-[]
+[
+  {
+    "name": "European long distance path E4 - part Bulgaria",
+    "region": "Greece",
+    "terrain": "mountain",
+    "difficulty": "hard",
+    "duration_hours": 4.0,
+    "lat": 42.0022944,
+    "lon": 23.4462132,
+    "crowd_level": 2,
+    "local_economy_score": 6,
+    "highlights": [
+      "International long-distance route",
+      "Bulgaria-Greece border crossing",
+      "Diverse landscapes"
+    ],
+    "osm_id": 1144854,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Hiking around Monemvasia (Route P2)",
+    "region": "Greece",
+    "terrain": "coastal",
+    "difficulty": "moderate",
+    "duration_hours": 4.0,
+    "lat": 36.6751357,
+    "lon": 22.9983984,
+    "crowd_level": 3,
+    "local_economy_score": 8,
+    "highlights": [
+      "Medieval Monemvasia views",
+      "Exposed coastal scenery",
+      "Byzantine fortress proximity"
+    ],
+    "osm_id": 1147410,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Corfu Trail",
+    "region": "Greece",
+    "terrain": "mixed",
+    "difficulty": "moderate",
+    "duration_hours": 60.0,
+    "lat": 39.5924402,
+    "lon": 19.8953698,
+    "crowd_level": 3,
+    "local_economy_score": 7,
+    "highlights": [
+      "Island traverse route",
+      "Well-marked waypoints",
+      "Traditional villages"
+    ],
+    "osm_id": 1659988,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Εθνικό μονοπάτι O22",
+    "region": "Greece",
+    "terrain": "mountain",
+    "difficulty": "moderate",
+    "duration_hours": 4.0,
+    "lat": 38.3919799,
+    "lon": 23.1191173,
+    "crowd_level": 2,
+    "local_economy_score": 5,
+    "highlights": [
+      "National hiking path",
+      "Authentic Greek route",
+      "Local trail network"
+    ],
+    "osm_id": 1817196,
+    "osm_source": "relation"
+  },
+  {
+    "name": "eEuropean Walking Route E4, Greece, Crete",
+    "region": "Greece",
+    "terrain": "mountain",
+    "difficulty": "hard",
+    "duration_hours": 4.0,
+    "lat": 35.2843547,
+    "lon": 24.9056859,
+    "crowd_level": 2,
+    "local_economy_score": 7,
+    "highlights": [
+      "Crete section of E4",
+      "Gorges and plateaus",
+      "Coastal mountain views"
+    ],
+    "osm_id": 1920350,
+    "osm_source": "relation"
+  },
+  {
+    "name": "European long distance path E4 - part Greece, Central",
+    "region": "Greece",
+    "terrain": "mountain",
+    "difficulty": "hard",
+    "duration_hours": 4.0,
+    "lat": 39.6029906,
+    "lon": 21.9082683,
+    "crowd_level": 2,
+    "local_economy_score": 6,
+    "highlights": [
+      "Central Greece traverse",
+      "Mountain refuge stops",
+      "Mainland highlights"
+    ],
+    "osm_id": 2376427,
+    "osm_source": "relation"
+  },
+  {
+    "name": "European long distance path E4 - part Greece",
+    "region": "Greece",
+    "terrain": "mixed",
+    "difficulty": "hard",
+    "duration_hours": 4.0,
+    "lat": 35.2199958,
+    "lon": 24.6410422,
+    "crowd_level": 2,
+    "local_economy_score": 6,
+    "highlights": [
+      "Complete Greek E4 route",
+      "Multi-region journey",
+      "Epic thru-hike"
+    ],
+    "osm_id": 2376439,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Footpath to Agiofili beach",
+    "region": "Greece",
+    "terrain": "coastal",
+    "difficulty": "easy",
+    "duration_hours": 4.0,
+    "lat": 38.6081089,
+    "lon": 20.6131442,
+    "crowd_level": 4,
+    "local_economy_score": 4,
+    "highlights": [
+      "Secluded beach access",
+      "Turquoise waters",
+      "Short coastal walk"
+    ],
+    "osm_id": 2873375,
+    "osm_source": "relation"
+  },
+  {
+    "name": "European long distance path E4 - part Greece, Peloponnese",
+    "region": "Greece",
+    "terrain": "mixed",
+    "difficulty": "hard",
+    "duration_hours": 4.0,
+    "lat": 37.4685354,
+    "lon": 22.3379392,
+    "crowd_level": 2,
+    "local_economy_score": 7,
+    "highlights": [
+      "Peloponnese highlights",
+      "Ancient sites nearby",
+      "Varied terrain"
+    ],
+    "osm_id": 2940581,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Anopoli-Pachnes",
+    "region": "Greece",
+    "terrain": "mountain",
+    "difficulty": "hard",
+    "duration_hours": 4.0,
+    "lat": 35.2572172,
+    "lon": 24.0624415,
+    "crowd_level": 1,
+    "local_economy_score": 5,
+    "highlights": [
+      "White Mountains summit",
+      "Alpine environment",
+      "Remote mountain trek"
+    ],
+    "osm_id": 3158033,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Agios Ioannis-Sellouda-Agios Pavlos",
+    "region": "Greece",
+    "terrain": "coastal",
+    "difficulty": "moderate",
+    "duration_hours": 4.0,
+    "lat": 35.2196254,
+    "lon": 24.0165661,
+    "crowd_level": 2,
+    "local_economy_score": 6,
+    "highlights": [
+      "Coastal chapels",
+      "Traditional villages",
+      "Aegean sea views"
+    ],
+    "osm_id": 3170582,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Agios Ioannis-Kormokopos Cave",
+    "region": "Greece",
+    "terrain": "mountain",
+    "difficulty": "moderate",
+    "duration_hours": 4.0,
+    "lat": 35.2417754,
+    "lon": 24.0097465,
+    "crowd_level": 2,
+    "local_economy_score": 5,
+    "highlights": [
+      "Cave exploration",
+      "Chapel visit",
+      "Rocky landscape"
+    ],
+    "osm_id": 3170583,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Anopoli-Loutro",
+    "region": "Greece",
+    "terrain": "coastal",
+    "difficulty": "moderate",
+    "duration_hours": 4.0,
+    "lat": 35.2095494,
+    "lon": 24.08461,
+    "crowd_level": 3,
+    "local_economy_score": 8,
+    "highlights": [
+      "Coastal descent",
+      "Village to village",
+      "Crystal clear waters"
+    ],
+    "osm_id": 3170584,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Aradena-Marmara Bay",
+    "region": "Greece",
+    "terrain": "mixed",
+    "difficulty": "hard",
+    "duration_hours": 4.0,
+    "lat": 35.2108368,
+    "lon": 24.0568001,
+    "crowd_level": 2,
+    "local_economy_score": 6,
+    "highlights": [
+      "Gorge traverse",
+      "Secluded beach",
+      "Dramatic cliffs"
+    ],
+    "osm_id": 3170585,
+    "osm_source": "relation"
+  },
+  {
+    "name": "The Lighthouse Trail",
+    "region": "Greece",
+    "terrain": "coastal",
+    "difficulty": "easy",
+    "duration_hours": 0.3,
+    "lat": 38.461456,
+    "lon": 20.580311,
+    "crowd_level": 3,
+    "local_economy_score": 7,
+    "highlights": [
+      "Historic lighthouse",
+      "Early Christian ruins",
+      "Peninsula views"
+    ],
+    "osm_id": 3822268,
+    "osm_source": "relation"
+  },
+  {
+    "name": "The Battery Trail",
+    "region": "Greece",
+    "terrain": "mixed",
+    "difficulty": "moderate",
+    "duration_hours": 4.0,
+    "lat": 38.4644227,
+    "lon": 20.5584796,
+    "crowd_level": 3,
+    "local_economy_score": 7,
+    "highlights": [
+      "WWII fortifications",
+      "Ancient sites",
+      "Beach access"
+    ],
+    "osm_id": 3824409,
+    "osm_source": "relation"
+  },
+  {
+    "name": "The Cypress Trail",
+    "region": "Greece",
+    "terrain": "forest",
+    "difficulty": "easy",
+    "duration_hours": 1.6,
+    "lat": 38.454,
+    "lon": 20.57012,
+    "crowd_level": 2,
+    "local_economy_score": 6,
+    "highlights": [
+      "Cypress forests",
+      "Abandoned terraces",
+      "Rural heritage"
+    ],
+    "osm_id": 3827526,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Hiking around Monemvasia (Route P19)",
+    "region": "Greece",
+    "terrain": "coastal",
+    "difficulty": "moderate",
+    "duration_hours": 4.0,
+    "lat": 36.5856862,
+    "lon": 23.0673404,
+    "crowd_level": 4,
+    "local_economy_score": 8,
+    "highlights": [
+      "Byzantine fortress views",
+      "Coastal scenery",
+      "Medieval history"
+    ],
+    "osm_id": 3851119,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Hiking around Monemvasia (Route P12)",
+    "region": "Greece",
+    "terrain": "coastal",
+    "difficulty": "moderate",
+    "duration_hours": 4.0,
+    "lat": 36.5963902,
+    "lon": 23.0080661,
+    "crowd_level": 4,
+    "local_economy_score": 8,
+    "highlights": [
+      "Castle rock panoramas",
+      "Seaside paths",
+      "Historic landmarks"
+    ],
+    "osm_id": 3851136,
+    "osm_source": "relation"
+  },
+  {
+    "name": "European long distance path E6 - part Greece, West",
+    "region": "Greece",
+    "terrain": "mountain",
+    "difficulty": "hard",
+    "duration_hours": 4.0,
+    "lat": 40.2828438,
+    "lon": 21.4282288,
+    "crowd_level": 2,
+    "local_economy_score": 7,
+    "highlights": [
+      "Long distance trekking",
+      "Diverse landscapes",
+      "Mountain villages"
+    ],
+    "osm_id": 3924352,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Ios Manganari Kalamos monastery (Canon Trail)",
+    "region": "Greece",
+    "terrain": "mixed",
+    "difficulty": "hard",
+    "duration_hours": 2.5,
+    "lat": 36.6767188,
+    "lon": 25.3670468,
+    "crowd_level": 1,
+    "local_economy_score": 4,
+    "highlights": [
+      "Kalamos monastery",
+      "Backcountry wilderness",
+      "Cycladic island views"
+    ],
+    "osm_id": 4017790,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Connection Route 4",
+    "region": "Greece",
+    "terrain": "mixed",
+    "difficulty": "moderate",
+    "duration_hours": 4.0,
+    "lat": 37.1492838,
+    "lon": 25.224227,
+    "crowd_level": 2,
+    "local_economy_score": 3,
+    "highlights": [
+      "Connection route",
+      "Trail network link",
+      "Functional pathway"
+    ],
+    "osm_id": 4031520,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Main Route 1",
+    "region": "Greece",
+    "terrain": "mixed",
+    "difficulty": "moderate",
+    "duration_hours": 4.0,
+    "lat": 37.1497774,
+    "lon": 25.222777,
+    "crowd_level": 3,
+    "local_economy_score": 5,
+    "highlights": [
+      "Main hiking route",
+      "Primary trail",
+      "Standard pathway"
+    ],
+    "osm_id": 4031521,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Main Route 2",
+    "region": "Greece",
+    "terrain": "mixed",
+    "difficulty": "moderate",
+    "duration_hours": 4.0,
+    "lat": 37.1493763,
+    "lon": 25.2250192,
+    "crowd_level": 3,
+    "local_economy_score": 5,
+    "highlights": [
+      "Secondary main route",
+      "Alternative pathway",
+      "Trail network"
+    ],
+    "osm_id": 4031522,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Ios Mylopotas Analipsi Mersina",
+    "region": "Greece",
+    "terrain": "coastal",
+    "difficulty": "moderate",
+    "duration_hours": 2.0,
+    "lat": 36.7030038,
+    "lon": 25.3040831,
+    "crowd_level": 2,
+    "local_economy_score": 6,
+    "highlights": [
+      "Three historic chapels",
+      "Mylopotas bay views",
+      "Ridge and coastal walk"
+    ],
+    "osm_id": 4046240,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Ios Chora Skarkos archeological park",
+    "region": "Greece",
+    "terrain": "mixed",
+    "difficulty": "easy",
+    "duration_hours": 0.8,
+    "lat": 36.7269616,
+    "lon": 25.2832268,
+    "crowd_level": 4,
+    "local_economy_score": 8,
+    "highlights": [
+      "Skarkos archaeological site",
+      "Easy access from Chora",
+      "Ancient settlement"
+    ],
+    "osm_id": 4049119,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Ios Mylopotas Manganari (Ridge Trail)",
+    "region": "Greece",
+    "terrain": "mountain",
+    "difficulty": "hard",
+    "duration_hours": 3.7,
+    "lat": 36.6849361,
+    "lon": 25.3342476,
+    "crowd_level": 1,
+    "local_economy_score": 5,
+    "highlights": [
+      "Kefala ridge traverse",
+      "Remote backcountry",
+      "Manganari destination"
+    ],
+    "osm_id": 4049120,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Εθνικό μονοπάτι O4",
+    "region": "Greece",
+    "terrain": "mixed",
+    "difficulty": "moderate",
+    "duration_hours": 4.0,
+    "lat": 40.8454648,
+    "lon": 23.7696009,
+    "crowd_level": 2,
+    "local_economy_score": 6,
+    "highlights": [
+      "National trail O4",
+      "Long-distance route",
+      "Greek trail network"
+    ],
+    "osm_id": 4052075,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Ios Chora Profiti Ilias",
+    "region": "Greece",
+    "terrain": "mountain",
+    "difficulty": "moderate",
+    "duration_hours": 1.0,
+    "lat": 36.7265922,
+    "lon": 25.293583,
+    "crowd_level": 3,
+    "local_economy_score": 7,
+    "highlights": [
+      "Summit of Profiti Ilias",
+      "Panoramic island views",
+      "Windmill starting point"
+    ],
+    "osm_id": 4056457,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Ios Chora Pyrgos (via Agios Ioannis Prodromos)",
+    "region": "Greece",
+    "terrain": "mountain",
+    "difficulty": "hard",
+    "duration_hours": 2.0,
+    "lat": 36.7191162,
+    "lon": 25.3090342,
+    "crowd_level": 2,
+    "local_economy_score": 5,
+    "highlights": [
+      "Pyrgos summit",
+      "Agios Ioannis chapel",
+      "Extended mountain trek"
+    ],
+    "osm_id": 4056458,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Ios Agio Theodoti Chora (Profiti Ilias Trail)",
+    "region": "Greece",
+    "terrain": "mountain",
+    "difficulty": "hard",
+    "duration_hours": 2.5,
+    "lat": 36.7378755,
+    "lon": 25.302719,
+    "crowd_level": 2,
+    "local_economy_score": 4,
+    "highlights": [
+      "Summit of Profiti Ilias",
+      "Panoramic Cycladic views",
+      "Remote backcountry experience"
+    ],
+    "osm_id": 4069856,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Ios Kalamos Psathi (Coast Range Trail)",
+    "region": "Greece",
+    "terrain": "coastal",
+    "difficulty": "moderate",
+    "duration_hours": 2.7,
+    "lat": 36.7160253,
+    "lon": 25.3744782,
+    "crowd_level": 1,
+    "local_economy_score": 2,
+    "highlights": [
+      "Coastal scenery",
+      "Traditional village Kalamos",
+      "Secluded beaches"
+    ],
+    "osm_id": 4069857,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Ios Psathi Agio Theodoti (Paleokastro Trail)",
+    "region": "Greece",
+    "terrain": "mixed",
+    "difficulty": "hard",
+    "duration_hours": 2.7,
+    "lat": 36.7444597,
+    "lon": 25.341677,
+    "crowd_level": 2,
+    "local_economy_score": 3,
+    "highlights": [
+      "Ancient Paleokastro ruins",
+      "Steep coastal descents",
+      "Agio Theodoti beach"
+    ],
+    "osm_id": 4069858,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Ios 4 Day hiking circuit via Manganari Psathi Agio Theodoti",
+    "region": "Greece",
+    "terrain": "mixed",
+    "difficulty": "hard",
+    "duration_hours": 14.0,
+    "lat": 36.7055917,
+    "lon": 25.3273969,
+    "crowd_level": 1,
+    "local_economy_score": 5,
+    "highlights": [
+      "Multi-day island circuit",
+      "Manganari beaches",
+      "Complete Ios traverse"
+    ],
+    "osm_id": 4071145,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Ι. Μ. Κωσταμονίτου - Ι. Μ. Βατοπαιδίου",
+    "region": "Greece",
+    "terrain": "mountain",
+    "difficulty": "moderate",
+    "duration_hours": 4.0,
+    "lat": 40.2997894,
+    "lon": 24.1930657,
+    "crowd_level": 3,
+    "local_economy_score": 6,
+    "highlights": [
+      "Mount Athos monasteries",
+      "Byzantine architecture",
+      "Spiritual pilgrimage route"
+    ],
+    "osm_id": 4249856,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Ι. Μ. Γρηγορίου - Ι. Μ. Διονυσίου",
+    "region": "Greece",
+    "terrain": "mixed",
+    "difficulty": "moderate",
+    "duration_hours": 4.0,
+    "lat": 40.1739214,
+    "lon": 24.2660542,
+    "crowd_level": 3,
+    "local_economy_score": 6,
+    "highlights": [
+      "Coastal monastery path",
+      "Athonite heritage",
+      "Sea and forest views"
+    ],
+    "osm_id": 4249857,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Ι. Μ. Διονυσίου - Ι. Μ. Αγ. Παύλου",
+    "region": "Greece",
+    "terrain": "coastal",
+    "difficulty": "moderate",
+    "duration_hours": 4.0,
+    "lat": 40.1631086,
+    "lon": 24.2826601,
+    "crowd_level": 3,
+    "local_economy_score": 6,
+    "highlights": [
+      "Monastery to monastery trek",
+      "Religious monuments",
+      "Athos Peninsula coastline"
+    ],
+    "osm_id": 4249858,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Ι. Μ. Σιμωνος Πέτρας - Ι. Μ. Γρηγορίου",
+    "region": "Greece",
+    "terrain": "mountain",
+    "difficulty": "moderate",
+    "duration_hours": 4.0,
+    "lat": 40.1851686,
+    "lon": 24.2524955,
+    "crowd_level": 3,
+    "local_economy_score": 6,
+    "highlights": [
+      "Simonopetra monastery views",
+      "Forested mountain trails",
+      "Orthodox heritage sites"
+    ],
+    "osm_id": 4249859,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Ι. Μ. Βατοπαιδίου - Ι. Μ. Ζωγράφου",
+    "region": "Greece",
+    "terrain": "forest",
+    "difficulty": "moderate",
+    "duration_hours": 4.0,
+    "lat": 40.3113901,
+    "lon": 24.1856585,
+    "crowd_level": 3,
+    "local_economy_score": 6,
+    "highlights": [
+      "Historic monastery route",
+      "Mount Athos wilderness",
+      "Byzantine treasures"
+    ],
+    "osm_id": 4259789,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Ι. Μ. Δοχειαρίου - Ι. Μ. Βατοπαιδίου",
+    "region": "Greece",
+    "terrain": "forest",
+    "difficulty": "moderate",
+    "duration_hours": 4.0,
+    "lat": 40.2898286,
+    "lon": 24.1915968,
+    "crowd_level": 3,
+    "local_economy_score": 6,
+    "highlights": [
+      "Dochiariou to Vatopedi path",
+      "Ancient pilgrimage trail",
+      "Monastic hospitality"
+    ],
+    "osm_id": 4259790,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Ι. Μ. Εσφιγμένου - Ι. Μ. Βατοπαιδίου",
+    "region": "Greece",
+    "terrain": "mixed",
+    "difficulty": "moderate",
+    "duration_hours": 4.0,
+    "lat": 40.3337039,
+    "lon": 24.1745541,
+    "crowd_level": 2,
+    "local_economy_score": 3,
+    "highlights": [
+      "Monastic architecture",
+      "Byzantine artifacts",
+      "Coastal monastery views"
+    ],
+    "osm_id": 4259791,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Ι. Μ. Εσφιγμένου - Καρυές (Δρόμος του Μπέη)",
+    "region": "Greece",
+    "terrain": "mountain",
+    "difficulty": "moderate",
+    "duration_hours": 4.0,
+    "lat": 40.3049046,
+    "lon": 24.1916453,
+    "crowd_level": 3,
+    "local_economy_score": 5,
+    "highlights": [
+      "Historic Bey's Road",
+      "Capital of Mount Athos",
+      "Traditional kalderimi path"
+    ],
+    "osm_id": 4259792,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Ι. Μ. Κωσταμονίτου - Ι. Μ. Ζωγράφου",
+    "region": "Greece",
+    "terrain": "forest",
+    "difficulty": "moderate",
+    "duration_hours": 4.0,
+    "lat": 40.2973619,
+    "lon": 24.167578,
+    "crowd_level": 1,
+    "local_economy_score": 2,
+    "highlights": [
+      "Bulgarian monastery connection",
+      "Forest paths",
+      "Secluded monastic route"
+    ],
+    "osm_id": 4259793,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Ι. Μ. Χιλανδαρίου - Ι. Μ. Ζωγράφου",
+    "region": "Greece",
+    "terrain": "mountain",
+    "difficulty": "hard",
+    "duration_hours": 4.0,
+    "lat": 40.3236242,
+    "lon": 24.140149,
+    "crowd_level": 1,
+    "local_economy_score": 2,
+    "highlights": [
+      "Serbian-Bulgarian monasteries",
+      "Mountain ridges",
+      "Rare wildlife spotting"
+    ],
+    "osm_id": 4259794,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Ι. Μ. Δοχειαρίου - Ι. Μ. Ζωγράφου",
+    "region": "Greece",
+    "terrain": "mixed",
+    "difficulty": "moderate",
+    "duration_hours": 4.0,
+    "lat": 40.2864728,
+    "lon": 24.1616294,
+    "crowd_level": 2,
+    "local_economy_score": 3,
+    "highlights": [
+      "Coastal to inland route",
+      "Dense chestnut forests",
+      "Spring water sources"
+    ],
+    "osm_id": 4260168,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Ι. Μ. Δοχειαρίου - Ι. Μ. Κωσταμονίτου",
+    "region": "Greece",
+    "terrain": "coastal",
+    "difficulty": "easy",
+    "duration_hours": 4.0,
+    "lat": 40.2773747,
+    "lon": 24.1661035,
+    "crowd_level": 2,
+    "local_economy_score": 2,
+    "highlights": [
+      "Short monastery link",
+      "Sea views",
+      "Ancient olive groves"
+    ],
+    "osm_id": 4260169,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Ι. Μ. Δοχειαρίου - Ι. Μ. Ξενοφώντος",
+    "region": "Greece",
+    "terrain": "coastal",
+    "difficulty": "easy",
+    "duration_hours": 4.0,
+    "lat": 40.2621183,
+    "lon": 24.1753172,
+    "crowd_level": 2,
+    "local_economy_score": 4,
+    "highlights": [
+      "Coastal monastery trail",
+      "Harbor views",
+      "Byzantine frescoes"
+    ],
+    "osm_id": 4260170,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Ι. Μ. Ξενοφώντος - Ι. Μ. Παντελεήμονος",
+    "region": "Greece",
+    "terrain": "coastal",
+    "difficulty": "easy",
+    "duration_hours": 4.0,
+    "lat": 40.2476193,
+    "lon": 24.1897796,
+    "crowd_level": 3,
+    "local_economy_score": 4,
+    "highlights": [
+      "Russian monastery visit",
+      "Seafront path",
+      "Icon museum access"
+    ],
+    "osm_id": 4260171,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Ι. Μ. Παντελεήμονος - Ι. Μ. Ξηροποτάμου",
+    "region": "Greece",
+    "terrain": "coastal",
+    "difficulty": "easy",
+    "duration_hours": 4.0,
+    "lat": 40.2328445,
+    "lon": 24.2111002,
+    "crowd_level": 3,
+    "local_economy_score": 5,
+    "highlights": [
+      "Western coast route",
+      "Port of Daphni nearby",
+      "Maritime monastery views"
+    ],
+    "osm_id": 4260172,
+    "osm_source": "relation"
+  },
+  {
+    "name": "Ι. Μ. Βατοπαιδίου - Ι. Μ. Παντοκράτορος",
+    "region": "Greece",
+    "terrain": "coastal",
+    "difficulty": "moderate",
+    "duration_hours": 4.0,
+    "lat": 40.2987543,
+    "lon": 24.2387514,
+    "crowd_level": 1,
+    "local_economy_score": 2,
+    "highlights": [
+      "Northeast peninsula",
+      "Panoramic Aegean views",
+      "Remote hermitages"
+    ],
+    "osm_id": 4262543,
+    "osm_source": "relation"
+  }
+]
