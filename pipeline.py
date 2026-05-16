@@ -28,7 +28,7 @@ from backend.sustainability import sustainability_score
 from backend.itinerary      import generate_itinerary
 
 
-def run_pathfinder(user_input: str, verbose: bool = True) -> dict:
+def run_pathfinder(user_input: str = None, profile: dict = None, verbose: bool = True) -> dict:
     """
     Full pipeline. Returns:
         profile         — extracted preferences
@@ -45,7 +45,8 @@ def run_pathfinder(user_input: str, verbose: bool = True) -> dict:
 
     # ── 1. Profile ─────────────────────────────────────────────────────────
     log("1/5  Extracting traveller profile…")
-    profile = extract_profile(user_input)
+    if profile is None:
+        profile = extract_profile(user_input)
     log(
         f"     → {profile['duration_days']}d | {profile['difficulty']} | "
         f"{profile['terrain']} | interests: {profile['interests']}"
