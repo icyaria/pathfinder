@@ -1,0 +1,67 @@
+[
+  {
+    "UserUniqueID": "USR-2D946D8FD7C9",
+    "HistoryUniqueID": "HIS-9F3A18C0B271",
+    "KeyData": {
+      "duration_days": 2,
+      "difficulty": "moderate",
+      "terrain": "forest",
+      "interests": [
+        "wildlife",
+        "photography"
+      ],
+      "selected_trail": "Vikos Gorge Ridge Path"
+    },
+    "UserMessages": [
+      "I want a quiet 2-day forest hike in Greece.",
+      "I care about wildlife and good photo spots."
+    ],
+    "QuickSelectPromptsChosen": [
+      "Moderate forest hike, interested in history and local villages"
+    ],
+    "CreatedAt": "2026-05-16T11:20:00+00:00"
+  },
+  {
+    "UserUniqueID": "USR-2D946D8FD7C9",
+    "HistoryUniqueID": "HIS-54E71D9A2C44",
+    "KeyData": {
+      "duration_days": 1,
+      "difficulty": "easy",
+      "terrain": "coastal",
+      "group_size": 2,
+      "weather_alerts_seen": [
+        "Rain - expect slippery rocks and mud"
+      ]
+    },
+    "UserMessages": [
+      "Show me an easy coastal walk for me and my friend.",
+      "Avoid very crowded places."
+    ],
+    "QuickSelectPromptsChosen": [
+      "Easy 1-day coastal walk with great views, small group of 2"
+    ],
+    "CreatedAt": "2026-05-16T11:42:00+00:00"
+  },
+  {
+    "UserUniqueID": "USR-FB9551FD7FB7",
+    "HistoryUniqueID": "HIS-7B42F1CE8DA3",
+    "KeyData": {
+      "duration_days": 3,
+      "difficulty": "hard",
+      "terrain": "mountain",
+      "interests": [
+        "remote landscapes",
+        "wildlife"
+      ],
+      "itinerary_generated": true
+    },
+    "UserMessages": [
+      "I need a hard 3-day mountain hike far from tourists.",
+      "I am fit and want remote routes with wildlife."
+    ],
+    "QuickSelectPromptsChosen": [
+      "3-day hard mountain hike far from tourists, I love wildlife and remote landscapes"
+    ],
+    "CreatedAt": "2026-05-16T12:05:00+00:00"
+  }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "Name": "Eleni",
+    "Surname": "Papadaki",
+    "Age": 25,
+    "Gender": "Female",
+    "Location": "Athens",
+    "UserUniqieID": "USR-2D946D8FD7C9",
+    "Description": "Student"
+  },
+  {
+    "Name": "Nikos",
+    "Surname": "Georgiou",
+    "Age": 30,
+    "Gender": "Male",
+    "Location": "Thessaloniki",
+    "UserUniqieID": "USR-FB9551FD7FB7",
+    "Description": "Engineer"
+  }
+]
