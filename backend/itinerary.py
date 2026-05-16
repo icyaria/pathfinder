@@ -5,12 +5,17 @@ Takes fully enriched trail objects and generates a day-by-day plan via LLM.
 
 import json
 import os
-import anthropic
+import boto3
 from dotenv import load_dotenv
 
 load_dotenv()
-client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
-MODEL = "claude-sonnet-4-20250514"
+MODEL = os.getenv("BEDROCK_MODEL_ID", "anthropic.claude-3-5-sonnet-20241022-v2:0")
+bedrock = boto3.client(
+    "bedrock-runtime",
+    region_name=os.getenv("AWS_REGION", "us-east-1"),
+    aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
+    aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
+)
 
 
 def generate_itinerary(profile: dict, enriched_trails: list) -> str:
@@ -81,9 +86,9 @@ Write a day-by-day hiking itinerary. Structure:
 Tone: warm, knowledgeable, like a Greek local guide who loves these places.
 """
 
-    response = client.messages.create(
-        model=MODEL,
-        max_tokens=2000,
-        messages=[{"role": "user", "content": prompt}],
+    response = bedrock.converse(
+        modelId=MODEL,
+        messages=[{"role": "user", "content": [{"text": prompt}]}],
+        inferenceConfig={"maxTokens": 2000},
     )
-    return response.content[0].text
+    return response["output"]["message"]["content"][0]["text"]

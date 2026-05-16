@@ -11,9 +11,8 @@ import os
 import sys
 import json
 import time
-import math
 import requests
-import anthropic
+import boto3
 from dotenv import load_dotenv
 
 # Allow imports from project root
@@ -23,7 +22,13 @@ load_dotenv()
 OVERPASS_URL = "https://overpass-api.de/api/interpreter"
 OUTPUT_PATH  = os.path.join(os.path.dirname(__file__), "..", "data", "trails.json")
 
-client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
+MODEL = os.getenv("BEDROCK_MODEL_ID", "us.anthropic.claude-sonnet-4-5-20250929-v1:0")
+bedrock = boto3.client(
+    "bedrock-runtime",
+    region_name=os.getenv("AWS_REGION", "us-east-1"),
+    aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
+    aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
+)
 
 # Greece bounding box
 GREECE_BBOX = "34.8, 19.3, 41.8, 29.6"
@@ -151,12 +156,12 @@ Trails:
 {listing}
 """
         try:
-            resp = client.messages.create(
-                model="claude-sonnet-4-20250514",
-                max_tokens=2000,
-                messages=[{"role": "user", "content": prompt}],
+            resp = bedrock.converse(
+                modelId=MODEL,
+                messages=[{"role": "user", "content": [{"text": prompt}]}],
+                inferenceConfig={"maxTokens": 2000},
             )
-            raw = resp.content[0].text.strip()
+            raw = resp["output"]["message"]["content"][0]["text"].strip()
             if raw.startswith("```"):
                 raw = raw.split("```")[1]
                 if raw.startswith("json"):
@@ -197,11 +202,11 @@ def build(use_llm=True, min_trails=20, max_trails=50):
 
     trails = trails[:max_trails]
 
-    if use_llm and os.getenv("ANTHROPIC_API_KEY"):
+    if use_llm and os.getenv("AWS_ACCESS_KEY_ID"):
         print(f"\n  Enriching {len(trails)} trails with LLM…")
         trails = enrich(trails)
     else:
-        print("  Skipping LLM enrichment (no ANTHROPIC_API_KEY)")
+        print("  Skipping LLM enrichment (no AWS credentials)")
 
     # Strip internal fields
     clean = [{k: v for k, v in t.items() if not k.startswith("_")} for t in trails]

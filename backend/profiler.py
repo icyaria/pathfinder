@@ -4,13 +4,18 @@ Converts the user's natural language message into a structured profile dict.
 """
 
 import json
-import anthropic
 import os
+import boto3
 from dotenv import load_dotenv
 
 load_dotenv()
-client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
-MODEL = "claude-sonnet-4-20250514"
+MODEL = os.getenv("BEDROCK_MODEL_ID", "anthropic.claude-3-5-sonnet-20241022-v2:0")
+bedrock = boto3.client(
+    "bedrock-runtime",
+    region_name=os.getenv("AWS_REGION", "us-east-1"),
+    aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
+    aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
+)
 
 
 def extract_profile(user_input: str) -> dict:
@@ -39,12 +44,12 @@ If a field cannot be inferred, use these defaults:
   duration_days=2, difficulty="moderate", terrain="mixed",
   interests=[], group_size=1, fitness_level="medium"
 """
-    response = client.messages.create(
-        model=MODEL,
-        max_tokens=400,
-        messages=[{"role": "user", "content": prompt}],
+    response = bedrock.converse(
+        modelId=MODEL,
+        messages=[{"role": "user", "content": [{"text": prompt}]}],
+        inferenceConfig={"maxTokens": 400},
     )
-    raw = response.content[0].text.strip()
+    raw = response["output"]["message"]["content"][0]["text"].strip()
     if raw.startswith("```"):
         raw = raw.split("```")[1]
         if raw.startswith("json"):

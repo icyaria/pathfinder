@@ -14,6 +14,15 @@ import folium
 from streamlit_folium import st_folium
 from pipeline import run_pathfinder
 
+DATA_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "trails.json")
+if not os.path.exists(DATA_PATH):
+    with st.spinner("First launch: building trail database from OpenStreetMap… (this takes ~1 min)"):
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+        from scripts.fetch_trails import build
+        build()
+    st.success("Trail database ready!")
+    st.rerun()
+
 # ── Page config ──────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="Pathfinder",
