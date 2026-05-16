@@ -15,6 +15,8 @@ import streamlit as st
 import folium
 from streamlit_folium import st_folium
 from pipeline import run_pathfinder
+from backend.user_db import create_user, list_users, get_user_by_unique_id, authenticate_user
+from backend.chat_history_db import create_history_entry, list_history_for_user
 
 DATA_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "trails.json")
 if not os.path.exists(DATA_PATH):
@@ -26,6 +28,12 @@ if not os.path.exists(DATA_PATH):
 
 # ── Page config ───────────────────────────────────────────────────────────────
 st.set_page_config(page_title="Pathfinder", page_icon="🧭", layout="wide")
+
+# ── Session state initialization ──────────────────────────────────────────────
+if "current_user_id" not in st.session_state:
+    st.session_state["current_user_id"] = None
+if "current_user_name" not in st.session_state:
+    st.session_state["current_user_name"] = None
 
 st.markdown("""
 <style>
@@ -42,6 +50,87 @@ st.markdown("""
 <div class="subtitle">Find your trail. Leave no trace. — AI-powered sustainable hiking in Greece.</div>
 <hr/>
 """, unsafe_allow_html=True)
+
+
+# ── Authentication UI ─────────────────────────────────────────────────────────
+def show_auth_page():
+    st.markdown("## Welcome to Pathfinder")
+    st.markdown("Create an account or sign in to get started.")
+    
+    tab1, tab2 = st.tabs(["Sign Up", "Sign In"])
+    
+    with tab1:
+        st.subheader("Create Your Account")
+        with st.form("signup_form"):
+            name = st.text_input("First Name", placeholder="e.g., Maria")
+            surname = st.text_input("Last Name", placeholder="e.g., Papadopoulou")
+            age = st.number_input("Age", min_value=1, max_value=120, step=1)
+            gender = st.selectbox("Gender", ["Female", "Male", "Other", "Prefer not to say"])
+            location = st.text_input("Location", placeholder="e.g., Athens, Greece")
+            description = st.text_area(
+                "Tell us about yourself (max 256 chars)",
+                placeholder="e.g., I love remote mountain hikes with wildlife.",
+                max_chars=256,
+            )
+            password = st.text_input("Password", type="password", placeholder="Min 6 characters")
+            confirm_password = st.text_input("Confirm Password", type="password", placeholder="Repeat password")
+            submitted = st.form_submit_button("Create Account")
+            
+            if submitted:
+                if not all([name, surname, gender, location, password, confirm_password]):
+                    st.error("Please fill in all required fields.")
+                elif password != confirm_password:
+                    st.error("Passwords do not match.")
+                else:
+                    try:
+                        user = create_user(
+                            name=name,
+                            surname=surname,
+                            age=int(age),
+                            gender=gender,
+                            location=location,
+                            description=description or "",
+                            password=password,
+                        )
+                        st.session_state["current_user_id"] = user["UserUniqieID"]
+                        st.session_state["current_user_name"] = f"{user['Name']} {user['Surname']}"
+                        st.success(f"✅ Welcome, {user['Name']}! Your ID: {user['UserUniqieID']}")
+                        st.rerun()
+                    except Exception as e:
+                        st.error(f"Error creating account: {e}")
+    
+    with tab2:
+        st.subheader("Sign In")
+        users = list_users()
+        if not users:
+            st.info("No accounts yet. Please sign up first.")
+        else:
+            user_options = [f"{u['Name']} {u['Surname']} ({u['UserUniqieID']})" for u in users]
+            selected = st.selectbox("Select your account", user_options)
+            password_input = st.text_input("Password", type="password", placeholder="Enter your password")
+            if st.button("Sign In", type="primary"):
+                user_id = selected.split("(")[1].rstrip(")")
+                authenticated_user = authenticate_user(user_id, password_input)
+                if authenticated_user:
+                    st.session_state["current_user_id"] = user_id
+                    st.session_state["current_user_name"] = f"{authenticated_user['Name']} {authenticated_user['Surname']}"
+                    st.success(f"✅ Welcome back, {authenticated_user['Name']}!")
+                    st.rerun()
+                else:
+                    st.error("❌ Invalid password. Please try again.")
+
+
+# ── Main app (only show if authenticated) ─────────────────────────────────────
+if not st.session_state["current_user_id"]:
+    show_auth_page()
+    st.stop()
+
+# Display user header
+st.sidebar.markdown(f"**User:** {st.session_state.get('current_user_name', 'Unknown')}")
+if st.sidebar.button("Sign Out"):
+    st.session_state["current_user_id"] = None
+    st.session_state["current_user_name"] = None
+    st.rerun()
 
 
 # ── Conversation definition ───────────────────────────────────────────────────
@@ -163,6 +252,32 @@ def _record(display: str, value, step_id: str):
         })
 
 
+def _extract_user_messages() -> list:
+    """Extract free-text user messages from pf_messages."""
+    messages = []
+    for msg in st.session_state.pf_messages:
+        if msg["role"] == "user":
+            content = msg.get("content", "").strip()
+            if content:
+                messages.append(content)
+    return messages
+
+
+def _extract_quick_prompts() -> list:
+    """Extract button-selected prompts (quick examples)."""
+    prompts = []
+    example_prompts = [
+        "3-day hard mountain hike far from tourists, I love wildlife and remote landscapes",
+        "Easy 1-day coastal walk with great views, small group of 2",
+        "Moderate forest hike, interested in history and local villages",
+    ]
+    messages_text = " ".join(msg.get("content", "") for msg in st.session_state.pf_messages)
+    for ex in example_prompts:
+        if ex in messages_text and ex not in prompts:
+            prompts.append(ex)
+    return prompts
+
+
 def _build_profile() -> dict:
     a = st.session_state.pf_answers
 
@@ -258,6 +373,32 @@ if st.session_state.pf_done and st.session_state.pf_result is None:
             try:
                 result = run_pathfinder(profile=profile, verbose=False)
                 st.session_state.pf_result = result
+                
+                # Save to chat history
+                try:
+                    user_id = st.session_state.get("current_user_id")
+                    if user_id:
+                        user_messages = _extract_user_messages()
+                        quick_prompts = _extract_quick_prompts()
+                        key_data = {
+                            "duration_days": profile.get("duration_days"),
+                            "difficulty": profile.get("difficulty"),
+                            "terrain": profile.get("terrain"),
+                            "interests": profile.get("interests"),
+                            "fitness_level": profile.get("fitness_level"),
+                            "start_date": profile.get("start_date"),
+                            "matched_trail_count": len(result.get("enriched_trails", [])),
+                        }
+                        history = create_history_entry(
+                            user_uniqie_id=user_id,
+                            key_data=key_data,
+                            user_messages=user_messages,
+                            quick_select_prompts_chosen=quick_prompts,
+                        )
+                        st.session_state["last_history_id"] = history["HistoryUniqueID"]
+                except Exception as history_err:
+                    st.warning(f"Could not save chat history: {history_err}")
+                
                 st.rerun()
             except Exception as e:
                 st.error(f"Something went wrong: {e}")

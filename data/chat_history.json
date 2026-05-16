@@ -63,5 +63,108 @@
       "3-day hard mountain hike far from tourists, I love wildlife and remote landscapes"
     ],
     "CreatedAt": "2026-05-16T12:05:00+00:00"
+  },
+  {
+    "UserUniqueID": "USR-114AAE7DB376",
+    "HistoryUniqueID": "HIS-7E8D4AC70283",
+    "KeyData": {
+      "duration_days": 3,
+      "difficulty": "hard",
+      "terrain": "mountain",
+      "interests": [
+        "wildlife",
+        "nature"
+      ],
+      "fitness_level": "medium",
+      "start_date": "2026-05-23",
+      "matched_trail_count": 5
+    },
+    "UserMessages": [
+      "🏔️ Mountain",
+      "3 days",
+      "Next week",
+      "🚶 Average",
+      "Hard",
+      "🌿 Nature & flora, 🦅 Wildlife",
+      "2 people"
+    ],
+    "QuickSelectPromptsChosen": [],
+    "CreatedAt": "2026-05-16T12:11:20.969646+00:00"
+  },
+  {
+    "UserUniqueID": "USR-114AAE7DB376",
+    "HistoryUniqueID": "HIS-28BBA04FF154",
+    "KeyData": {
+      "duration_days": 3,
+      "difficulty": "easy",
+      "terrain": "coastal",
+      "interests": [
+        "wildlife"
+      ],
+      "fitness_level": "medium",
+      "start_date": "2026-05-23",
+      "matched_trail_count": 5
+    },
+    "UserMessages": [
+      "🌊 Coastal",
+      "3 days",
+      "This weekend",
+      "🚶 Average",
+      "Easy",
+      "🦅 Wildlife",
+      "Just me 🧍"
+    ],
+    "QuickSelectPromptsChosen": [],
+    "CreatedAt": "2026-05-16T12:28:37.325033+00:00"
+  },
+  {
+    "UserUniqueID": "USR-114AAE7DB376",
+    "HistoryUniqueID": "HIS-A30E3BA8EE24",
+    "KeyData": {
+      "duration_days": 2,
+      "difficulty": "moderate",
+      "terrain": "forest",
+      "interests": [],
+      "fitness_level": "medium",
+      "start_date": "2026-05-16",
+      "matched_trail_count": 5
+    },
+    "UserMessages": [
+      "🌲 Forest",
+      "2 days",
+      "May 16, 2026",
+      "Not very Fit",
+      "Hardcore",
+      "No preference",
+      "Just me 🧍"
+    ],
+    "QuickSelectPromptsChosen": [],
+    "CreatedAt": "2026-05-16T12:32:48.012626+00:00"
+  },
+  {
+    "UserUniqueID": "USR-2D946D8FD7C9",
+    "HistoryUniqueID": "HIS-FE6E01448F33",
+    "KeyData": {
+      "duration_days": 2,
+      "difficulty": "moderate",
+      "terrain": "mountain",
+      "interests": [
+        "nature"
+      ],
+      "fitness_level": "medium",
+      "start_date": "2026-05-23",
+      "matched_trail_count": 5
+    },
+    "UserMessages": [
+      "🏔️ Mountain",
+      "2 days",
+      "This weekend",
+      "🚶 Average",
+      "Moderate",
+      "🌿 Nature & flora",
+      "2 people"
+    ],
+    "QuickSelectPromptsChosen": [],
+    "CreatedAt": "2026-05-16T12:51:07.483793+00:00"
   }
 ]

@@ -21,7 +21,13 @@ REQUIRED_FIELDS = [
     "Location",
     "UserUniqieID",
     "Description",
+    "Password",
 ]
+
+
+def _verify_password(password: str, stored_password: str) -> bool:
+    """Verify password (plain text comparison for prototyping)."""
+    return password == stored_password
 
 
 def _ensure_db_exists() -> None:
@@ -66,17 +72,19 @@ def create_user(
     gender: str,
     location: str,
     description: str,
+    password: str,
 ) -> Dict:
     """
     Create a user and persist it to data/users.json.
 
     Stored fields:
-      Name, Surname, Age, Gender, Location, UserUniqieID, Description
+      Name, Surname, Age, Gender, Location, UserUniqieID, Description, Password
     """
     name = _normalize_text(name, "Name")
     surname = _normalize_text(surname, "Surname")
     gender = _normalize_text(gender, "Gender")
     location = _normalize_text(location, "Location")
+    password = (password or "").strip()
     description = (description or "").strip()
 
     if not isinstance(age, int):
@@ -85,6 +93,8 @@ def create_user(
         raise ValueError("Age must be between 0 and 120")
     if len(description) > MAX_DESCRIPTION_LENGTH:
         raise ValueError("Description must be at most 256 characters")
+    if len(password) < 6:
+        raise ValueError("Password must be at least 6 characters")
 
     users = _load_users()
     existing_ids = {u.get("UserUniqieID") for u in users}
@@ -98,6 +108,7 @@ def create_user(
         "Location": location,
         "UserUniqieID": user_unique_id,
         "Description": description,
+        "Password": password,
     }
 
     users.append(user)
@@ -119,6 +130,16 @@ def get_user_by_unique_id(user_unique_id: str) -> Optional[Dict]:
 
 def list_users() -> List[Dict]:
     return _load_users()
+
+
+def authenticate_user(user_unique_id: str, password: str) -> Optional[Dict]:
+    """Authenticate user by ID and password. Returns user dict if valid, None otherwise."""
+    user = get_user_by_unique_id(user_unique_id)
+    if not user:
+        return None
+    if _verify_password(password, user.get("Password", "")):
+        return user
+    return None
 
 
 def validate_user_record(user: Dict) -> bool:

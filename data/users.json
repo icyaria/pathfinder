@@ -6,7 +6,8 @@
     "Gender": "Female",
     "Location": "Athens",
     "UserUniqieID": "USR-2D946D8FD7C9",
-    "Description": "Student"
+    "Description": "Student",
+    "Password": "password"
   },
   {
     "Name": "Nikos",
@@ -15,6 +16,17 @@
     "Gender": "Male",
     "Location": "Thessaloniki",
     "UserUniqieID": "USR-FB9551FD7FB7",
-    "Description": "Engineer"
+    "Description": "Engineer",
+    "Password": "password"
+  },
+  {
+    "Name": "LAMPROS",
+    "Surname": "KALUTEROS",
+    "Age": 26,
+    "Gender": "Prefer not to say",
+    "Location": "Athens",
+    "UserUniqieID": "USR-114AAE7DB376",
+    "Description": "I dont like HUMANS",
+    "Password": "password"
   }
 ]
