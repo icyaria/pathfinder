@@ -20,11 +20,12 @@ Usage (import):
 import time
 from backend.profiler       import extract_profile
 from backend.trail_engine   import load_trails, match_trails
-from backend.weather        import get_weather
+from backend.weather        import get_weather_for_date, get_weather_calendar
 from backend.biodiversity   import get_biodiversity
 from backend.routing        import get_route_summary
 from backend.elevation      import get_elevation_profile
 from backend.sustainability import sustainability_score
+from backend.crowd_economy  import get_crowd_and_economy
 from backend.itinerary      import generate_itinerary
 
 
@@ -75,10 +76,13 @@ def run_pathfinder(user_input: str = None, profile: dict = None, verbose: bool =
     for i, trail in enumerate(matched, 1):
         log(f"     [{i}/{len(matched)}] {trail['name']}…")
 
-        weather = get_weather(trail["lat"], trail["lon"])
+        weather = get_weather_for_date(trail["lat"], trail["lon"], profile.get("start_date"))
         time.sleep(0.2)
 
-        bio  = get_biodiversity(trail["lat"], trail["lon"])
+        weather_cal = get_weather_calendar(trail["lat"], trail["lon"], profile.get("start_date", ""), window=2)
+        time.sleep(0.2)
+
+        bio = get_biodiversity(trail["lat"], trail["lon"])
         time.sleep(0.2)
 
         route = get_route_summary(trail["lat"], trail["lon"])
@@ -87,16 +91,28 @@ def run_pathfinder(user_input: str = None, profile: dict = None, verbose: bool =
         elevation = get_elevation_profile(trail["lat"], trail["lon"])
         time.sleep(0.2)
 
-        sust = sustainability_score(trail, bio_count=bio["total_observations"])
+        crowd_eco = get_crowd_and_economy(trail["lat"], trail["lon"])
+        time.sleep(0.3)
+
+        sust = sustainability_score(
+            trail,
+            bio_count=bio["total_observations"],
+            weather=weather,
+            profile=profile,
+            crowd_level=crowd_eco["crowd_level"],
+            local_economy_score=crowd_eco["local_economy_score"],
+        )
 
         enriched.append(
             {
                 **trail,
-                "_weather": weather,
-                "_biodiversity": bio,
-                "_route": route,
-                "_elevation": elevation,
-                "_sustainability": sust,
+                "_weather":         weather,
+                "_weather_calendar": weather_cal,
+                "_biodiversity":    bio,
+                "_route":           route,
+                "_elevation":       elevation,
+                "_crowd_economy":   crowd_eco,
+                "_sustainability":  sust,
             }
         )
 

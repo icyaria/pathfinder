@@ -166,5 +166,128 @@
     ],
     "QuickSelectPromptsChosen": [],
     "CreatedAt": "2026-05-16T12:51:07.483793+00:00"
+  },
+  {
+    "UserUniqueID": "USR-114AAE7DB376",
+    "HistoryUniqueID": "HIS-93107B0C7692",
+    "KeyData": {
+      "duration_days": 1,
+      "difficulty": "easy",
+      "terrain": "mountain",
+      "interests": [],
+      "fitness_level": "low",
+      "start_date": "2026-05-23",
+      "matched_trail_count": 5
+    },
+    "UserMessages": [
+      "🏔️ Mountain",
+      "1 day",
+      "This weekend",
+      "🐢 Easy-going",
+      "Easy",
+      "No preference",
+      "Just me 🧍"
+    ],
+    "QuickSelectPromptsChosen": [],
+    "CreatedAt": "2026-05-16T13:06:10.483736+00:00"
+  },
+  {
+    "UserUniqueID": "USR-2D946D8FD7C9",
+    "HistoryUniqueID": "HIS-8E83DDB101DD",
+    "KeyData": {
+      "duration_days": 1,
+      "difficulty": "easy",
+      "terrain": "mountain",
+      "interests": [],
+      "fitness_level": "low",
+      "start_date": "2026-05-23",
+      "matched_trail_count": 5
+    },
+    "UserMessages": [
+      "🏔️ Mountain",
+      "1 day",
+      "This weekend",
+      "🐢 Easy-going",
+      "Easy",
+      "No preference",
+      "Just me 🧍"
+    ],
+    "QuickSelectPromptsChosen": [],
+    "CreatedAt": "2026-05-16T13:24:34.007103+00:00"
+  },
+  {
+    "UserUniqueID": "USR-2D946D8FD7C9",
+    "HistoryUniqueID": "HIS-EC1450EF2555",
+    "KeyData": {
+      "duration_days": 1,
+      "difficulty": "moderate",
+      "terrain": "mountain",
+      "interests": [],
+      "fitness_level": "medium",
+      "start_date": "2026-05-23",
+      "matched_trail_count": 5
+    },
+    "UserMessages": [
+      "🏔️ Mountain",
+      "1 day",
+      "Next week",
+      "🚶 Average",
+      "Moderate",
+      "No preference",
+      "2 people"
+    ],
+    "QuickSelectPromptsChosen": [],
+    "CreatedAt": "2026-05-16T13:29:08.396997+00:00"
+  },
+  {
+    "UserUniqueID": "USR-2D946D8FD7C9",
+    "HistoryUniqueID": "HIS-2815EB6FE909",
+    "KeyData": {
+      "duration_days": 1,
+      "difficulty": "easy",
+      "terrain": "mountain",
+      "interests": [],
+      "fitness_level": "high",
+      "start_date": "2026-05-23",
+      "matched_trail_count": 5
+    },
+    "UserMessages": [
+      "🏔️ Mountain",
+      "1 day",
+      "Next week",
+      "🏃 Fit & active",
+      "Easy",
+      "No preference",
+      "3–5 people"
+    ],
+    "QuickSelectPromptsChosen": [],
+    "CreatedAt": "2026-05-16T13:44:10.941029+00:00"
+  },
+  {
+    "UserUniqueID": "USR-2D946D8FD7C9",
+    "HistoryUniqueID": "HIS-523845DB6727",
+    "KeyData": {
+      "duration_days": 2,
+      "difficulty": "hard",
+      "terrain": "mixed",
+      "interests": [
+        "local culture",
+        "views"
+      ],
+      "fitness_level": "high",
+      "start_date": "2026-05-23",
+      "matched_trail_count": 5
+    },
+    "UserMessages": [
+      "🗺️ Mixed — surprise me",
+      "2 days",
+      "Next week",
+      "🏃 Fit & active",
+      "Hard",
+      "🏘️ Local villages, 🌅 Scenic views",
+      "Just me 🧍"
+    ],
+    "QuickSelectPromptsChosen": [],
+    "CreatedAt": "2026-05-16T14:07:21.357616+00:00"
   }
 ]

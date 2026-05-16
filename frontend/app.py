@@ -17,6 +17,9 @@ from streamlit_folium import st_folium
 from pipeline import run_pathfinder
 from backend.user_db import create_user, list_users, get_user_by_unique_id, authenticate_user
 from backend.chat_history_db import create_history_entry, list_history_for_user
+from backend.trail_details import get_accurate_stats, get_nearby_pois
+from backend.trail_chat import chat_about_trail
+from backend.saved_trails import save_trail, get_saved_trails, remove_saved_trail
 
 DATA_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "trails.json")
 if not os.path.exists(DATA_PATH):
@@ -132,6 +135,15 @@ if st.sidebar.button("Sign Out"):
     st.session_state["current_user_name"] = None
     st.rerun()
 
+uid = st.session_state.get("current_user_id")
+saved = get_saved_trails(uid) if uid else []
+if saved:
+    st.sidebar.markdown("---")
+    st.sidebar.markdown("**📌 Your planned trails:**")
+    for s in saved:
+        date_str = f" · {s['planned_date']}" if s.get("planned_date") else ""
+        st.sidebar.caption(f"🥾 {s['trail_name']}{date_str}")
+
 
 # ── Conversation definition ───────────────────────────────────────────────────
 
@@ -226,6 +238,14 @@ def _init():
         st.session_state.pf_answers  = {}
         st.session_state.pf_done     = False
         st.session_state.pf_result   = None
+    if "pf_planned_trail"  not in st.session_state:
+        st.session_state.pf_planned_trail  = None  # full enriched trail dict
+    if "pf_trail_stats"    not in st.session_state:
+        st.session_state.pf_trail_stats    = None
+    if "pf_trail_pois"     not in st.session_state:
+        st.session_state.pf_trail_pois     = None
+    if "pf_trail_chat"     not in st.session_state:
+        st.session_state.pf_trail_chat     = []    # list of {role, content}
 
 _init()
 
@@ -434,25 +454,60 @@ if st.session_state.pf_result:
             label     = s["label"]
             breakdown = s["breakdown"]
             with st.expander(f"{label} &nbsp; **{t['name']}** — {score}/100", expanded=False):
-                c1, c2 = st.columns(2)
-                c1.metric("Crowd avoidance", f"{breakdown['crowd_avoidance']}/30")
-                c2.metric("Remoteness",      f"{breakdown['remoteness']}/20")
-                c1.metric("Biodiversity",    f"{breakdown['biodiversity']}/20")
-                c2.metric("Local economy",   f"{breakdown['local_economy']}/20")
+                # ── Score breakdown ───────────────────────────────────────────
+                c1, c2, c3 = st.columns(3)
+                c1.metric("Crowd avoidance", f"{breakdown['crowd_avoidance']}/25")
+                c2.metric("Remoteness",      f"{breakdown['remoteness']}/15")
+                c3.metric("Biodiversity",    f"{breakdown['biodiversity']}/20")
+                c1.metric("Local economy",   f"{breakdown['local_economy']}/20")
+                c2.metric("Weather score",   f"{breakdown['weather']}/20")
 
-                w = t["_weather"]
-                if w.get("temp_c") is not None:
-                    st.markdown(
-                        f"🌤 **Weather:** {w['temp_c']}°C, {w['conditions']} | "
-                        f"💨 {w['wind_kmh']} km/h"
+                # ── OSM crowd/economy raw data ────────────────────────────────
+                ce = t.get("_crowd_economy", {})
+                if ce.get("_crowd_poi_count") is not None:
+                    st.caption(
+                        f"📍 {ce['_crowd_poi_count']} tourism POIs within 3 km · "
+                        f"🏘️ {ce['_economy_poi_count']} local amenities within 10 km"
                     )
-                for flag in w.get("safety_flags", []):
+
+                # ── Weather calendar ──────────────────────────────────────────
+                cal = t.get("_weather_calendar", [])
+                if cal:
+                    st.markdown("**Weather forecast around your hike dates:**")
+                    day_cols = st.columns(len(cal))
+                    for ci, day in enumerate(cal):
+                        with day_cols[ci]:
+                            d_label = day["date"][5:]  # MM-DD
+                            if day.get("is_planned"):
+                                st.markdown(f"**{d_label}**\n\n🎯 *your hike*")
+                            else:
+                                st.markdown(f"**{d_label}**")
+
+                            if not day.get("available"):
+                                reason = day.get("reason", "")
+                                if reason == "too_far":
+                                    st.caption("📅 Beyond\n5-day\nforecast")
+                                elif reason == "past":
+                                    st.caption("—")
+                                else:
+                                    st.caption("No data")
+                            else:
+                                st.markdown(day.get("emoji", "🌡️"))
+                                st.caption(
+                                    f"{day.get('temp_c', '?')}°C\n"
+                                    f"{day.get('conditions', '')}"
+                                )
+
+                # ── Safety flags ──────────────────────────────────────────────
+                for flag in t["_weather"].get("safety_flags", []):
                     st.warning(flag)
 
+                # ── Biodiversity ──────────────────────────────────────────────
                 bio = t["_biodiversity"]
                 if bio.get("notable_species"):
                     st.markdown(f"🦎 **Nearby species:** {', '.join(bio['notable_species'])}")
 
+                # ── Route & elevation ─────────────────────────────────────────
                 route = t.get("_route", {})
                 if route.get("distance_km") is not None:
                     st.markdown(
@@ -466,6 +521,30 @@ if st.session_state.pf_result:
                         f"⛰️ **Elevation (SRTM):** {elev['min_m']}–{elev['max_m']} m · "
                         f"gain {elev['gain_m']} m"
                     )
+
+                st.divider()
+                already_planned = (
+                    st.session_state.pf_planned_trail is not None
+                    and st.session_state.pf_planned_trail.get("name") == t.get("name")
+                )
+                if already_planned:
+                    st.success("📌 Trail planned — see details below")
+                elif st.button(f"📌 Plan this trail", key=f"plan_{t['name']}", type="primary"):
+                    with st.spinner("Loading trail details & nearby attractions…"):
+                        stats = get_accurate_stats(t)
+                        pois  = get_nearby_pois(t["lat"], t["lon"])
+                    st.session_state.pf_planned_trail = t
+                    st.session_state.pf_trail_stats   = stats
+                    st.session_state.pf_trail_pois    = pois
+                    st.session_state.pf_trail_chat    = []
+                    # Save to DB
+                    uid = st.session_state.get("current_user_id")
+                    if uid:
+                        try:
+                            save_trail(uid, t, st.session_state.pf_answers)
+                        except Exception:
+                            pass
+                    st.rerun()
 
         st.markdown("---")
         st.markdown("#### Your Itinerary")
@@ -495,6 +574,143 @@ if st.session_state.pf_result:
                     icon=folium.Icon(color=color, icon="leaf", prefix="fa"),
                 ).add_to(m)
             st_folium(m, width=600, height=500)
+
+# ── Planned trail detail page ─────────────────────────────────────────────────
+
+if st.session_state.pf_planned_trail:
+    t     = st.session_state.pf_planned_trail
+    stats = st.session_state.pf_trail_stats or {}
+    pois  = st.session_state.pf_trail_pois  or []
+
+    st.markdown("---")
+    st.markdown(f"## 📌 Your Planned Trail: **{t['name']}**")
+    st.caption(f"{t.get('region', '')}  ·  Sustainability {t['_sustainability']['score']}/100  {t['_sustainability']['label']}")
+
+    # ── Accurate stats bar ────────────────────────────────────────────────────
+    sc1, sc2, sc3, sc4, sc5 = st.columns(5)
+    sc1.metric("Distance",   f"{stats.get('distance_km', '?')} km",
+               help=f"Source: {stats.get('source', '?')}")
+    sc2.metric("Est. time",  f"{stats.get('duration_h', '?')} h",
+               help="Naismith's Rule: 4 km/h + 1 h per 600 m ascent")
+    sc3.metric("Difficulty", stats.get("difficulty", "?").capitalize())
+    sc4.metric("Ascent",     f"{stats.get('ascent_m', '?')} m")
+    sc5.metric("Terrain",    t.get("terrain", "?").capitalize())
+
+    if stats.get("source") == "estimated":
+        st.caption("⚠️ Distance estimated — OSM tags and ORS unavailable for this trail.")
+    elif stats.get("source") == "osm_tags":
+        st.caption("✅ Distance from official OSM trail tags.")
+
+    detail_left, detail_right = st.columns([1, 1])
+
+    # ── Left: info + chat ─────────────────────────────────────────────────────
+    with detail_left:
+        # Highlights
+        if t.get("highlights"):
+            st.markdown("**Highlights:** " + " · ".join(t["highlights"]))
+
+        # Weather on planned day
+        w = t.get("_weather", {})
+        if w.get("temp_c") is not None:
+            st.markdown(
+                f"🌤 **Weather on your date:** {w['temp_c']}°C, {w['conditions']} · "
+                f"💨 {w['wind_kmh']} km/h"
+            )
+        for flag in w.get("safety_flags", []):
+            st.warning(flag)
+
+        # Biodiversity
+        bio = t.get("_biodiversity", {})
+        if bio.get("notable_species"):
+            st.markdown(f"🦎 **Nearby wildlife:** {', '.join(bio['notable_species'])}")
+
+        st.markdown("---")
+
+        # ── Chat ──────────────────────────────────────────────────────────────
+        st.markdown("#### 💬 Ask about this trail")
+        st.caption("Ask anything — what to pack, safety tips, nearby villages, wildlife, best season…")
+
+        for msg in st.session_state.pf_trail_chat:
+            with st.chat_message(msg["role"]):
+                st.markdown(msg["content"])
+
+        user_q = st.chat_input("Ask a question about this trail…", key="trail_chat_input")
+        if user_q:
+            st.session_state.pf_trail_chat.append({"role": "user", "content": user_q})
+            with st.spinner("Thinking…"):
+                reply = chat_about_trail(
+                    trail=t,
+                    stats=stats,
+                    pois=pois,
+                    history=st.session_state.pf_trail_chat[:-1],
+                    user_message=user_q,
+                )
+            st.session_state.pf_trail_chat.append({"role": "assistant", "content": reply})
+            st.rerun()
+
+        if st.session_state.pf_trail_chat:
+            if st.button("Clear chat", key="clear_trail_chat"):
+                st.session_state.pf_trail_chat = []
+                st.rerun()
+
+    # ── Right: POI map ────────────────────────────────────────────────────────
+    with detail_right:
+        st.markdown("#### 🗺️ Trail & Nearby Attractions")
+
+        m2 = folium.Map(location=[t["lat"], t["lon"]], zoom_start=12, tiles="OpenStreetMap")
+
+        # Trail marker (large)
+        folium.Marker(
+            location=[t["lat"], t["lon"]],
+            tooltip=t["name"],
+            popup=folium.Popup(f"<b>{t['name']}</b><br>{t.get('region','')}", max_width=200),
+            icon=folium.Icon(color="darkgreen", icon="flag", prefix="fa"),
+        ).add_to(m2)
+
+        # POI markers
+        COLOR_MAP = {
+            "blue": "blue", "gray": "gray", "purple": "purple",
+            "green": "green", "red": "red", "lightblue": "lightblue",
+            "white": "white", "beige": "beige",
+        }
+        for poi in pois:
+            folium.Marker(
+                location=[poi["lat"], poi["lon"]],
+                tooltip=f"{poi['emoji']} {poi['name']}",
+                popup=folium.Popup(
+                    f"<b>{poi['name']}</b><br>{poi['category']}", max_width=160
+                ),
+                icon=folium.Icon(
+                    color=COLOR_MAP.get(poi["color"], "beige"),
+                    icon="circle", prefix="fa",
+                ),
+            ).add_to(m2)
+
+        st_folium(m2, width=560, height=460, key="detail_map")
+
+        # POI legend
+        if pois:
+            st.markdown("**Nearby attractions:**")
+            by_cat = {}
+            for p in pois:
+                by_cat.setdefault(p["category"], []).append(p)
+            for cat, items in by_cat.items():
+                emoji = items[0]["emoji"]
+                names = ", ".join(
+                    p["name"] for p in items[:4] if p["name"] != cat
+                ) or f"{len(items)} locations"
+                st.caption(f"{emoji} **{cat}** ({len(items)}): {names}")
+
+    # ── Unplan button ─────────────────────────────────────────────────────────
+    if st.button("✕ Remove from plan", key="unplan_trail"):
+        uid = st.session_state.get("current_user_id")
+        if uid:
+            remove_saved_trail(uid, t.get("name"))
+        st.session_state.pf_planned_trail = None
+        st.session_state.pf_trail_stats   = None
+        st.session_state.pf_trail_pois    = None
+        st.session_state.pf_trail_chat    = []
+        st.rerun()
 
 # ── Footer ────────────────────────────────────────────────────────────────────
 st.markdown(
