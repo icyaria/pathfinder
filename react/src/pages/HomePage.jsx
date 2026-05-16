@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Nav from '../components/Nav'
 import { api } from '../api/client'
+import mountainImg from '../assets/mountain.png'
 import './HomePage.css'
 
 const TERRAIN_CLS = {
@@ -11,9 +12,9 @@ const TERRAIN_CLS = {
 const TERRAIN_EMJ = { mountain: '🏔️', coastal: '🌊', forest: '🌲', mixed: '🗺️' }
 
 const PLACEHOLDER_TRAILS = [
-  { name: 'Mytikas Summit Trail', region: 'Mount Olympus, Pieria', terrain: 'mountain', difficulty: 'hard',   duration_hours: 8 },
-  { name: 'Caldera Rim Walk',     region: 'Santorini, Cyclades',  terrain: 'coastal',  difficulty: 'easy',   duration_hours: 3 },
-  { name: 'Vikos Gorge Path',     region: 'Zagori, Epirus',       terrain: 'forest',   difficulty: 'moderate', duration_hours: 6 },
+  { name: 'Mytikas Summit Trail', region: 'Mount Olympus, Pieria',  terrain: 'mountain', difficulty: 'hard',     duration_hours: 8 },
+  { name: 'Caldera Rim Walk',     region: 'Santorini, Cyclades',    terrain: 'coastal',  difficulty: 'easy',     duration_hours: 3 },
+  { name: 'Vikos Gorge Path',     region: 'Zagori, Epirus',         terrain: 'forest',   difficulty: 'moderate', duration_hours: 6 },
 ]
 
 function TrailCard({ trail }) {
@@ -54,12 +55,20 @@ export default function HomePage() {
 
       {/* Hero */}
       <section className="hero">
+        <div
+          className="hero-bg"
+          style={{ backgroundImage: `url(${mountainImg})` }}
+        />
+        <div className="hero-overlay" />
         <div className="hero-content">
-          <span className="hero-badge">🌿 Sustainable Trekking v2.0</span>
+          <span className="hero-badge">
+            <span className="hero-badge-dot" />
+            Sustainable Trekking 2.0
+          </span>
           <h1>Discover Greece's<br /><em>Hidden Trails</em></h1>
           <p className="hero-sub">
-            AI-powered trail recommendations that match your pace, protect local ecosystems,
-            and connect you with the authentic soul of Greece.
+            AI-powered trail recommendations that match your pace, protect local
+            ecosystems, and connect you with the authentic soul of Greece.
           </p>
           <div className="hero-ctas">
             <Link to="/explore" className="cta-primary">Start New Trail</Link>
@@ -68,11 +77,33 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Stats strip */}
+      <div className="stats-strip">
+        <div className="stat-item">
+          <div className="stat-num">50+</div>
+          <div className="stat-label">Real Greek Trails</div>
+        </div>
+        <div className="stat-item">
+          <div className="stat-num">Live</div>
+          <div className="stat-label">Weather Data</div>
+        </div>
+        <div className="stat-item">
+          <div className="stat-num">AI</div>
+          <div className="stat-label">Personalised Routes</div>
+        </div>
+        <div className="stat-item">
+          <div className="stat-num">100%</div>
+          <div className="stat-label">Sustainability-Scored</div>
+        </div>
+      </div>
+
       {/* Featured trails */}
       <section className="section">
         <p className="eyebrow">Featured Paths</p>
         <h2>Trails Worth The Journey</h2>
-        <p className="section-lead">Hand-scored for sustainability, biodiversity, and authentic local experience.</p>
+        <p className="section-lead">
+          Hand-scored for sustainability, biodiversity, and authentic local experience.
+        </p>
         <div className="trail-cards">
           {featured.map((t, i) => <TrailCard key={i} trail={t} />)}
         </div>
@@ -82,7 +113,9 @@ export default function HomePage() {
       <section className="section alt-bg">
         <p className="eyebrow">Engineered for the Wild</p>
         <h2>Every Step, Data-Backed</h2>
-        <p className="section-lead">Live feeds from OpenStreetMap, iNaturalist, and OpenWeatherMap — not guesses.</p>
+        <p className="section-lead">
+          Live feeds from OpenStreetMap, iNaturalist, and OpenWeatherMap — not guesses.
+        </p>
         <div className="features">
 
           <div className="feature">
@@ -103,7 +136,7 @@ export default function HomePage() {
             <div className="feature-icon">🏛️</div>
             <h3>Cultural Anchors</h3>
             <p>Every trail mapped to nearby historic sites, local villages, and cultural events — so you never hike in a vacuum.</p>
-            <div style={{ marginTop: 18 }}>
+            <div style={{ marginTop: 20 }}>
               <span className="event-tag">Local Event</span>
               <p className="event-text">
                 <strong>Zagori Mountain Festival</strong><br />

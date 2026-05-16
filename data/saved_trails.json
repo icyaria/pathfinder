@@ -66,5 +66,41 @@
       "planned_date": "2026-05-23",
       "saved_at": "2026-05-16T16:12:02.662727"
     }
+  ],
+  "USR-114AAE7DB376": [
+    {
+      "trail_name": "Ios Manganari Kalamos monastery (Canon Trail)",
+      "region": "Greece",
+      "trail_data": {
+        "name": "Ios Manganari Kalamos monastery (Canon Trail)",
+        "region": "Greece",
+        "terrain": "mixed",
+        "difficulty": "hard",
+        "duration_hours": 2.5,
+        "lat": 36.6767188,
+        "lon": 25.3670468,
+        "crowd_level": 1,
+        "local_economy_score": 4,
+        "highlights": [
+          "Kalamos monastery",
+          "Backcountry wilderness",
+          "Cycladic island views"
+        ],
+        "osm_id": 4017790,
+        "osm_source": "relation"
+      },
+      "profile": {
+        "terrain": "mixed",
+        "duration_days": 5,
+        "fitness_level": "high",
+        "difficulty": "hard",
+        "interests": [
+          "views"
+        ],
+        "group_size": 7
+      },
+      "planned_date": "2026-05-30",
+      "saved_at": "2026-05-16T16:36:32.010303"
+    }
   ]
 }

@@ -12,7 +12,7 @@ load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"), override=True
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List, Dict
 import json
 
 from pipeline import run_pathfinder
@@ -44,7 +44,7 @@ class Profile(BaseModel):
     duration_days: int = 2
     difficulty: str = "moderate"
     terrain: str = "mixed"
-    interests: list[str] = []
+    interests: List[str] = []
     group_size: int = 1
     fitness_level: str = "medium"
     start_date: str = ""
@@ -67,8 +67,8 @@ class ChatMessage(BaseModel):
 class ChatPayload(BaseModel):
     trail: dict
     stats: dict
-    pois: list[dict]
-    history: list[ChatMessage]
+    pois: List[Dict]
+    history: List[ChatMessage]
     message: str
 
 
