@@ -74,7 +74,7 @@
 
 .hero h1 em {
   font-style: normal;
-  color: #FFB781;
+  color: #aec86a;
 }
 
 .hero-sub {
@@ -105,20 +105,6 @@
 
 .cta-primary:hover { background: #6b7a3f; transform: translateY(-2px); }
 
-.cta-secondary {
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  padding: 12px 26px;
-  border-radius: 8px;
-  font-weight: 600;
-  text-decoration: none;
-  font-size: .93rem;
-  transition: all .2s;
-}
-
-.cta-secondary:hover { background: rgba(255,255,255,.16); border-color: rgba(255,255,255,.5); }
-
 /* ── Sections ──────────────────────────────────────────────────────────────── */
 .section {
   padding: 72px 52px;
@@ -126,14 +112,14 @@
 }
 
 .section.alt-bg {
-  background: #6B8646;
+  background: #f7f5f0;
 }
 
 .eyebrow {
-  font-size: .7rem;
+  font-size: 1rem;
   font-weight: 800;
   letter-spacing: .15em;
-  color: #D27E36;
+  color: #839448;
   text-transform: uppercase;
   margin-bottom: 10px;
 }
@@ -146,8 +132,8 @@
   letter-spacing: -.02em;
 }
 
-.section.alt-bg h2 { color: #fff; }
-.section.alt-bg .eyebrow { color: #D27E36; }
+.section.alt-bg h2 { color: #000000; }
+.section.alt-bg .eyebrow { color: #839448; }
 
 .section-lead {
   color: #888;
@@ -156,7 +142,7 @@
   max-width: 520px;
 }
 
-.section.alt-bg .section-lead { color: #B4CAD3; }
+.section.alt-bg .section-lead { color: #4e5d63; }
 
 /* ── Trail cards ───────────────────────────────────────────────────────────── */
 .trail-cards {
@@ -240,13 +226,13 @@
   min-width: 240px;
   border-radius: 16px;
   padding: 30px;
-  background: #fff;
+  background: #1A2E35;
   box-shadow: 0 2px 20px rgba(0,0,0,.06);
   border: 1px solid rgba(0,0,0,.06);
 }
 
 .feature-dark  { background: #1A2E35; border-color: transparent; }
-.feature-dark2 { background: #0d2128; border-color: transparent; }
+.feature-dark2 { background: #1A2E35; border-color: transparent; }
 
 .feature-icon { font-size: 1.9rem; margin-bottom: 14px; }
 
@@ -322,7 +308,7 @@
 .stat-num {
   font-size: 2.4rem;
   font-weight: 800;
-  color: #FFB781;
+  color: #aec86a;
   line-height: 1;
   margin-bottom: 6px;
 }

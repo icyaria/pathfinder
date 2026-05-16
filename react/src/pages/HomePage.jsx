@@ -61,18 +61,12 @@ export default function HomePage() {
         />
         <div className="hero-overlay" />
         <div className="hero-content">
-          <span className="hero-badge">
-            <span className="hero-badge-dot" />
-            Sustainable Trekking 2.0
-          </span>
           <h1>Discover Greece's<br /><em>Hidden Trails</em></h1>
           <p className="hero-sub">
-            AI-powered trail recommendations that match your pace, protect local
-            ecosystems, and connect you with the authentic soul of Greece.
+            3.2M tourists hit Santorini last year. Meanwhile, 80% of Greece's trails receive fewer than 500 hikers annually.
           </p>
           <div className="hero-ctas">
-            <Link to="/explore" className="cta-primary">Start New Trail</Link>
-            <Link to="/explore" className="cta-secondary">Consult AI Guide</Link>
+            <Link to="/explore" className="cta-primary">Start Exploring</Link>
           </div>
         </div>
       </section>
