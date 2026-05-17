@@ -62,4 +62,15 @@ export const api = {
 
   surpriseMe: (mood, region_id, preferences = {}) =>
     req('POST', '/surprise', { mood, region_id: region_id || null, preferences }),
+
+  getUserGroups: (user_id) => req('GET', `/groups?user_id=${encodeURIComponent(user_id)}`),
+
+  getGroupMessages: (trail_name, limit = 50) =>
+    req('GET', `/groups/messages?trail_name=${encodeURIComponent(trail_name)}&limit=${limit}`),
+
+  sendGroupMessage: (trail_name, user_id, user_name, text) =>
+    req('POST', '/groups/messages', { trail_name, user_id, user_name, text }),
+
+  leaveGroup: (trail_name, user_id) =>
+    req('POST', '/groups/leave', { trail_name, user_id }),
 }

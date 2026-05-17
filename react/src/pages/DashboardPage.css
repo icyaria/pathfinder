@@ -1136,3 +1136,304 @@
   color: #888;
   margin: 0;
 }
+
+.ds-liked-remove {
+  flex-shrink: 0;
+  margin-left: auto;
+  background: none;
+  border: 1.5px solid #e8e0d8;
+  border-radius: 7px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .8rem;
+  color: #bbb;
+  cursor: pointer;
+  transition: all .18s;
+}
+.ds-liked-remove:hover {
+  background: #fef5f4;
+  border-color: #c0392b;
+  color: #c0392b;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   SIDENAV BADGE
+   ══════════════════════════════════════════════════════════════════ */
+.dash-sidenav-badge {
+  margin-left: auto;
+  background: #3a5c1a;
+  color: #fff;
+  font-size: .68rem;
+  font-weight: 700;
+  border-radius: 10px;
+  padding: 2px 7px;
+  min-width: 18px;
+  text-align: center;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   COMMUNITY SECTION
+   ══════════════════════════════════════════════════════════════════ */
+
+.community-section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  height: 100%;
+}
+
+.community-header { margin-bottom: 4px; }
+
+.community-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 20px;
+  flex: 1;
+  min-height: 0;
+  height: calc(100vh - 220px);
+}
+
+@media (max-width: 900px) {
+  .community-layout { grid-template-columns: 1fr; height: auto; }
+}
+
+/* ── Group list ──────────────────────────────────────────────────── */
+.community-list {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.07);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.community-list-item {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 14px;
+  cursor: pointer;
+  border-bottom: 1px solid #f5f3ee;
+  transition: background .18s;
+  position: relative;
+}
+.community-list-item:last-child { border-bottom: none; }
+.community-list-item:hover { background: #f9f8f5; }
+.community-list-item.active { background: #f0f7e6; }
+
+.community-leave-btn {
+  flex-shrink: 0;
+  margin-left: auto;
+  background: none;
+  border: 1.5px solid #e0ddd5;
+  border-radius: 7px;
+  padding: 5px 10px;
+  font-size: .77rem;
+  font-weight: 600;
+  color: #c0392b;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all .18s;
+  white-space: nowrap;
+}
+.community-leave-btn:hover:not(:disabled) {
+  background: #fef5f4;
+  border-color: #c0392b;
+}
+.community-leave-btn:disabled { opacity: .5; cursor: default; }
+
+.community-empty {
+  padding: 48px 24px;
+  text-align: center;
+  color: #aaa;
+  font-size: .9rem;
+}
+
+.community-empty-hint {
+  font-size: .82rem;
+  color: #ccc;
+  margin-top: 6px;
+}
+
+/* ── Chat panel ──────────────────────────────────────────────────── */
+.community-chat-panel {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.07);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.community-chat-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #ccc;
+  gap: 10px;
+  font-size: .9rem;
+}
+
+.community-chat-empty-icon {
+  opacity: .3;
+  transform: scale(2.2);
+}
+
+.community-chat-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid #f0ede8;
+  flex-shrink: 0;
+}
+
+.community-chat-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a2416;
+}
+
+.community-chat-meta {
+  font-size: .78rem;
+  color: #aaa;
+  margin-top: 2px;
+}
+
+.community-chat-close {
+  background: none;
+  border: none;
+  color: #bbb;
+  font-size: .95rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background .15s, color .15s;
+  font-family: inherit;
+}
+.community-chat-close:hover { background: #f0f0f0; color: #333; }
+
+/* ── Messages ────────────────────────────────────────────────────── */
+.community-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.community-no-msgs {
+  color: #ccc;
+  font-size: .85rem;
+  text-align: center;
+  padding: 32px 0;
+  margin: 0;
+}
+
+.community-msg {
+  display: flex;
+  gap: 9px;
+  align-items: flex-end;
+}
+
+.community-msg--me {
+  flex-direction: row-reverse;
+}
+
+.community-msg-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .78rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.community-msg-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  max-width: 65%;
+}
+
+.community-msg--me .community-msg-body {
+  align-items: flex-end;
+}
+
+.community-msg-sender {
+  font-size: .73rem;
+  font-weight: 700;
+  color: #888;
+  padding: 0 4px;
+}
+
+.community-msg-bubble {
+  background: #f5f3ee;
+  color: #1a2416;
+  padding: 9px 13px;
+  border-radius: 14px 14px 14px 4px;
+  font-size: .88rem;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.community-msg--me .community-msg-bubble {
+  background: #1c2b1e;
+  color: #fff;
+  border-radius: 14px 14px 4px 14px;
+}
+
+.community-msg-time {
+  font-size: .69rem;
+  color: #ccc;
+  padding: 0 4px;
+}
+
+/* ── Input row ───────────────────────────────────────────────────── */
+.community-input-row {
+  display: flex;
+  gap: 10px;
+  padding: 14px 16px;
+  border-top: 1px solid #f0ede8;
+  flex-shrink: 0;
+}
+
+.community-input {
+  flex: 1;
+  border: 1.5px solid #e0ddd5;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: .9rem;
+  font-family: inherit;
+  color: #1a2416;
+  background: #fafaf8;
+  outline: none;
+  transition: border-color .18s;
+}
+.community-input:focus { border-color: #3a5c1a; background: #fff; }
+
+.community-send-btn {
+  background: #1c2b1e;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: .88rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background .2s;
+  flex-shrink: 0;
+}
+.community-send-btn:hover:not(:disabled) { background: #2d4230; }
+.community-send-btn:disabled { opacity: .5; cursor: default; }

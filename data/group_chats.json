@@ -1,0 +1,37 @@
+{
+  "Agios Nikolaos - Pezoulia - Loutsa Karavas - Korifi Karava": {
+    "trail_name": "Agios Nikolaos - Pezoulia - Loutsa Karavas - Korifi Karava",
+    "group_name": "Agios Nikolaos - Pezoulia - Loutsa Karavas - Korifi Karava Hikers",
+    "members": [],
+    "messages": [
+      {
+        "id": "MSG-B47C44816F",
+        "user_id": "USR-94026724547D",
+        "user_name": "test",
+        "text": "hello",
+        "sent_at": "2026-05-17T09:16:58.877852+00:00"
+      }
+    ],
+    "created_at": "2026-05-17T09:15:21.303328+00:00"
+  },
+  "Ξηροποτάμου - Καρυες - Ιβήρων": {
+    "trail_name": "Ξηροποτάμου - Καρυες - Ιβήρων",
+    "group_name": "Ξηροποτάμου - Καρυες - Ιβήρων Hikers",
+    "members": [],
+    "messages": [],
+    "created_at": "2026-05-17T09:17:48.905144+00:00"
+  },
+  "Ι. Μ. Βατοπαιδίου - Ι. Μ. Ζωγράφου": {
+    "trail_name": "Ι. Μ. Βατοπαιδίου - Ι. Μ. Ζωγράφου",
+    "group_name": "Ι. Μ. Βατοπαιδίου - Ι. Μ. Ζωγράφου Hikers",
+    "members": [
+      {
+        "user_id": "USR-94026724547D",
+        "user_name": "test",
+        "joined_at": "2026-05-17T09:19:27.148920+00:00"
+      }
+    ],
+    "messages": [],
+    "created_at": "2026-05-17T09:19:27.148642+00:00"
+  }
+}

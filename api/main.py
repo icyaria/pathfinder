@@ -20,6 +20,10 @@ from backend.trail_details import get_accurate_stats, get_nearby_pois
 from backend.trail_chat import chat_about_trail
 from backend.saved_trails import save_trail, get_saved_trails, remove_saved_trail
 from backend.live_interest import register_interest, get_all_interests
+from backend.group_chats import (
+    join_group, leave_group, send_message as gc_send,
+    get_messages as gc_get_messages, get_user_groups, get_group,
+)
 
 try:
     from backend.user_db import create_user, list_users, authenticate_user, authenticate_user_by_email
@@ -109,6 +113,18 @@ class SurprisePayload(BaseModel):
 
 class InterestPayload(BaseModel):
     trail_name: str
+
+
+class GroupMessagePayload(BaseModel):
+    trail_name: str
+    user_id: str
+    user_name: str
+    text: str
+
+
+class LeaveGroupPayload(BaseModel):
+    trail_name: str
+    user_id: str
 
 
 from backend.region_utils import filter_by_region
@@ -250,7 +266,53 @@ def api_save_trail(payload: SaveTrailPayload):
     if trail_name:
         register_interest(trail_name)
     entry = save_trail(payload.user_id, payload.trail, payload.profile)
+    # Auto-join the trail group chat
+    if trail_name and payload.user_id:
+        user_name = payload.user_id
+        if HAS_AUTH:
+            try:
+                all_users = list_users()
+                match = next((u for u in all_users if u["UserUniqieID"] == payload.user_id), None)
+                if match:
+                    user_name = match["Name"]
+            except Exception:
+                pass
+        join_group(trail_name, payload.user_id, user_name)
     return entry
+
+
+# ── Group Chats ───────────────────────────────────────────────────────────────
+
+@app.get("/api/groups")
+def api_get_user_groups(user_id: str):
+    return {"groups": get_user_groups(user_id)}
+
+
+@app.get("/api/groups/messages")
+def api_get_group_messages(trail_name: str, limit: int = 50):
+    return {"messages": gc_get_messages(trail_name, limit)}
+
+
+@app.post("/api/groups/messages")
+def api_send_group_message(payload: GroupMessagePayload):
+    if not payload.text.strip():
+        raise HTTPException(status_code=400, detail="Message cannot be empty")
+    msg = gc_send(payload.trail_name, payload.user_id, payload.user_name, payload.text)
+    return msg
+
+
+@app.post("/api/groups/leave")
+def api_leave_group(payload: LeaveGroupPayload):
+    ok = leave_group(payload.trail_name, payload.user_id)
+    return {"success": ok}
+
+
+@app.get("/api/groups/detail")
+def api_get_group(trail_name: str):
+    group = get_group(trail_name)
+    if not group:
+        raise HTTPException(status_code=404, detail="Group not found")
+    return group
 
 
 @app.post("/api/trails/interest")

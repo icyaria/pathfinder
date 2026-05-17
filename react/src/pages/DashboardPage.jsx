@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { api } from '../api/client'
 import { useApp } from '../context/AppContext'
@@ -48,38 +48,26 @@ const TERRAIN_GRADIENTS = {
   mixed:    'linear-gradient(155deg, #2c3e50 0%, #4a6741 50%, #7d8b4a 100%)',
 }
 
-const MOCK_GROUP_CHATS = [
-  {
-    id: 1,
-    name: 'Athos Peninsula Hikers',
-    members: 14,
-    lastMessage: 'Meeting point confirmed at the monastery gate at 8am',
-    unread: 2,
-    avatar: 'A',
-    time: '1h ago',
-    color: '#3a5c1a',
-  },
-  {
-    id: 2,
-    name: 'Crete Coastal Walkers',
-    members: 9,
-    lastMessage: 'Weather looks perfect this weekend! 🌤️',
-    unread: 0,
-    avatar: 'C',
-    time: 'Yesterday',
-    color: '#1a5276',
-  },
-  {
-    id: 3,
-    name: 'Monemvasia Explorers',
-    members: 31,
-    lastMessage: 'New photos from last week\'s hike just posted 📸',
-    unread: 7,
-    avatar: 'M',
-    time: '3h ago',
-    color: '#7a3a1a',
-  },
-]
+const AVATAR_COLORS = ['#3a5c1a', '#1a5276', '#7a3a1a', '#5c3a7a', '#1a5c5c', '#7a5c1a']
+
+function avatarColor(name) {
+  let h = 0
+  for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) & 0xffffffff
+  return AVATAR_COLORS[Math.abs(h) % AVATAR_COLORS.length]
+}
+
+function timeAgo(isoStr) {
+  if (!isoStr) return ''
+  const diff = Date.now() - new Date(isoStr).getTime()
+  const mins = Math.floor(diff / 60000)
+  if (mins < 1) return 'Just now'
+  if (mins < 60) return `${mins}m ago`
+  const hrs = Math.floor(mins / 60)
+  if (hrs < 24) return `${hrs}h ago`
+  const days = Math.floor(hrs / 24)
+  if (days === 1) return 'Yesterday'
+  return `${days}d ago`
+}
 
 function formatDate(dateStr) {
   if (!dateStr) return null
@@ -200,7 +188,7 @@ function MiniCalendar({ trails }) {
   )
 }
 
-function OverviewSection({ trails, loading, onViewAll, onViewMap }) {
+function OverviewSection({ trails, loading, onViewAll, onViewMap, groups, onViewCommunity }) {
   const todayStr = new Date().toISOString().split('T')[0]
   const upcoming = trails
     .filter(t => !t.planned_date || t.planned_date >= todayStr)
@@ -315,29 +303,39 @@ function OverviewSection({ trails, loading, onViewAll, onViewMap }) {
           <div className="overview-card-head">
             <h2 className="overview-section-title">My Group Chats</h2>
             <span className="overview-chat-count">
-              <IconChat /> {MOCK_GROUP_CHATS.length} active
+              <IconChat /> {groups.length} active
             </span>
           </div>
-          <div className="group-chat-list">
-            {MOCK_GROUP_CHATS.map(chat => (
-              <div key={chat.id} className="group-chat-item">
-                <div className="chat-avatar-circle" style={{ background: chat.color }}>
-                  {chat.avatar}
-                </div>
-                <div className="chat-info">
-                  <div className="chat-info-top">
-                    <span className="chat-name">{chat.name}</span>
-                    <span className="chat-time">{chat.time}</span>
+          {groups.length === 0 ? (
+            <p className="overview-empty">
+              Save a trail to auto-join its group chat.{' '}
+              <button className="overview-inline-link" onClick={() => onViewCommunity()}>View Community →</button>
+            </p>
+          ) : (
+            <div className="group-chat-list">
+              {groups.slice(0, 3).map((chat, i) => (
+                <div key={i} className="group-chat-item" onClick={onViewCommunity}>
+                  <div className="chat-avatar-circle" style={{ background: avatarColor(chat.group_name) }}>
+                    {chat.group_name[0].toUpperCase()}
                   </div>
-                  <div className="chat-info-bottom">
-                    <span className="chat-last-msg">{chat.lastMessage}</span>
-                    {chat.unread > 0 && <span className="chat-unread">{chat.unread}</span>}
+                  <div className="chat-info">
+                    <div className="chat-info-top">
+                      <span className="chat-name">{chat.group_name}</span>
+                      <span className="chat-time">{timeAgo(chat.last_message?.sent_at)}</span>
+                    </div>
+                    <div className="chat-info-bottom">
+                      <span className="chat-last-msg">
+                        {chat.last_message
+                          ? `${chat.last_message.user_name}: ${chat.last_message.text}`
+                          : 'No messages yet'}
+                      </span>
+                    </div>
+                    <span className="chat-members">{chat.member_count} members</span>
                   </div>
-                  <span className="chat-members">{chat.members} members</span>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </section>
       </div>
     </div>
@@ -442,6 +440,193 @@ function MyTrailsSection({ trails, loading, tab, setTab, menuOpen, setMenuOpen, 
   )
 }
 
+function CommunitySection({ user, groups, setGroups }) {
+  const [activeTrail, setActiveTrail] = useState(null)
+  const [messages, setMessages] = useState([])
+  const [msgText, setMsgText] = useState('')
+  const [sending, setSending] = useState(false)
+  const [leaving, setLeaving] = useState(null)
+  const messagesEndRef = useRef(null)
+  const pollRef = useRef(null)
+
+  const loadMessages = useCallback(async (trailName) => {
+    try {
+      const data = await api.getGroupMessages(trailName, 80)
+      setMessages(data.messages || [])
+    } catch {}
+  }, [])
+
+  useEffect(() => {
+    if (!activeTrail) return
+    loadMessages(activeTrail)
+    pollRef.current = setInterval(() => loadMessages(activeTrail), 5000)
+    return () => clearInterval(pollRef.current)
+  }, [activeTrail, loadMessages])
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages])
+
+  const openChat = (trailName) => {
+    setActiveTrail(trailName)
+    setMessages([])
+  }
+
+  const closeChat = () => {
+    setActiveTrail(null)
+    setMessages([])
+    clearInterval(pollRef.current)
+  }
+
+  const handleSend = async (e) => {
+    e.preventDefault()
+    if (!msgText.trim() || sending) return
+    setSending(true)
+    try {
+      await api.sendGroupMessage(activeTrail, user.id, user.name, msgText.trim())
+      setMsgText('')
+      await loadMessages(activeTrail)
+    } catch {}
+    setSending(false)
+  }
+
+  const handleLeave = async (trailName) => {
+    setLeaving(trailName)
+    try {
+      await api.leaveGroup(trailName, user.id)
+      setGroups(prev => prev.filter(g => g.trail_name !== trailName))
+      if (activeTrail === trailName) closeChat()
+    } catch {}
+    setLeaving(null)
+  }
+
+  return (
+    <div className="community-section">
+      <div className="community-header">
+        <h1 className="dash-title">Community</h1>
+        <p className="dash-subtitle">
+          Group chats for every trail you've planned. Connect with fellow hikers heading to the same destination.
+        </p>
+      </div>
+
+      <div className="community-layout">
+        {/* Group list */}
+        <div className="community-list">
+          {groups.length === 0 ? (
+            <div className="community-empty">
+              <p>You haven't joined any group chats yet.</p>
+              <p className="community-empty-hint">Save a trail to automatically join its group chat.</p>
+            </div>
+          ) : (
+            groups.map((chat, i) => (
+              <div
+                key={i}
+                className={`community-list-item ${activeTrail === chat.trail_name ? 'active' : ''}`}
+                onClick={() => openChat(chat.trail_name)}
+              >
+                <div className="chat-avatar-circle" style={{ background: avatarColor(chat.group_name) }}>
+                  {chat.group_name[0].toUpperCase()}
+                </div>
+                <div className="chat-info">
+                  <div className="chat-info-top">
+                    <span className="chat-name">{chat.group_name}</span>
+                    <span className="chat-time">{timeAgo(chat.last_message?.sent_at)}</span>
+                  </div>
+                  <div className="chat-info-bottom">
+                    <span className="chat-last-msg">
+                      {chat.last_message
+                        ? `${chat.last_message.user_name}: ${chat.last_message.text}`
+                        : 'No messages yet — say hi!'}
+                    </span>
+                  </div>
+                  <span className="chat-members">{chat.member_count} members</span>
+                </div>
+                <button
+                  className="community-leave-btn"
+                  title="Leave group"
+                  disabled={leaving === chat.trail_name}
+                  onClick={(e) => { e.stopPropagation(); handleLeave(chat.trail_name) }}
+                >
+                  {leaving === chat.trail_name ? '…' : 'Leave'}
+                </button>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Chat panel */}
+        <div className="community-chat-panel">
+          {!activeTrail ? (
+            <div className="community-chat-empty">
+              <div className="community-chat-empty-icon"><IconChat /></div>
+              <p>Select a group to start chatting</p>
+            </div>
+          ) : (
+            <>
+              <div className="community-chat-head">
+                <div>
+                  <div className="community-chat-title">
+                    {groups.find(g => g.trail_name === activeTrail)?.group_name || activeTrail}
+                  </div>
+                  <div className="community-chat-meta">
+                    {groups.find(g => g.trail_name === activeTrail)?.member_count || 0} members
+                  </div>
+                </div>
+                <button className="community-chat-close" onClick={closeChat} aria-label="Close chat">✕</button>
+              </div>
+
+              <div className="community-messages">
+                {messages.length === 0 && (
+                  <p className="community-no-msgs">No messages yet. Be the first to say something!</p>
+                )}
+                {messages.map((msg) => {
+                  const isMe = msg.user_id === user.id
+                  return (
+                    <div key={msg.id} className={`community-msg ${isMe ? 'community-msg--me' : ''}`}>
+                      {!isMe && (
+                        <div
+                          className="community-msg-avatar"
+                          style={{ background: avatarColor(msg.user_name) }}
+                        >
+                          {msg.user_name[0]?.toUpperCase()}
+                        </div>
+                      )}
+                      <div className="community-msg-body">
+                        {!isMe && <span className="community-msg-sender">{msg.user_name}</span>}
+                        <div className="community-msg-bubble">{msg.text}</div>
+                        <span className="community-msg-time">{timeAgo(msg.sent_at)}</span>
+                      </div>
+                    </div>
+                  )
+                })}
+                <div ref={messagesEndRef} />
+              </div>
+
+              <form className="community-input-row" onSubmit={handleSend}>
+                <input
+                  className="community-input"
+                  value={msgText}
+                  onChange={e => setMsgText(e.target.value)}
+                  placeholder="Type a message…"
+                  maxLength={500}
+                  autoComplete="off"
+                />
+                <button
+                  className="community-send-btn"
+                  type="submit"
+                  disabled={!msgText.trim() || sending}
+                >
+                  Send
+                </button>
+              </form>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function DashboardPage() {
   const { user, setPlannedTrail, recordSwipe } = useApp()
   const navigate = useNavigate()
@@ -451,6 +636,7 @@ export default function DashboardPage() {
   const [tab, setTab] = useState('upcoming')
   const [menuOpen, setMenuOpen] = useState(null)
   const [activeModal, setActiveModal] = useState(null)
+  const [groups, setGroups] = useState([])
   const menuRef = useRef(null)
 
   useEffect(() => {
@@ -460,6 +646,15 @@ export default function DashboardPage() {
       .catch(() => setTrails([]))
       .finally(() => setLoading(false))
   }, [user])
+
+  const refreshGroups = useCallback(() => {
+    if (!user) return
+    api.getUserGroups(user.id)
+      .then(data => setGroups(Array.isArray(data?.groups) ? data.groups : []))
+      .catch(() => {})
+  }, [user])
+
+  useEffect(() => { refreshGroups() }, [refreshGroups])
 
   useEffect(() => {
     const close = (e) => {
@@ -510,8 +705,12 @@ export default function DashboardPage() {
             >
               <IconDiscover /> Discover
             </div>
-            <div className="dash-sidenav-item disabled">
+            <div
+              className={`dash-sidenav-item ${activeSection === 'community' ? 'active' : ''}`}
+              onClick={() => setActiveSection('community')}
+            >
               <IconCommunity /> Community
+              {groups.length > 0 && <span className="dash-sidenav-badge">{groups.length}</span>}
             </div>
           </nav>
         </aside>
@@ -523,6 +722,8 @@ export default function DashboardPage() {
               loading={loading}
               onViewAll={() => setActiveSection('mytrails')}
               onViewMap={handleViewMap}
+              groups={groups}
+              onViewCommunity={() => setActiveSection('community')}
             />
           )}
           {activeSection === 'mytrails' && (
@@ -540,7 +741,10 @@ export default function DashboardPage() {
             />
           )}
           {activeSection === 'discover' && (
-            <DiscoverSection user={user} recordSwipe={recordSwipe} />
+            <DiscoverSection user={user} recordSwipe={recordSwipe} onTrailLiked={refreshGroups} />
+          )}
+          {activeSection === 'community' && (
+            <CommunitySection user={user} groups={groups} setGroups={setGroups} />
           )}
         </main>
       </div>

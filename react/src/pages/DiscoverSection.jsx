@@ -99,7 +99,7 @@ function SwipeCard({ trail, onSwipe, isTop }) {
   )
 }
 
-export default function DiscoverSection({ user, recordSwipe }) {
+export default function DiscoverSection({ user, recordSwipe, onTrailLiked }) {
   const [trails,      setTrails]      = useState([])
   const [index,       setIndex]       = useState(0)
   const [loading,     setLoading]     = useState(true)
@@ -126,10 +126,24 @@ export default function DiscoverSection({ user, recordSwipe }) {
     if (liked) {
       const updated = [...likedTrails, trail]
       setLikedTrails(updated)
-      if (user) api.saveTrail(user.id, trail, {}).catch(() => {})
+      if (user) {
+        api.saveTrail(user.id, trail, {})
+          .then(() => onTrailLiked?.())
+          .catch(() => {})
+      }
       api.registerInterest(trail.name).catch(() => {})
     }
     setIndex(i => i + 1)
+  }
+
+  const handleRemoveLiked = (trail) => {
+    setLikedTrails(prev => prev.filter(t => t.name !== trail.name))
+    if (user) {
+      api.removeTrail(user.id, trail.name).catch(() => {})
+      api.leaveGroup(trail.name, user.id)
+        .then(() => onTrailLiked?.())
+        .catch(() => {})
+    }
   }
 
   const reload = () => {
@@ -188,6 +202,13 @@ export default function DiscoverSection({ user, recordSwipe }) {
                         {' · '}⏱ {t.duration_hours}h · {(t.terrain || 'mixed').charAt(0).toUpperCase() + (t.terrain || 'mixed').slice(1)}
                       </p>
                     </div>
+                    <button
+                      className="ds-liked-remove"
+                      title="Remove"
+                      onClick={() => handleRemoveLiked(t)}
+                    >
+                      ✕
+                    </button>
                   </div>
                 ))}
               </div>
