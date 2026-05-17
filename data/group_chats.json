@@ -24,14 +24,22 @@
   "Ι. Μ. Βατοπαιδίου - Ι. Μ. Ζωγράφου": {
     "trail_name": "Ι. Μ. Βατοπαιδίου - Ι. Μ. Ζωγράφου",
     "group_name": "Ι. Μ. Βατοπαιδίου - Ι. Μ. Ζωγράφου Hikers",
-    "members": [
-      {
-        "user_id": "USR-94026724547D",
-        "user_name": "test",
-        "joined_at": "2026-05-17T09:19:27.148920+00:00"
-      }
-    ],
+    "members": [],
     "messages": [],
     "created_at": "2026-05-17T09:19:27.148642+00:00"
+  },
+  "Agios Ioannis-Papakefala": {
+    "trail_name": "Agios Ioannis-Papakefala",
+    "group_name": "Agios Ioannis-Papakefala Hikers",
+    "members": [],
+    "messages": [],
+    "created_at": "2026-05-17T09:32:16.875932+00:00"
+  },
+  "waymarks blue bar and cairns": {
+    "trail_name": "waymarks blue bar and cairns",
+    "group_name": "waymarks blue bar and cairns Hikers",
+    "members": [],
+    "messages": [],
+    "created_at": "2026-05-17T09:33:25.923734+00:00"
   }
 }

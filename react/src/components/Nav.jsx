@@ -38,7 +38,7 @@ export default function Nav({ activeLink }) {
         {user && (
           <Link to="/dashboard" className={activeLink === 'dashboard' ? 'active' : ''}>Dashboard</Link>
         )}
-        <Link to="/" className={activeLink === 'home' ? 'active' : ''}>About Us</Link>
+        <Link to="/about" className={activeLink === 'about' ? 'active' : ''}>About Us</Link>
       </div>
 
       <div className="pf-nav-right">

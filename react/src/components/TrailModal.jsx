@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import TrailMap from './TrailMap'
 import { api } from '../api/client'
 import { useApp } from '../context/AppContext'
+import { Sun, Cloud, CloudRain, CloudDrizzle, CloudLightning, Snowflake, CloudFog, X, Leaf, Map, Star, MessageCircle } from 'lucide-react'
 import './TrailModal.css'
 
 const TERRAIN_GRADIENTS = {
@@ -11,12 +12,11 @@ const TERRAIN_GRADIENTS = {
   mixed:    'linear-gradient(160deg, #1c2e1e 0%, #3a5430 50%, #6a8040 100%)',
 }
 
-const WEATHER_EMOJI = {
-  Clear: '☀️', Clouds: '⛅', Rain: '🌧️', Drizzle: '🌦️',
-  Thunderstorm: '⛈️', Snow: '❄️', Mist: '🌫️', Fog: '🌫️', Haze: '🌁',
+const WEATHER_ICON = {
+  Clear: <Sun size={22} />, Clouds: <Cloud size={22} />, Rain: <CloudRain size={22} />,
+  Drizzle: <CloudDrizzle size={22} />, Thunderstorm: <CloudLightning size={22} />,
+  Snow: <Snowflake size={22} />, Mist: <CloudFog size={22} />, Fog: <CloudFog size={22} />, Haze: <CloudFog size={22} />,
 }
-
-const FAUNA_EMOJI = ['🦅', '🦌', '🐺', '🦊', '🐗', '🦎', '🦋', '🐦']
 
 function cap(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : '—' }
 function fmtDate(d) {
@@ -45,14 +45,14 @@ function StarRating({ avg, count, userRating, onRate, submitting }) {
             onMouseLeave={() => setHovered(null)}
             onClick={() => !submitting && onRate(n)}
             aria-label={`Rate ${n} star${n > 1 ? 's' : ''}`}
-          >★</button>
+          ><Star size={18} /></button>
         ))}
       </div>
       <span className="tm-rating-meta">
         {avg != null
           ? <><strong>{avg}</strong> · {count} rating{count !== 1 ? 's' : ''}</>
           : 'No ratings yet'}
-        {userRating && <span className="tm-my-rating"> · Your rating: {userRating}★</span>}
+        {userRating && <span className="tm-my-rating"> · Your rating: {userRating} <Star size={11} /></span>}
       </span>
     </div>
   )
@@ -176,7 +176,7 @@ export default function TrailModal({ trail: saved, onClose }) {
 
   const highlights  = td?.highlights || []
   const nearbyPois  = pois.slice(0, 3)
-  const weatherEmoji = WEATHER_EMOJI[weather?.weather_main] || '🌤️'
+  const weatherIcon = WEATHER_ICON[weather?.weather_main] || <Sun size={22} />
 
   return (
     <div className="tm-overlay" ref={overlayRef} onClick={handleOverlay}>
@@ -224,7 +224,7 @@ export default function TrailModal({ trail: saved, onClose }) {
 
         {/* ══ RIGHT PANEL ══ */}
         <div className="tm-right">
-          <button className="tm-close" onClick={onClose} aria-label="Close">✕</button>
+          <button className="tm-close" onClick={onClose} aria-label="Close"><X size={18} /></button>
 
           <div className="tm-right-scroll">
 
@@ -277,7 +277,7 @@ export default function TrailModal({ trail: saved, onClose }) {
 
             {/* Weather */}
             <div className="tm-section">
-              <div className="tm-section-title"><span>☀️</span> WEATHER FORECAST</div>
+              <div className="tm-section-title"><span><Sun size={13} /></span> WEATHER FORECAST</div>
               {weather && !weather._skipped && weather.temp_c != null ? (
                 <div className="tm-weather">
                   <div className="tm-weather-info">
@@ -290,7 +290,7 @@ export default function TrailModal({ trail: saved, onClose }) {
                       </div>
                     )}
                   </div>
-                  <div className="tm-weather-emoji">{weatherEmoji}</div>
+                  <div className="tm-weather-emoji">{weatherIcon}</div>
                 </div>
               ) : (
                 <div className="tm-empty-block">
@@ -302,7 +302,7 @@ export default function TrailModal({ trail: saved, onClose }) {
             {/* Highlights */}
             {highlights.length > 0 && (
               <div className="tm-section">
-                <div className="tm-section-title"><span>📅</span> LOCAL HIGHLIGHTS</div>
+                <div className="tm-section-title"><span><Leaf size={13} /></span> LOCAL HIGHLIGHTS</div>
                 <div className="tm-events">
                   {highlights.map((h, i) => (
                     <div key={i} className="tm-event">
@@ -316,14 +316,14 @@ export default function TrailModal({ trail: saved, onClose }) {
             {/* Local Fauna */}
             {(loading || fauna.length > 0) && (
               <div className="tm-section">
-                <div className="tm-section-title"><span>🦎</span> LOCAL FAUNA</div>
+                <div className="tm-section-title"><span><Leaf size={13} /></span> LOCAL FAUNA</div>
                 {loading ? (
                   <div className="tm-empty-block">Loading species data…</div>
                 ) : (
                   <div className="tm-fauna">
                     {fauna.slice(0, 4).map((species, i) => (
                       <div key={i} className="tm-fauna-card">
-                        <div className="tm-fauna-avatar">{FAUNA_EMOJI[i % FAUNA_EMOJI.length]}</div>
+                        <div className="tm-fauna-avatar"><Leaf size={16} /></div>
                         <div className="tm-fauna-name">{species}</div>
                       </div>
                     ))}
@@ -334,7 +334,7 @@ export default function TrailModal({ trail: saved, onClose }) {
 
             {/* Mini chatbox */}
             <div className="tm-section">
-              <div className="tm-section-title"><span>💬</span> ASK ABOUT THIS TRAIL</div>
+              <div className="tm-section-title"><span><MessageCircle size={13} /></span> ASK ABOUT THIS TRAIL</div>
               <div className="tm-chat">
                 <div className="tm-chat-messages">
                   {chatHistory.length === 0 && (

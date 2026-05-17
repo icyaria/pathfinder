@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { X as LucideX } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import { api } from '../api/client'
 import { useApp } from '../context/AppContext'
@@ -572,7 +573,7 @@ function CommunitySection({ user, groups, setGroups }) {
                     {groups.find(g => g.trail_name === activeTrail)?.member_count || 0} members
                   </div>
                 </div>
-                <button className="community-chat-close" onClick={closeChat} aria-label="Close chat">✕</button>
+                <button className="community-chat-close" onClick={closeChat} aria-label="Close chat"><LucideX size={16} /></button>
               </div>
 
               <div className="community-messages">

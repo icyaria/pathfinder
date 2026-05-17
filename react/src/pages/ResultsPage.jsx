@@ -4,24 +4,42 @@ import Nav from '../components/Nav'
 import { api } from '../api/client'
 import { useApp } from '../context/AppContext'
 import TrailMap from '../components/TrailMap'
+import { Leaf, CheckCircle, AlertTriangle, XCircle, Flame, MapPin, Building2, Milestone, Footprints, Crosshair, Thermometer, Sun, CloudRain, Cloud, Snowflake, Wind } from 'lucide-react'
+
+const WEATHER_ICON_SM = (emoji) => {
+  if (!emoji) return <Thermometer size={16} />
+  if (emoji.includes('☀') || emoji.includes('🌤') || emoji.includes('⛅')) return <Sun size={16} />
+  if (emoji.includes('🌧') || emoji.includes('🌦') || emoji.includes('🌩') || emoji.includes('⛈')) return <CloudRain size={16} />
+  if (emoji.includes('❄') || emoji.includes('🌨')) return <Snowflake size={16} />
+  if (emoji.includes('☁') || emoji.includes('🌫')) return <Cloud size={16} />
+  if (emoji.includes('💨')) return <Wind size={16} />
+  return <Thermometer size={16} />
+}
 import './ResultsPage.css'
 
-const SCORE_LABEL = (s) => s >= 80 ? '🌿 Excellent' : s >= 60 ? '✅ Good' : s >= 40 ? '⚠️ Moderate' : '🔴 Poor'
+const SCORE_LABEL = (s) => s >= 80 ? 'Excellent' : s >= 60 ? 'Good' : s >= 40 ? 'Moderate' : 'Poor'
+const SCORE_ICON  = (s) => s >= 80
+  ? <Leaf size={13} />
+  : s >= 60
+  ? <CheckCircle size={13} />
+  : s >= 40
+  ? <AlertTriangle size={13} />
+  : <XCircle size={13} />
 const SCORE_CLS   = (s) => s >= 60 ? 'good' : s >= 40 ? 'moderate' : 'poor'
 
 function WeatherDay({ day }) {
   const label = day.date.slice(5)
   return (
     <div className={`weather-day ${day.is_planned ? 'planned' : ''}`}>
-      <div className="wd-date">{label}{day.is_planned ? ' 🎯' : ''}</div>
+      <div className="wd-date">{label}{day.is_planned ? <Crosshair size={11} style={{ marginLeft: 3 }} /> : ''}</div>
       {day.available ? (
         <>
-          <div className="wd-emoji">{day.emoji || '🌡️'}</div>
+          <div className="wd-emoji">{WEATHER_ICON_SM(day.emoji)}</div>
           <div className="wd-temp">{day.temp_c}°C</div>
           <div className="wd-cond">{day.conditions}</div>
         </>
       ) : (
-        <div className="wd-na">{day.reason === 'too_far' ? '📅 >5 day' : '—'}</div>
+        <div className="wd-na">{day.reason === 'too_far' ? '>5 day' : '—'}</div>
       )}
     </div>
   )
@@ -67,7 +85,7 @@ function TrailCard({ trail, onPlan }) {
               {trail.name}
               {liveCount > 0 && (
                 <span className="live-interest-chip" title="Users currently headed here">
-                  🔥 {liveCount} heading here
+                  <Flame size={12} /> {liveCount} heading here
                 </span>
               )}
             </div>
@@ -75,7 +93,7 @@ function TrailCard({ trail, onPlan }) {
           </div>
         </div>
         <div className="result-card-right">
-          <span className="score-label">{SCORE_LABEL(s.score)}</span>
+          <span className="score-label">{SCORE_ICON(s.score)} {SCORE_LABEL(s.score)}</span>
           <button className="expand-btn">{open ? '▲' : '▼'}</button>
         </div>
       </div>
@@ -85,7 +103,7 @@ function TrailCard({ trail, onPlan }) {
           <ScoreBreakdown breakdown={s.breakdown} />
 
           {ce._crowd_poi_count != null && (
-            <p className="ce-note">📍 {ce._crowd_poi_count} tourism POIs (3 km) · 🏘️ {ce._economy_poi_count} amenities (10 km)</p>
+            <p className="ce-note"><MapPin size={12} /> {ce._crowd_poi_count} tourism POIs (3 km) · <Building2 size={12} /> {ce._economy_poi_count} amenities (10 km)</p>
           )}
 
           {cal.length > 0 && (
@@ -98,15 +116,15 @@ function TrailCard({ trail, onPlan }) {
           )}
 
           {trail._weather?.safety_flags?.map((f, i) => (
-            <div key={i} className="safety-flag">⚠️ {f}</div>
+            <div key={i} className="safety-flag"><AlertTriangle size={13} /> {f}</div>
           ))}
 
           {trail._biodiversity?.notable_species?.length > 0 && (
-            <p className="bio-note">🦎 <strong>Nearby species:</strong> {trail._biodiversity.notable_species.join(', ')}</p>
+            <p className="bio-note"><Footprints size={13} /> <strong>Nearby species:</strong> {trail._biodiversity.notable_species.join(', ')}</p>
           )}
 
           <button className="plan-btn" onClick={() => onPlan(trail)}>
-            📌 Plan this trail
+            <Milestone size={14} /> Plan this trail
           </button>
         </div>
       )}

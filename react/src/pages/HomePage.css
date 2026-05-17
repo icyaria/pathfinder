@@ -82,7 +82,6 @@
   color: rgba(255, 255, 255, 0.72);
   line-height: 1.7;
   margin-bottom: 38px;
-  max-width: 480px;
 }
 
 .hero-ctas {
@@ -139,7 +138,6 @@
   color: #888;
   font-size: .93rem;
   margin-bottom: 44px;
-  max-width: 520px;
 }
 
 .section.alt-bg .section-lead { color: #4e5d63; }
@@ -174,6 +172,14 @@
 .card-coastal  { background: linear-gradient(160deg, #061a30 0%, #0f3560 55%, #041626 100%); }
 .card-forest   { background: linear-gradient(160deg, #081408 0%, #14340f 55%, #060e06 100%); }
 .card-mixed    { background: linear-gradient(160deg, #1a1206 0%, #372a0c 55%, #120e04 100%); }
+
+.card-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
 .card-overlay {
   position: absolute;
@@ -236,7 +242,7 @@
 
 .feature-icon { font-size: 1.9rem; margin-bottom: 14px; }
 
-.feature h3 { font-size: 1rem; font-weight: 800; margin: 0 0 8px; color: #1a1a1a; }
+.feature h3 { font-size: 1rem; font-weight: 800; margin: 0 0 8px; color: #faf2f2; }
 .feature-dark h3,
 .feature-dark2 h3 { color: #fff; }
 
@@ -260,7 +266,7 @@
 .event-tag {
   display: inline-block;
   background: rgba(210, 126, 54, 0.15);
-  color: #D27E36;
+  color: #258f2a;
   font-size: .68rem;
   font-weight: 800;
   padding: 3px 10px;
@@ -334,7 +340,7 @@
 }
 
 .footer-logo { font-size: 1.05rem; font-weight: 800; color: #fff; }
-.footer-logo span { color: #D27E36; }
+.footer-logo span { color: #2a8821; }
 .footer p { font-size: .76rem; margin: 6px 0 0; color: #B4CAD3; }
 
 .footer-links { display: flex; gap: 24px; }

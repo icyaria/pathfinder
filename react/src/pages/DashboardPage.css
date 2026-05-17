@@ -114,7 +114,6 @@
 .dash-subtitle {
   color: #666;
   font-size: .9rem;
-  max-width: 480px;
   line-height: 1.65;
   margin: 0;
 }
@@ -809,7 +808,6 @@
 .ds-desc {
   font-size: .9rem;
   color: #888;
-  max-width: 540px;
   line-height: 1.65;
   margin: 6px 0 0;
 }

@@ -8,6 +8,7 @@ import ResultsPage from './pages/ResultsPage'
 import TrailDetailPage from './pages/TrailDetailPage'
 import DiscoverPage from './pages/DiscoverPage'
 import SurprisePage from './pages/SurprisePage'
+import AboutPage from './pages/AboutPage'
 
 function ProtectedRoute({ children }) {
   const { user } = useApp()
@@ -25,6 +26,7 @@ function AppRoutes() {
       <Route path="/trail"     element={<ProtectedRoute><TrailDetailPage /></ProtectedRoute>} />
       <Route path="/discover"  element={<ProtectedRoute><DiscoverPage /></ProtectedRoute>} />
       <Route path="/surprise"  element={<ProtectedRoute><SurprisePage /></ProtectedRoute>} />
+      <Route path="/about"     element={<AboutPage />} />
       <Route path="*"        element={<Navigate to="/" replace />} />
     </Routes>
   )

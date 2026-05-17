@@ -2,14 +2,27 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Nav from '../components/Nav'
 import { api } from '../api/client'
-import mountainImg from '../assets/hero.png'
+import mountainImg from '../assets/mountain.png'
+import trailImg1 from '../assets/one.jpg'
+import trailImg2 from '../assets/two.jpg'
+import trailImg3 from '../assets/three.jpg'
+import trailImg4 from '../assets/four.jpg'
+import { Mountain, Waves, TreePine, Map, Clock, Recycle, Satellite, Landmark, Handshake, Sun, Star } from 'lucide-react'
 import './HomePage.css'
+
+const TRAIL_IMGS = [trailImg1, trailImg2, trailImg3, trailImg4]
 
 const TERRAIN_CLS = {
   mountain: 'card-mountain', coastal: 'card-coastal',
   forest: 'card-forest', mixed: 'card-mixed',
 }
-const TERRAIN_EMJ = { mountain: '🏔️', coastal: '🌊', forest: '🌲', mixed: '🗺️' }
+const TERRAIN_ICON = {
+  mountain: <Mountain size={13} />,
+  coastal:  <Waves size={13} />,
+  forest:   <TreePine size={13} />,
+  mixed:    <Map size={13} />,
+}
+const TERRAIN_LABEL = { mountain: 'Mountain', coastal: 'Coastal', forest: 'Forest', mixed: 'Mixed' }
 
 const PLACEHOLDER_TRAILS = [
   { name: 'Mytikas Summit Trail', region: 'Mount Olympus, Pieria',  terrain: 'mountain', difficulty: 'hard',     duration_hours: 8 },
@@ -17,24 +30,25 @@ const PLACEHOLDER_TRAILS = [
   { name: 'Vikos Gorge Path',     region: 'Zagori, Epirus',         terrain: 'forest',   difficulty: 'moderate', duration_hours: 6 },
 ]
 
-function TrailCard({ trail }) {
+function TrailCard({ trail, imgSrc }) {
   const ter  = trail.terrain || 'mixed'
   const diff = trail.difficulty || 'moderate'
   return (
     <Link to="/explore" className={`trail-card ${TERRAIN_CLS[ter] || 'card-mixed'}`}>
+      {imgSrc && <img src={imgSrc} alt={trail.name} className="card-photo" />}
       <div className="card-overlay" />
       <div className="card-badges">
-        <span className="badge">{TERRAIN_EMJ[ter]} {ter.charAt(0).toUpperCase() + ter.slice(1)}</span>
+        <span className="badge">{TERRAIN_ICON[ter]} {TERRAIN_LABEL[ter] || ter}</span>
         <span className="badge">{diff.charAt(0).toUpperCase() + diff.slice(1)}</span>
         {trail.sustainability_score && (
-          <span className="badge badge-green">♻ {trail.sustainability_score}/100</span>
+          <span className="badge badge-green"><Recycle size={11} /> {trail.sustainability_score}/100</span>
         )}
       </div>
       <div className="card-body">
-        <div className="card-stars">★★★★☆</div>
+        <div className="card-stars"><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} /></div>
         <div className="card-region">{trail.region || 'Greece'}</div>
         <h3>{trail.name}</h3>
-        <div className="card-meta">⏱ {trail.duration_hours}h · {diff.charAt(0).toUpperCase() + diff.slice(1)}</div>
+        <div className="card-meta"><Clock size={12} /> {trail.duration_hours}h · {diff.charAt(0).toUpperCase() + diff.slice(1)}</div>
       </div>
     </Link>
   )
@@ -99,7 +113,7 @@ export default function HomePage() {
           Hand-scored for sustainability, biodiversity, and authentic local experience.
         </p>
         <div className="trail-cards">
-          {featured.map((t, i) => <TrailCard key={i} trail={t} />)}
+          {featured.map((t, i) => <TrailCard key={i} trail={t} imgSrc={TRAIL_IMGS[i % TRAIL_IMGS.length]} />)}
         </div>
       </section>
 
@@ -113,13 +127,13 @@ export default function HomePage() {
         <div className="features">
 
           <div className="feature">
-            <div className="feature-icon">🛰️</div>
+            <div className="feature-icon"><Satellite size={28}style={{ color: '#fff' }} /></div>
             <h3>Real-Time Intelligence</h3>
             <p>Weather forecasts, trail crowd levels, and biodiversity data sourced live from open APIs on every search.</p>
             <div className="weather-box">
               <div className="weather-temp">22°C</div>
               <div className="weather-info">
-                ☀️ Clear skies<br />
+                <Sun size={14} /> Clear skies<br />
                 <strong>Ideal hiking conditions</strong><br />
                 Wind 12 km/h · Humidity 45%
               </div>
@@ -127,7 +141,7 @@ export default function HomePage() {
           </div>
 
           <div className="feature feature-dark">
-            <div className="feature-icon">🏛️</div>
+            <div className="feature-icon"><Landmark size={28}style={{ color: '#fff' }} /></div>
             <h3>Cultural Anchors</h3>
             <p>Every trail mapped to nearby historic sites, local villages, and cultural events — so you never hike in a vacuum.</p>
             <div style={{ marginTop: 20 }}>
@@ -140,7 +154,7 @@ export default function HomePage() {
           </div>
 
           <div className="feature feature-dark2">
-            <div className="feature-icon">🤝</div>
+            <div className="feature-icon"><Handshake size={28}style={{ color: '#fff' }} /></div>
             <h3>Trek Together</h3>
             <p>Solo or group — our AI adapts to your party size, fitness, and shared interests for a tailored experience.</p>
             <blockquote className="quote">

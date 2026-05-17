@@ -4,17 +4,18 @@ import Nav from '../components/Nav'
 import RegionFilter from '../components/RegionFilter'
 import { api } from '../api/client'
 import { useApp } from '../context/AppContext'
+import { Zap, Leaf, Compass, Sunset, Users, Bird, Landmark, Rocket, Clock, Sparkles, Milestone, Dices } from 'lucide-react'
 import './SurprisePage.css'
 
 const MOOD_CHIPS = [
-  { id: 'adventurous',  label: '⚡ Adventurous',     text: 'I want something challenging and exciting' },
-  { id: 'peaceful',     label: '🌿 Peaceful',         text: 'I want calm, quiet nature away from crowds' },
-  { id: 'curious',      label: '🔭 Curious',          text: 'I want to discover something new and surprising' },
-  { id: 'romantic',     label: '🌅 Romantic',         text: 'A scenic trail for two, beautiful views' },
-  { id: 'family',       label: '👨‍👩‍👧 Family',           text: 'Easy and fun for all ages including kids' },
-  { id: 'wildlife',     label: '🦅 Wildlife lover',   text: 'I want to spot animals and rare species' },
-  { id: 'cultural',     label: '🏛️ Cultural',         text: 'History, ruins, and local villages along the way' },
-  { id: 'escape',       label: '🚀 Escape the city',  text: 'As far from tourists and crowds as possible' },
+  { id: 'adventurous', icon: <Zap size={15} />,      label: 'Adventurous',    text: 'I want something challenging and exciting' },
+  { id: 'peaceful',    icon: <Leaf size={15} />,      label: 'Peaceful',       text: 'I want calm, quiet nature away from crowds' },
+  { id: 'curious',     icon: <Compass size={15} />,   label: 'Curious',        text: 'I want to discover something new and surprising' },
+  { id: 'romantic',    icon: <Sunset size={15} />,    label: 'Romantic',       text: 'A scenic trail for two, beautiful views' },
+  { id: 'family',      icon: <Users size={15} />,     label: 'Family',         text: 'Easy and fun for all ages including kids' },
+  { id: 'wildlife',    icon: <Bird size={15} />,      label: 'Wildlife lover', text: 'I want to spot animals and rare species' },
+  { id: 'cultural',    icon: <Landmark size={15} />,  label: 'Cultural',       text: 'History, ruins, and local villages along the way' },
+  { id: 'escape',      icon: <Rocket size={15} />,    label: 'Escape the city',text: 'As far from tourists and crowds as possible' },
 ]
 
 export default function SurprisePage() {
@@ -80,7 +81,7 @@ export default function SurprisePage() {
         {!result ? (
           <>
             <div className="surprise-hero">
-              <div className="surprise-emoji">🎲</div>
+              <div className="surprise-emoji"><Dices size={48} strokeWidth={1.5} /></div>
               <h1>Surprise Me</h1>
               <p>Tell us how you feel right now and we'll find the perfect trail for your mood.</p>
             </div>
@@ -94,7 +95,7 @@ export default function SurprisePage() {
                     className={`mood-chip ${selectedMood === m.id ? 'active' : ''}`}
                     onClick={() => setSelectedMood(selectedMood === m.id ? null : m.id)}
                   >
-                    {m.label}
+                    {m.icon} {m.label}
                   </button>
                 ))}
               </div>
@@ -119,7 +120,7 @@ export default function SurprisePage() {
                 onClick={handleSurprise}
                 disabled={loading}
               >
-                {loading ? '🔮 Finding your trail…' : '🎲 Surprise Me'}
+                {loading ? <><Sparkles size={16} /> Finding your trail…</> : <><Dices size={16} /> Surprise Me</>}
               </button>
             </div>
           </>
@@ -135,11 +136,11 @@ export default function SurprisePage() {
                 <div className="sr-tags">
                   <span className="sr-tag">{result.trail.terrain}</span>
                   <span className="sr-tag">{result.trail.difficulty}</span>
-                  <span className="sr-tag">⏱ {result.trail.duration_hours}h</span>
+                  <span className="sr-tag"><Clock size={12} /> {result.trail.duration_hours}h</span>
                 </div>
                 <h2 className="sr-name">{result.trail.name}</h2>
                 <blockquote className="sr-reason">
-                  <span className="sr-reason-icon">✨</span>
+                  <span className="sr-reason-icon"><Sparkles size={15} /></span>
                   {result.reason}
                 </blockquote>
                 {result.trail.highlights?.length > 0 && (
@@ -148,8 +149,8 @@ export default function SurprisePage() {
                   </ul>
                 )}
                 <div className="sr-actions">
-                  <button className="sr-plan-btn" onClick={handlePlan}>📌 Plan this trail</button>
-                  <button className="sr-again-btn" onClick={reset}>🎲 Try again</button>
+                  <button className="sr-plan-btn" onClick={handlePlan}><Milestone /> Plan this trail</button>
+                  <button className="sr-again-btn" onClick={reset}><Dices /> Try again</button>
                 </div>
               </div>
             </div>

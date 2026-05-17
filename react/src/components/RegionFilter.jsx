@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Map } from 'lucide-react'
 import './RegionFilter.css'
 
 export const GREEK_REGIONS = [
@@ -50,7 +51,7 @@ export default function RegionFilter({ value, onChange, dark = false }) {
   return (
     <div className={`region-filter ${dark ? 'region-filter-dark' : ''}`}>
       <button className="region-trigger" onClick={() => setOpen(!open)}>
-        🗺️ {selected ? selected.el : 'Όλη η Ελλάδα'}
+        <Map size={14} /> {selected ? selected.el : 'Όλη η Ελλάδα'}
         <span className="region-caret">{open ? '▲' : '▼'}</span>
       </button>
       {open && (

@@ -212,31 +212,5 @@
       "saved_at": "2026-05-16T16:36:32.010303"
     }
   ],
-  "USR-94026724547D": [
-    {
-      "trail_name": "Ι. Μ. Βατοπαιδίου - Ι. Μ. Ζωγράφου",
-      "region": "Greece",
-      "trail_data": {
-        "name": "Ι. Μ. Βατοπαιδίου - Ι. Μ. Ζωγράφου",
-        "region": "Greece",
-        "terrain": "forest",
-        "difficulty": "moderate",
-        "duration_hours": 4,
-        "lat": 40.3113901,
-        "lon": 24.1856585,
-        "crowd_level": 1,
-        "local_economy_score": 4,
-        "highlights": [
-          "Forest monastery trail",
-          "Bulgarian monastery Zografou",
-          "Peaceful woodland hiking"
-        ],
-        "osm_id": 4259789,
-        "osm_source": "relation"
-      },
-      "profile": {},
-      "planned_date": "",
-      "saved_at": "2026-05-17T09:19:27.147828"
-    }
-  ]
+  "USR-94026724547D": []
 }

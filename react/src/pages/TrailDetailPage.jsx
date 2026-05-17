@@ -4,6 +4,7 @@ import Nav from '../components/Nav'
 import TrailMap from '../components/TrailMap'
 import { api } from '../api/client'
 import { useApp } from '../context/AppContext'
+import { AlertTriangle, CheckCircle, Map, Leaf, Sun, Wind, MessageCircle } from 'lucide-react'
 import './TrailDetailPage.css'
 
 function renderMd(text) {
@@ -89,10 +90,10 @@ export default function TrailDetailPage() {
       </div>
 
       {stats?.source === 'estimated' && (
-        <div className="stats-note warn">⚠️ Distance estimated — OSM tags unavailable for this trail.</div>
+        <div className="stats-note warn"><AlertTriangle size={13} /> Distance estimated — OSM tags unavailable for this trail.</div>
       )}
       {stats?.source === 'osm_tags' && (
-        <div className="stats-note ok">✅ Distance from official OSM trail tags.</div>
+        <div className="stats-note ok"><CheckCircle size={13} /> Distance from official OSM trail tags.</div>
       )}
 
       <div className="detail-layout">
@@ -108,23 +109,23 @@ export default function TrailDetailPage() {
           {w.temp_c != null && (
             <div className="detail-card">
               <div className="detail-card-title">Weather on your date</div>
-              <p>🌤 {w.temp_c}°C, {w.conditions} · 💨 {w.wind_kmh} km/h</p>
+              <p><Sun size={13} /> {w.temp_c}°C, {w.conditions} · <Wind size={13} /> {w.wind_kmh} km/h</p>
               {w.safety_flags?.map((f, i) => (
-                <div key={i} className="safety-flag">⚠️ {f}</div>
+                <div key={i} className="safety-flag"><AlertTriangle size={13} /> {f}</div>
               ))}
             </div>
           )}
 
           {bio.notable_species?.length > 0 && (
             <div className="detail-card">
-              <div className="detail-card-title">🦎 Nearby Wildlife</div>
+              <div className="detail-card-title"><Leaf size={15} /> Nearby Wildlife</div>
               <p>{bio.notable_species.join(', ')}</p>
             </div>
           )}
 
           {/* Chat */}
           <div className="detail-card chat-card">
-            <div className="detail-card-title">💬 Ask about this trail</div>
+            <div className="detail-card-title"><MessageCircle size={15} /> Ask about this trail</div>
             <p className="chat-hint">Ask anything — what to pack, safety tips, nearby villages, best season…</p>
 
             <div className="chat-log">
@@ -166,7 +167,7 @@ export default function TrailDetailPage() {
         {/* Right: map */}
         <div className="detail-right">
           <div className="detail-card">
-            <div className="detail-card-title">🗺️ Trail &amp; Nearby Attractions</div>
+            <div className="detail-card-title"><Map size={15} /> Trail &amp; Nearby Attractions</div>
             <TrailMap trails={[t]} pois={pois} height={420} />
 
             {pois.length > 0 && (
