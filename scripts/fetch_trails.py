@@ -198,15 +198,16 @@ Trails:
 
 # ── Main ─────────────────────────────────────────────────────────────────────
 
-def build(use_llm=True, min_trails=20, max_trails=50):
+def build(use_llm=True, max_trails=200):
     print("\n🗺️  Building trail database from OpenStreetMap\n" + "="*45)
 
     elements = fetch(RELATION_QUERY, "hiking relations")
     time.sleep(2)
     trails = parse_elements(elements, "relation")
+    print(f"  → {len(trails)} named relations found")
 
-    if len(trails) < min_trails:
-        print(f"\n  Only {len(trails)} relations — supplementing with ways…")
+    if len(trails) < max_trails:
+        print(f"\n  Only {len(trails)} relations — supplementing with ways to reach {max_trails}…")
         way_els  = fetch(WAY_QUERY, "hiking ways")
         existing = {t["name"] for t in trails}
         extras   = [t for t in parse_elements(way_els, "way") if t["name"] not in existing]

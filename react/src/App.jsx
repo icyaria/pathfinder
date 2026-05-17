@@ -5,6 +5,8 @@ import AuthPage from './pages/AuthPage'
 import ExplorePage from './pages/ExplorePage'
 import ResultsPage from './pages/ResultsPage'
 import TrailDetailPage from './pages/TrailDetailPage'
+import DiscoverPage from './pages/DiscoverPage'
+import SurprisePage from './pages/SurprisePage'
 
 function ProtectedRoute({ children }) {
   const { user } = useApp()
@@ -16,9 +18,11 @@ function AppRoutes() {
     <Routes>
       <Route path="/"        element={<HomePage />} />
       <Route path="/auth"    element={<AuthPage />} />
-      <Route path="/explore" element={<ProtectedRoute><ExplorePage /></ProtectedRoute>} />
-      <Route path="/results" element={<ProtectedRoute><ResultsPage /></ProtectedRoute>} />
-      <Route path="/trail"   element={<ProtectedRoute><TrailDetailPage /></ProtectedRoute>} />
+      <Route path="/explore"   element={<ProtectedRoute><ExplorePage /></ProtectedRoute>} />
+      <Route path="/results"   element={<ProtectedRoute><ResultsPage /></ProtectedRoute>} />
+      <Route path="/trail"     element={<ProtectedRoute><TrailDetailPage /></ProtectedRoute>} />
+      <Route path="/discover"  element={<ProtectedRoute><DiscoverPage /></ProtectedRoute>} />
+      <Route path="/surprise"  element={<ProtectedRoute><SurprisePage /></ProtectedRoute>} />
       <Route path="*"        element={<Navigate to="/" replace />} />
     </Routes>
   )

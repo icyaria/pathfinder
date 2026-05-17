@@ -19,6 +19,7 @@ from pipeline import run_pathfinder
 from backend.trail_details import get_accurate_stats, get_nearby_pois
 from backend.trail_chat import chat_about_trail
 from backend.saved_trails import save_trail, get_saved_trails, remove_saved_trail
+from backend.live_interest import register_interest, get_all_interests
 
 try:
     from backend.user_db import create_user, list_users, authenticate_user
@@ -48,6 +49,7 @@ class Profile(BaseModel):
     group_size: int = 1
     fitness_level: str = "medium"
     start_date: str = ""
+    region_filter: str = ""
 
 
 class TrailPayload(BaseModel):
@@ -96,6 +98,19 @@ class SaveTrailPayload(BaseModel):
 class RemoveTrailPayload(BaseModel):
     user_id: str
     trail_name: str
+
+
+class SurprisePayload(BaseModel):
+    mood: str
+    region_id: Optional[str] = None
+    preferences: dict = {}
+
+
+class InterestPayload(BaseModel):
+    trail_name: str
+
+
+from backend.region_utils import filter_by_region
 
 
 # ── Trails ────────────────────────────────────────────────────────────────────
@@ -181,8 +196,24 @@ def trail_chat(payload: ChatPayload):
 
 @app.post("/api/trails/save")
 def api_save_trail(payload: SaveTrailPayload):
+    trail_name = payload.trail.get("name", "")
+    if trail_name:
+        register_interest(trail_name)
     entry = save_trail(payload.user_id, payload.trail, payload.profile)
     return entry
+
+
+@app.post("/api/trails/interest")
+def api_register_interest(payload: InterestPayload):
+    """Signal that a user is heading to this trail (view/open detail page)."""
+    count = register_interest(payload.trail_name)
+    return {"trail_name": payload.trail_name, "interest_count": count}
+
+
+@app.get("/api/trails/interest")
+def api_get_interests():
+    """Return live interest counts for all active trails."""
+    return {"interests": get_all_interests()}
 
 
 @app.get("/api/trails/saved")
@@ -229,6 +260,42 @@ def api_signin(payload: SigninPayload):
     if not user:
         raise HTTPException(status_code=401, detail="Invalid credentials")
     return {"user_id": payload.user_id, "name": user["Name"], "surname": user["Surname"]}
+
+
+@app.get("/api/trails/discover")
+def discover_trails(region_id: Optional[str] = None, n: int = 40):
+    """Return trails for the Discover (swipe) page, optionally filtered by region."""
+    if not os.path.exists(DATA_PATH):
+        return {"trails": []}
+    with open(DATA_PATH, encoding="utf-8") as f:
+        all_trails = json.load(f)
+    if region_id:
+        all_trails = filter_by_region(all_trails, region_id)
+    import random
+    random.shuffle(all_trails)
+    slim = [{k: v for k, v in t.items() if not k.startswith("_")} for t in all_trails[:n]]
+    return {"trails": slim}
+
+
+@app.post("/api/surprise")
+def surprise_me(payload: SurprisePayload):
+    """Mood-based trail match via LLM."""
+    try:
+        from backend.surprise import surprise_trail
+        if not os.path.exists(DATA_PATH):
+            raise HTTPException(status_code=503, detail="Trail database not found")
+        with open(DATA_PATH, encoding="utf-8") as f:
+            all_trails = json.load(f)
+        if payload.region_id:
+            all_trails = filter_by_region(all_trails, payload.region_id)
+        if not all_trails:
+            raise HTTPException(status_code=404, detail="No trails found for that region")
+        result = surprise_trail(payload.mood, all_trails, payload.preferences)
+        return result
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.get("/api/health")

@@ -26,6 +26,7 @@ from backend.routing        import get_route_summary
 from backend.elevation      import get_elevation_profile
 from backend.sustainability import sustainability_score
 from backend.crowd_economy  import get_crowd_and_economy
+from backend.live_interest  import get_interest_count
 from backend.itinerary      import generate_itinerary
 
 
@@ -94,6 +95,8 @@ def run_pathfinder(user_input: str = None, profile: dict = None, verbose: bool =
         crowd_eco = get_crowd_and_economy(trail["lat"], trail["lon"])
         time.sleep(0.3)
 
+        live_count = get_interest_count(trail["name"])
+
         sust = sustainability_score(
             trail,
             bio_count=bio["total_observations"],
@@ -101,18 +104,20 @@ def run_pathfinder(user_input: str = None, profile: dict = None, verbose: bool =
             profile=profile,
             crowd_level=crowd_eco["crowd_level"],
             local_economy_score=crowd_eco["local_economy_score"],
+            live_interest_count=live_count,
         )
 
         enriched.append(
             {
                 **trail,
-                "_weather":         weather,
+                "_weather":          weather,
                 "_weather_calendar": weather_cal,
-                "_biodiversity":    bio,
-                "_route":           route,
-                "_elevation":       elevation,
-                "_crowd_economy":   crowd_eco,
-                "_sustainability":  sust,
+                "_biodiversity":     bio,
+                "_route":            route,
+                "_elevation":        elevation,
+                "_crowd_economy":    crowd_eco,
+                "_sustainability":   sust,
+                "_live_interest":    live_count,
             }
         )
 

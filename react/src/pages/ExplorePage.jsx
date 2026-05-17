@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Nav from '../components/Nav'
+import RegionFilter from '../components/RegionFilter'
 import { api } from '../api/client'
 import { useApp } from '../context/AppContext'
 import './ExplorePage.css'
@@ -97,6 +98,7 @@ export default function ExplorePage() {
   const [showFree, setShowFree] = useState(false)
   const [multiSelected, setMultiSelected] = useState([])
   const [customDate, setCustomDate] = useState('')
+  const [regionId, setRegionId] = useState(null)
   const chatEndRef = useRef(null)
 
   useEffect(() => {
@@ -135,6 +137,7 @@ export default function ExplorePage() {
       group_size: Number(answers.group_size) || 1,
       fitness_level: ['low','medium','high'].includes(answers.fitness_level) ? answers.fitness_level : 'medium',
       start_date: answers.start_date || '',
+      region_filter: regionId || '',
     }
     try {
       const result = await api.searchTrails(profile)
@@ -164,6 +167,11 @@ export default function ExplorePage() {
         <aside className="explore-sidebar">
           <div className="sidebar-brand">🧭 Pathfinder</div>
           <p className="sidebar-desc">Your AI trail companion for sustainable hiking in Greece.</p>
+          <div className="sidebar-region">
+            <div className="sidebar-region-label">📍 Filter by region</div>
+            <RegionFilter value={regionId} onChange={setRegionId} dark />
+          </div>
+
           <div className="sidebar-steps">
             {STEPS.map((s, i) => (
               <div key={s.id} className={`sidebar-step ${i < step ? 'done' : i === step ? 'active' : ''}`}>

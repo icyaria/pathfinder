@@ -15,8 +15,10 @@ export default function Nav({ activeLink }) {
     <nav className="pf-nav">
       <Link to="/" className="pf-nav-logo">Path<span>Finder</span></Link>
       <div className="pf-nav-links">
-        <Link to="/explore" className={activeLink === 'explore' ? 'active' : ''}>Explore</Link>
-        <Link to="/" className={activeLink === 'home' ? 'active' : ''}>About Us</Link>
+        <Link to="/explore"   className={activeLink === 'explore'   ? 'active' : ''}>Explore</Link>
+        <Link to="/discover"  className={activeLink === 'discover'  ? 'active' : ''}>Discover</Link>
+        <Link to="/surprise"  className={activeLink === 'surprise'  ? 'active' : ''}>Surprise Me</Link>
+        <Link to="/"          className={activeLink === 'home'      ? 'active' : ''}>About Us</Link>
       </div>
       <div className="pf-nav-right">
         {user ? (

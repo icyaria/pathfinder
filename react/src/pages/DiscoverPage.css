@@ -1,0 +1,242 @@
+.discover-page { background: #f5f3ee; min-height: 100vh; }
+
+/* ── Header ─────────────────────────────────────────────────────────────────── */
+.discover-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 28px 48px 0;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.discover-title { font-size: 1.8rem; font-weight: 800; color: #1a1a1a; margin: 0 0 4px; }
+.discover-sub   { font-size: .85rem; color: #888; margin: 0; }
+
+.discover-header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.prefs-toggle {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: .85rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: #444;
+  transition: border-color .2s;
+}
+.prefs-toggle:hover { border-color: #839448; }
+
+/* ── Prefs panel ─────────────────────────────────────────────────────────────── */
+.prefs-panel {
+  margin: 16px 48px 0;
+  background: #fff;
+  border: 1px solid #e4e8d8;
+  border-radius: 12px;
+  padding: 16px 20px;
+  font-size: .85rem;
+  color: #333;
+}
+
+.prefs-chips { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0 8px; }
+.pref-chip {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: .78rem;
+  font-weight: 600;
+}
+.pref-chip.terrain { background: #eef4e0; color: #4a5a20; }
+.pref-chip.diff    { background: #e8f0fa; color: #1e3a6e; }
+.prefs-note { font-size: .76rem; color: #999; margin: 0; }
+
+/* ── Stage ───────────────────────────────────────────────────────────────────── */
+.swipe-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 28px 20px 48px;
+  position: relative;
+}
+
+.swipe-counter {
+  font-size: .78rem;
+  color: #aaa;
+  margin-top: 16px;
+}
+
+.plan-inline-btn {
+  margin-top: 14px;
+  background: none;
+  border: 1px solid #1A2E35;
+  color: #1A2E35;
+  border-radius: 8px;
+  padding: 9px 22px;
+  font-size: .85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .2s, color .2s;
+}
+.plan-inline-btn:hover { background: #1A2E35; color: #fff; }
+
+/* ── Swipe card ──────────────────────────────────────────────────────────────── */
+.swipe-card {
+  width: min(440px, 92vw);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 12px 48px rgba(0,0,0,.16);
+  overflow: hidden;
+  position: relative;
+  user-select: none;
+  touch-action: pan-y;
+  cursor: grab;
+}
+
+.swipe-card:active { cursor: grabbing; }
+
+.swipe-card-top   { z-index: 2; }
+.swipe-card-under {
+  position: absolute;
+  top: 10px;
+  transform: scale(.97);
+  z-index: 1;
+  pointer-events: none;
+  filter: brightness(.96);
+}
+
+/* hint labels */
+.swipe-hint-like,
+.swipe-hint-skip {
+  position: absolute;
+  top: 20px;
+  font-size: 1.3rem;
+  font-weight: 900;
+  letter-spacing: .05em;
+  padding: 6px 14px;
+  border-radius: 8px;
+  opacity: 0;
+  z-index: 10;
+  pointer-events: none;
+  transition: opacity .05s;
+}
+.swipe-hint-like { right: 20px; color: #4a9e4a; border: 3px solid #4a9e4a; }
+.swipe-hint-skip { left: 20px;  color: #c0392b; border: 3px solid #c0392b; }
+
+/* hero image area */
+.swipe-card-hero {
+  height: 220px;
+  position: relative;
+  overflow: hidden;
+}
+
+.swipe-terrain-bg {
+  position: absolute;
+  inset: 0;
+}
+.terrain-mountain { background: linear-gradient(160deg, #0f1e10 0%, #1c3e14 60%, #0a1a0b 100%); }
+.terrain-coastal  { background: linear-gradient(160deg, #061a30 0%, #0f3560 60%, #041626 100%); }
+.terrain-forest   { background: linear-gradient(160deg, #081408 0%, #14340f 60%, #060e06 100%); }
+.terrain-mixed    { background: linear-gradient(160deg, #1a1206 0%, #372a0c 60%, #120e04 100%); }
+
+.swipe-terrain-emoji {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 5rem;
+  opacity: .35;
+}
+
+.swipe-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,.55) 0%, transparent 60%);
+}
+
+.swipe-card-region {
+  position: absolute;
+  bottom: 12px;
+  left: 16px;
+  font-size: .72rem;
+  color: rgba(255,255,255,.7);
+  letter-spacing: .05em;
+}
+
+/* body */
+.swipe-card-body { padding: 18px 20px 10px; }
+
+.swipe-card-tags {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.swipe-tag { font-size: .75rem; color: #777; font-weight: 600; }
+
+.swipe-trail-name { font-size: 1.25rem; font-weight: 800; color: #1a1a1a; margin: 0 0 10px; line-height: 1.2; }
+
+.swipe-highlights { padding: 0 0 0 16px; margin: 0; }
+.swipe-highlights li { font-size: .82rem; color: #555; line-height: 1.6; }
+
+/* action buttons */
+.swipe-actions {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  padding: 14px 0 20px;
+}
+
+.swipe-btn {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,.12);
+  transition: transform .15s, box-shadow .15s;
+}
+.swipe-btn:hover { transform: scale(1.12); box-shadow: 0 6px 22px rgba(0,0,0,.18); }
+
+.skip-btn { background: #fff; color: #c0392b; border: 2px solid #f0c0bb; }
+.like-btn { background: #4a9e4a; color: #fff; }
+
+/* ── Done / loading ──────────────────────────────────────────────────────────── */
+.discover-loading {
+  text-align: center;
+  padding: 80px 20px;
+  color: #888;
+  font-size: 1rem;
+}
+
+.discover-done {
+  text-align: center;
+  padding: 64px 20px;
+}
+.discover-done-emoji { font-size: 3.5rem; margin-bottom: 16px; }
+.discover-done h2    { font-size: 1.5rem; font-weight: 800; color: #1a1a1a; margin: 0 0 8px; }
+.discover-done p     { color: #777; margin-bottom: 24px; }
+
+.discover-done-btns { display: flex; justify-content: center; gap: 14px; }
+.disc-action-btn {
+  padding: 11px 26px;
+  border-radius: 8px;
+  font-size: .9rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid #1A2E35;
+  background: #fff;
+  color: #1A2E35;
+  transition: background .2s, color .2s;
+}
+.disc-action-btn.primary { background: #1A2E35; color: #fff; }
+.disc-action-btn:hover { background: #1A2E35; color: #fff; }

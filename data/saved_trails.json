@@ -65,6 +65,115 @@
       },
       "planned_date": "2026-05-23",
       "saved_at": "2026-05-16T16:12:02.662727"
+    },
+    {
+      "trail_name": "Agios Ioannis-Sellouda-Agios Pavlos",
+      "region": "Greece",
+      "trail_data": {
+        "name": "Agios Ioannis-Sellouda-Agios Pavlos",
+        "region": "Greece",
+        "terrain": "mixed",
+        "difficulty": "moderate",
+        "duration_hours": 4,
+        "lat": 35.2196254,
+        "lon": 24.0165661,
+        "crowd_level": 2,
+        "local_economy_score": 7,
+        "highlights": [
+          "Traditional villages",
+          "Cretan countryside",
+          "Authentic local culture"
+        ],
+        "osm_id": 3170582,
+        "osm_source": "relation"
+      },
+      "profile": {
+        "terrain": "mixed",
+        "duration_days": 5,
+        "fitness_level": "medium",
+        "difficulty": "moderate",
+        "interests": [
+          "history"
+        ],
+        "group_size": 1
+      },
+      "planned_date": "2026-05-24",
+      "saved_at": "2026-05-17T06:18:35.323304"
+    },
+    {
+      "trail_name": "Rocks Park",
+      "region": "Greece",
+      "trail_data": {
+        "name": "Rocks Park",
+        "region": "Greece",
+        "terrain": "mountain",
+        "difficulty": "easy",
+        "duration_hours": 4,
+        "lat": 37.1501211,
+        "lon": 25.2217329,
+        "crowd_level": 2,
+        "local_economy_score": 4,
+        "highlights": [
+          "Unique rock formations",
+          "Geological interest",
+          "Photo opportunities"
+        ],
+        "osm_id": 6085205,
+        "osm_source": "relation"
+      },
+      "profile": {},
+      "planned_date": "",
+      "saved_at": "2026-05-17T06:30:37.027638"
+    },
+    {
+      "trail_name": "OL12",
+      "region": "Greece",
+      "trail_data": {
+        "name": "OL12",
+        "region": "Greece",
+        "terrain": "mixed",
+        "difficulty": "moderate",
+        "duration_hours": 4,
+        "lat": 35.8643326,
+        "lon": 27.2283505,
+        "crowd_level": 2,
+        "local_economy_score": 5,
+        "highlights": [
+          "Scenic route",
+          "Natural beauty",
+          "Local trails"
+        ],
+        "osm_id": 6737521,
+        "osm_source": "relation"
+      },
+      "profile": {},
+      "planned_date": "",
+      "saved_at": "2026-05-17T06:30:47.538839"
+    },
+    {
+      "trail_name": "Hiking around Monemvasia (Route P2)",
+      "region": "Greece",
+      "trail_data": {
+        "name": "Hiking around Monemvasia (Route P2)",
+        "region": "Greece",
+        "terrain": "coastal",
+        "difficulty": "moderate",
+        "duration_hours": 4,
+        "lat": 36.6751357,
+        "lon": 22.9983984,
+        "crowd_level": 3,
+        "local_economy_score": 8,
+        "highlights": [
+          "Medieval Monemvasia views",
+          "Coastal scenery",
+          "Historical landmarks"
+        ],
+        "osm_id": 1147410,
+        "osm_source": "relation"
+      },
+      "profile": {},
+      "planned_date": "",
+      "saved_at": "2026-05-17T06:46:58.948660"
     }
   ],
   "USR-114AAE7DB376": [

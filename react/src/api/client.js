@@ -39,4 +39,17 @@ export const api = {
   signup: (data) => req('POST', '/auth/signup', data),
 
   signin: (user_id, password) => req('POST', '/auth/signin', { user_id, password }),
+
+  registerInterest: (trail_name) => req('POST', '/trails/interest', { trail_name }),
+
+  getLiveInterests: () => req('GET', '/trails/interest'),
+
+  discoverTrails: (region_id = null, n = 40) => {
+    const qs = new URLSearchParams({ n })
+    if (region_id) qs.set('region_id', region_id)
+    return req('GET', `/trails/discover?${qs}`)
+  },
+
+  surpriseMe: (mood, region_id, preferences = {}) =>
+    req('POST', '/surprise', { mood, region_id: region_id || null, preferences }),
 }

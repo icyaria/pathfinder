@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Nav from '../components/Nav'
 import { api } from '../api/client'
-import mountainImg from '../assets/mountain.png'
+import mountainImg from '../assets/hero.png'
 import './HomePage.css'
 
 const TERRAIN_CLS = {

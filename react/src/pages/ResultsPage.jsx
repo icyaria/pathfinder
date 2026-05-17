@@ -51,9 +51,10 @@ function ScoreBreakdown({ breakdown }) {
 }
 
 function TrailCard({ trail, onPlan }) {
-  const s   = trail._sustainability
-  const ce  = trail._crowd_economy || {}
-  const cal = trail._weather_calendar || []
+  const s       = trail._sustainability
+  const ce      = trail._crowd_economy || {}
+  const cal     = trail._weather_calendar || []
+  const liveCount = trail._live_interest || s?.breakdown?._live_interest || 0
   const [open, setOpen] = useState(false)
 
   return (
@@ -62,7 +63,14 @@ function TrailCard({ trail, onPlan }) {
         <div className="result-card-left">
           <span className={`score-badge ${SCORE_CLS(s.score)}`}>{s.score}/100</span>
           <div>
-            <div className="result-trail-name">{trail.name}</div>
+            <div className="result-trail-name">
+              {trail.name}
+              {liveCount > 0 && (
+                <span className="live-interest-chip" title="Users currently headed here">
+                  🔥 {liveCount} heading here
+                </span>
+              )}
+            </div>
             <div className="result-trail-meta">{trail.region} · {trail.terrain} · {trail.difficulty}</div>
           </div>
         </div>
@@ -119,6 +127,9 @@ export default function ResultsPage() {
   const { trails, itinerary, profile } = searchResults
 
   const handlePlan = async (trail) => {
+    // Register this user's interest — feeds collaborative rerouting for future searchers
+    api.registerInterest(trail.name).catch(() => {})
+
     const [stats, poisData] = await Promise.all([
       api.getTrailStats(trail).catch(() => ({})),
       api.getTrailPOIs(trail.lat, trail.lon).catch(() => ({ pois: [] })),

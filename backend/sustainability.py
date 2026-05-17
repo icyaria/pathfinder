@@ -101,19 +101,24 @@ def _weather_score(weather: dict, profile: dict) -> int:
 def sustainability_score(trail: dict, bio_count: int = 0,
                          weather: dict = None, profile: dict = None,
                          crowd_level: int = None,
-                         local_economy_score: int = None) -> dict:
+                         local_economy_score: int = None,
+                         live_interest_count: int = 0) -> dict:
     """
     Returns {"score": int 0–100, "breakdown": dict, "label": str}
 
-    crowd_level and local_economy_score should come from crowd_economy.py (real OSM data).
-    If not provided, falls back to trail-level fields (LLM estimates from fetch).
+    crowd_level and local_economy_score come from crowd_economy.py (real OSM data).
+    live_interest_count comes from live_interest.py (collaborative rerouting pressure).
     """
     profile = profile or {}
     breakdown = {}
 
-    # 1. Crowd avoidance (0–25) — lower crowd = better
+    # 1. Crowd avoidance (0–25) — lower crowd = better.
+    # live_interest_count adds rerouting pressure: every 3 users → +1 crowd level (max +3).
     crowd = crowd_level if crowd_level is not None else trail.get("crowd_level", 3)
-    breakdown["crowd_avoidance"] = round((5 - crowd) / 4 * 25)
+    live_bump = min(3, live_interest_count // 3)
+    effective_crowd = min(5, crowd + live_bump)
+    breakdown["crowd_avoidance"] = round((5 - effective_crowd) / 4 * 25)
+    breakdown["_live_interest"]  = live_interest_count
 
     # 2. Remoteness (0–15)
     # Divisor of 10 means 150 km from nearest city = full 15 pts,

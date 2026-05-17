@@ -83,8 +83,23 @@
 .score-badge.moderate { background: #fff3cd; color: #856404; }
 .score-badge.poor     { background: #f8d7da; color: #721c24; }
 
-.result-trail-name { font-size: 1rem; font-weight: 700; color: #1a1a1a; }
+.result-trail-name { font-size: 1rem; font-weight: 700; color: #1a1a1a; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .result-trail-meta { font-size: .8rem; color: #888; margin-top: 2px; }
+
+.live-interest-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: rgba(210, 126, 54, 0.12);
+  border: 1px solid rgba(210, 126, 54, 0.35);
+  color: #c06a1a;
+  font-size: .68rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 10px;
+  letter-spacing: .04em;
+  white-space: nowrap;
+}
 
 .score-label { font-size: .82rem; color: #555; }
 .expand-btn { background: none; border: none; font-size: .9rem; cursor: pointer; color: #999; }

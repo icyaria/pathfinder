@@ -5,6 +5,7 @@ Loads trails from data/trails.json and filters/ranks them against a profile.
 
 import json
 import os
+from backend.region_utils import filter_by_region
 
 # Absolute path so this works regardless of where you call it from
 DATA_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "trails.json")
@@ -35,6 +36,11 @@ def match_trails(profile: dict, trails: list = None, top_n: int = 5) -> list:
     """
     if trails is None:
         trails = load_trails()
+
+    # Apply geographic region filter if specified (region_filter is a region_id like "crete")
+    region_filter = profile.get("region_filter", "")
+    if region_filter:
+        trails = filter_by_region(trails, region_filter)
 
     max_daily_hours = {"high": 8, "medium": 6, "low": 4}[profile["fitness_level"]]
     max_total_hours = profile["duration_days"] * max_daily_hours
