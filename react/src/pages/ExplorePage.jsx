@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import Nav from '../components/Nav'
-import RegionFilter from '../components/RegionFilter'
 import { api } from '../api/client'
 import { useApp } from '../context/AppContext'
+import TrailMap from '../components/TrailMap'
+import forestImg from '../assets/ai.jpeg'
 import './ExplorePage.css'
 
 const today = new Date()
@@ -16,89 +16,106 @@ const nextWeekend = () => {
 
 const STEPS = [
   {
-    id: 'terrain', question: "What kind of landscape are you dreaming of?",
+    id: 'terrain',
+    question: "Kalispera! I'm your AI guide. To tailor your experience, tell me: do you prefer coastal paths with sea views or rugged mountain peaks?",
     options: [
-      { label: '🏔️ Mountain', value: 'mountain' },
-      { label: '🌊 Coastal',   value: 'coastal'  },
-      { label: '🌲 Forest',    value: 'forest'   },
-      { label: '🗺️ Mixed — surprise me', value: 'mixed' },
+      { label: 'Coastal', value: 'coastal' },
+      { label: 'Mountain', value: 'mountain' },
+      { label: 'Forest', value: 'forest' },
+      { label: 'Mixed', value: 'mixed' },
     ],
   },
   {
-    id: 'duration_days', question: "How many days are you planning for?",
+    id: 'duration_days',
+    question: "How many days are you planning for this adventure?",
     options: [
-      { label: '1 day', value: 1 }, { label: '2 days', value: 2 },
-      { label: '3 days', value: 3 }, { label: '4–7 days', value: 5 },
+      { label: '1 day', value: 1 },
+      { label: '2 days', value: 2 },
+      { label: '3 days', value: 3 },
+      { label: '4–7 days', value: 5 },
     ],
   },
   {
-    id: 'start_date', question: "When are you planning to go?", type: 'date',
+    id: 'start_date',
+    question: "When are you planning to set off?",
+    type: 'date',
     options: [
       { label: 'This weekend', value: nextWeekend() },
-      { label: 'Next week',    value: addDays(7)   },
-      { label: 'In 2 weeks',   value: addDays(14)  },
+      { label: 'Next week', value: addDays(7) },
+      { label: 'In 2 weeks', value: addDays(14) },
     ],
   },
   {
-    id: 'fitness_level', question: "What's your fitness level?",
-    options: [
-      { label: '🐢 Easy-going', value: 'low' },
-      { label: '🚶 Average',    value: 'medium' },
-      { label: '🏃 Fit & active', value: 'high' },
-    ],
-  },
-  {
-    id: 'difficulty', question: "How challenging do you want the trail to be?",
+    id: 'difficulty',
+    question: "Also, what is your preferred challenge level for today's trek?",
     options: [
       { label: 'Easy', value: 'easy' },
       { label: 'Moderate', value: 'moderate' },
-      { label: 'Hard', value: 'hard' },
+      { label: 'Challenging', value: 'hard' },
     ],
   },
   {
-    id: 'interests', question: "What do you love most on a hike?", type: 'multi',
+    id: 'fitness_level',
+    question: "What's your current fitness level?",
     options: [
-      { label: '🦅 Wildlife', value: 'wildlife' },
-      { label: '🏛️ History & ruins', value: 'history' },
-      { label: '📸 Photography', value: 'photography' },
-      { label: '🧘 Solitude', value: 'solitude' },
-      { label: '🏘️ Local villages', value: 'local culture' },
-      { label: '🌿 Nature & flora', value: 'nature' },
-      { label: '🌅 Scenic views', value: 'views' },
+      { label: 'Easy-going', value: 'low' },
+      { label: 'Average', value: 'medium' },
+      { label: 'Fit & active', value: 'high' },
     ],
   },
   {
-    id: 'group_size', question: "Who's coming with you?",
+    id: 'interests',
+    question: "What do you love most on a hike? Pick all that apply.",
+    type: 'multi',
     options: [
-      { label: 'Just me 🧍', value: 1 }, { label: '2 people', value: 2 },
-      { label: '3–5 people', value: 4 }, { label: '6+ people', value: 7 },
+      { label: 'Wildlife', value: 'wildlife' },
+      { label: 'History & ruins', value: 'history' },
+      { label: 'Photography', value: 'photography' },
+      { label: 'Solitude', value: 'solitude' },
+      { label: 'Local villages', value: 'local culture' },
+      { label: 'Nature & flora', value: 'nature' },
+      { label: 'Scenic views', value: 'views' },
+    ],
+  },
+  {
+    id: 'group_size',
+    question: "Last one — who's coming with you?",
+    options: [
+      { label: 'Just me', value: 1 },
+      { label: '2 people', value: 2 },
+      { label: '3–5 people', value: 4 },
+      { label: '6+ people', value: 7 },
     ],
   },
 ]
 
-const GREETING = "👋 Hey! I'm **Pathfinder**, your AI trail companion for Greece. Let's find the perfect hike for you — I'll ask a few quick questions.\n\n" + STEPS[0].question
-
-function renderMd(text) {
-  return text
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\n\n/g, '<br/><br/>')
-    .replace(/\n/g, '<br/>')
+function AiAvatar() {
+  return (
+    <div className="ep-ai-avatar">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="3" fill="white" />
+        <path d="M6.3 17.7a8 8 0 0 1 0-11.4" stroke="white" strokeWidth="1.8" strokeLinecap="round" />
+        <path d="M17.7 6.3a8 8 0 0 1 0 11.4" stroke="white" strokeWidth="1.8" strokeLinecap="round" />
+        <path d="M9.2 14.8a4 4 0 0 1 0-5.6" stroke="white" strokeWidth="1.8" strokeLinecap="round" />
+        <path d="M14.8 9.2a4 4 0 0 1 0 5.6" stroke="white" strokeWidth="1.8" strokeLinecap="round" />
+      </svg>
+    </div>
+  )
 }
 
 export default function ExplorePage() {
   const { user, setSearchResults } = useApp()
   const navigate = useNavigate()
 
-  const [messages, setMessages] = useState([{ role: 'assistant', content: GREETING }])
+  const [messages, setMessages] = useState([{ role: 'assistant', content: STEPS[0].question }])
   const [step, setStep] = useState(0)
   const [answers, setAnswers] = useState({})
   const [done, setDone] = useState(false)
   const [loading, setLoading] = useState(false)
   const [freeText, setFreeText] = useState('')
-  const [showFree, setShowFree] = useState(false)
   const [multiSelected, setMultiSelected] = useState([])
   const [customDate, setCustomDate] = useState('')
-  const [regionId, setRegionId] = useState(null)
+  const [mapTrails, setMapTrails] = useState(null)
   const chatEndRef = useRef(null)
 
   useEffect(() => {
@@ -106,24 +123,25 @@ export default function ExplorePage() {
   }, [messages])
 
   const record = (display, value, stepId) => {
-    const newMsg = { role: 'user', content: display }
     const newAnswers = { ...answers, [stepId]: value }
     const nextStep = step + 1
     setAnswers(newAnswers)
 
     if (nextStep < STEPS.length) {
-      setMessages(m => [...m, newMsg, { role: 'assistant', content: STEPS[nextStep].question }])
+      setMessages(m => [...m,
+        { role: 'user', content: display },
+        { role: 'assistant', content: STEPS[nextStep].question },
+      ])
       setStep(nextStep)
     } else {
-      setMessages(m => [...m, newMsg, {
-        role: 'assistant',
-        content: "✅ Perfect! I've got everything I need.\n\nPress **Find my trails** below to get your personalised itinerary!"
-      }])
+      setMessages(m => [...m,
+        { role: 'user', content: display },
+        { role: 'assistant', content: "Perfect! I've got everything I need. Press Find my trails to see your personalised options on the map." },
+      ])
       setStep(nextStep)
       setDone(true)
     }
     setFreeText('')
-    setShowFree(false)
     setMultiSelected([])
   }
 
@@ -131,159 +149,180 @@ export default function ExplorePage() {
     setLoading(true)
     const profile = {
       duration_days: Number(answers.duration_days) || 2,
-      difficulty: ['easy','moderate','hard'].includes(answers.difficulty) ? answers.difficulty : 'moderate',
-      terrain: ['coastal','mountain','forest','mixed'].includes(answers.terrain) ? answers.terrain : 'mixed',
+      difficulty: ['easy', 'moderate', 'hard'].includes(answers.difficulty) ? answers.difficulty : 'moderate',
+      terrain: ['coastal', 'mountain', 'forest', 'mixed'].includes(answers.terrain) ? answers.terrain : 'mixed',
       interests: Array.isArray(answers.interests) ? answers.interests : [],
       group_size: Number(answers.group_size) || 1,
-      fitness_level: ['low','medium','high'].includes(answers.fitness_level) ? answers.fitness_level : 'medium',
+      fitness_level: ['low', 'medium', 'high'].includes(answers.fitness_level) ? answers.fitness_level : 'medium',
       start_date: answers.start_date || '',
-      region_filter: regionId || '',
+      region_filter: '',
     }
     try {
       const result = await api.searchTrails(profile)
       setSearchResults({ ...result, answers })
-      navigate('/results')
+      setMapTrails(result.trails)
+      setMessages(m => [...m, {
+        role: 'assistant',
+        content: `Found ${result.trails.length} trails matching your profile! Explore them on the map, or tap View full results for sustainability scores and details.`,
+      }])
     } catch (e) {
-      setMessages(m => [...m, { role: 'assistant', content: `❌ Something went wrong: ${e.message}` }])
+      setMessages(m => [...m, { role: 'assistant', content: `Something went wrong: ${e.message}` }])
     } finally {
       setLoading(false)
     }
   }
 
   const handleReset = () => {
-    setMessages([{ role: 'assistant', content: GREETING }])
-    setStep(0); setAnswers({}); setDone(false); setFreeText('')
-    setShowFree(false); setMultiSelected([])
+    setMessages([{ role: 'assistant', content: STEPS[0].question }])
+    setStep(0)
+    setAnswers({})
+    setDone(false)
+    setFreeText('')
+    setMultiSelected([])
+    setMapTrails(null)
   }
 
   const stepDef = STEPS[Math.min(step, STEPS.length - 1)]
 
   return (
-    <div className="explore-page">
-      <Nav activeLink="explore" />
-
-      <div className="explore-layout">
-        {/* Sidebar */}
-        <aside className="explore-sidebar">
-          <div className="sidebar-brand">🧭 Pathfinder</div>
-          <p className="sidebar-desc">Your AI trail companion for sustainable hiking in Greece.</p>
-          <div className="sidebar-region">
-            <div className="sidebar-region-label">📍 Filter by region</div>
-            <RegionFilter value={regionId} onChange={setRegionId} dark />
+    <div className="ep-page">
+      {/* ── Left panel: background image or trail map ── */}
+      <div className="ep-left">
+        {mapTrails ? (
+          <div className="ep-map-wrap">
+            <TrailMap trails={mapTrails} height="100%" />
           </div>
+        ) : (
+          <div className="ep-bg" style={{ backgroundImage: `url(${forestImg})` }} />
+        )}
+      </div>
 
-          <div className="sidebar-steps">
-            {STEPS.map((s, i) => (
-              <div key={s.id} className={`sidebar-step ${i < step ? 'done' : i === step ? 'active' : ''}`}>
-                <span className="step-dot">{i < step ? '✓' : i + 1}</span>
-                <span className="step-label">{s.id.replace('_', ' ')}</span>
-              </div>
-            ))}
-          </div>
-          {user && (
-            <div className="sidebar-user">
-              <div className="sidebar-avatar">{user.name[0]}</div>
-              <span>{user.name} {user.surname}</span>
+      {/* ── Right panel: chat ── */}
+      <div className="ep-right">
+        <div className="ep-header">
+          <button className="ep-back-btn" onClick={() => navigate('/dashboard')}>
+            ← Back to dashboard
+          </button>
+          <h1 className="ep-title">Plan your trail</h1>
+          <p className="ep-subtitle">Tell us about your preferences to find the perfect trail for your next adventure.</p>
+        </div>
+
+        <div className="ep-divider" />
+
+        <div className="ep-messages">
+          {messages.map((msg, i) => (
+            <div key={i} className={`ep-msg ep-msg--${msg.role}`}>
+              {msg.role === 'assistant' && <AiAvatar />}
+              <div className="ep-bubble">{msg.content}</div>
             </div>
-          )}
-        </aside>
+          ))}
+          <div ref={chatEndRef} />
+        </div>
 
-        {/* Chat */}
-        <main className="explore-main">
-          <div className="chat-messages">
-            {messages.map((msg, i) => (
-              <div key={i} className={`chat-msg ${msg.role}`}>
-                {msg.role === 'assistant' && <div className="chat-avatar">🧭</div>}
-                <div className="chat-bubble" dangerouslySetInnerHTML={{ __html: renderMd(msg.content) }} />
-                {msg.role === 'user' && <div className="chat-avatar user-avatar">{user?.name?.[0] || '👤'}</div>}
-              </div>
-            ))}
-            <div ref={chatEndRef} />
-          </div>
-
-          {/* Input area */}
-          {!done && step < STEPS.length && (
-            <div className="chat-input-area">
-              {stepDef.type === 'multi' ? (
-                <div className="input-multi">
-                  <div className="option-chips">
-                    {stepDef.options.map(opt => (
-                      <button
-                        key={opt.value}
-                        className={`chip ${multiSelected.includes(opt.value) ? 'selected' : ''}`}
-                        onClick={() => setMultiSelected(s =>
-                          s.includes(opt.value) ? s.filter(v => v !== opt.value) : [...s, opt.value]
-                        )}
-                      >{opt.label}</button>
-                    ))}
-                  </div>
-                  <button className="confirm-btn" onClick={() => {
-                    const labels = stepDef.options.filter(o => multiSelected.includes(o.value)).map(o => o.label)
-                    record(labels.join(', ') || 'No preference', multiSelected, stepDef.id)
-                  }}>Confirm ✓</button>
-                </div>
-              ) : stepDef.type === 'date' ? (
-                <div className="input-date">
-                  <div className="option-chips">
-                    {stepDef.options.map(opt => (
-                      <button key={opt.value} className="chip" onClick={() => record(opt.label, opt.value, stepDef.id)}>
-                        {opt.label}
-                      </button>
-                    ))}
-                  </div>
-                  <div className="date-picker-row">
-                    <input type="date" value={customDate}
-                      min={today.toISOString().split('T')[0]}
-                      onChange={e => setCustomDate(e.target.value)} />
-                    <button className="confirm-btn" disabled={!customDate}
-                      onClick={() => record(customDate, customDate, stepDef.id)}>
-                      Use this date →
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <div className="option-chips">
+        {/* Option chips for current step */}
+        {!done && step < STEPS.length && (
+          <div className="ep-options">
+            {stepDef.type === 'multi' ? (
+              <>
+                <div className="ep-chips">
                   {stepDef.options.map(opt => (
-                    <button key={String(opt.value)} className="chip"
-                      onClick={() => record(opt.label, opt.value, stepDef.id)}>
+                    <button
+                      key={opt.value}
+                      className={`ep-chip ${multiSelected.includes(opt.value) ? 'ep-chip--sel' : ''}`}
+                      onClick={() => setMultiSelected(s =>
+                        s.includes(opt.value) ? s.filter(v => v !== opt.value) : [...s, opt.value]
+                      )}
+                    >
                       {opt.label}
                     </button>
                   ))}
                 </div>
-              )}
-
-              <div className="free-text-toggle">
-                <button className="toggle-link" onClick={() => setShowFree(!showFree)}>
-                  ✏️ Type your own answer
+                <button className="ep-confirm-btn" onClick={() => {
+                  const labels = stepDef.options.filter(o => multiSelected.includes(o.value)).map(o => o.label)
+                  record(labels.join(', ') || 'No preference', multiSelected, stepDef.id)
+                }}>
+                  Confirm →
                 </button>
-                {showFree && (
-                  <div className="free-input-row">
-                    <input
-                      value={freeText}
-                      onChange={e => setFreeText(e.target.value)}
-                      onKeyDown={e => e.key === 'Enter' && freeText.trim() && record(freeText.trim(), freeText.trim(), stepDef.id)}
-                      placeholder="Your answer…"
-                    />
-                    <button onClick={() => freeText.trim() && record(freeText.trim(), freeText.trim(), stepDef.id)}
-                      disabled={!freeText.trim()}>Submit →</button>
-                  </div>
-                )}
+              </>
+            ) : stepDef.type === 'date' ? (
+              <>
+                <div className="ep-chips">
+                  {stepDef.options.map(opt => (
+                    <button key={opt.value} className="ep-chip" onClick={() => record(opt.label, opt.value, stepDef.id)}>
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
+                <div className="ep-date-row">
+                  <input
+                    type="date"
+                    className="ep-date-input"
+                    value={customDate}
+                    min={today.toISOString().split('T')[0]}
+                    onChange={e => setCustomDate(e.target.value)}
+                  />
+                  <button className="ep-confirm-btn" disabled={!customDate}
+                    onClick={() => record(customDate, customDate, stepDef.id)}>
+                    Use this date →
+                  </button>
+                </div>
+              </>
+            ) : (
+              <div className="ep-chips">
+                {stepDef.options.map(opt => (
+                  <button key={String(opt.value)} className="ep-chip"
+                    onClick={() => record(opt.label, opt.value, stepDef.id)}>
+                    {opt.label}
+                  </button>
+                ))}
               </div>
-            </div>
-          )}
+            )}
+          </div>
+        )}
 
-          {/* Action buttons */}
-          <div className="chat-actions">
-            {done && (
-              <button className="find-btn" onClick={handleSearch} disabled={loading}>
-                {loading ? (
-                  <span>🔍 Searching trails… <span className="spinner" /></span>
-                ) : '🔍 Find my trails'}
+        {/* Done state: find / view results / reset */}
+        {done && (
+          <div className="ep-actions">
+            {!mapTrails && (
+              <button className="ep-find-btn" onClick={handleSearch} disabled={loading}>
+                {loading ? <><span className="ep-spinner" /> Searching…</> : 'Find my trails →'}
               </button>
             )}
-            <button className="reset-btn" onClick={handleReset}>🔄 Start over</button>
+            {mapTrails && (
+              <button className="ep-results-btn" onClick={() => navigate('/results')}>
+                View full results →
+              </button>
+            )}
+            <button className="ep-reset-btn" onClick={handleReset}>Start over</button>
           </div>
-        </main>
+        )}
+
+        {/* Text input (always visible) */}
+        <div className="ep-input-row">
+          <input
+            className="ep-text-input"
+            placeholder="Type your answer…"
+            value={freeText}
+            onChange={e => setFreeText(e.target.value)}
+            onKeyDown={e => {
+              if (e.key === 'Enter' && freeText.trim() && !done && step < STEPS.length) {
+                record(freeText.trim(), freeText.trim(), stepDef.id)
+              }
+            }}
+            disabled={done}
+          />
+          <button
+            className="ep-send-btn"
+            disabled={!freeText.trim() || done}
+            onClick={() => {
+              if (freeText.trim() && !done && step < STEPS.length) {
+                record(freeText.trim(), freeText.trim(), stepDef.id)
+              }
+            }}
+          >
+            →
+          </button>
+        </div>
       </div>
     </div>
   )
