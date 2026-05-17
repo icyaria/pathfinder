@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { api } from '../api/client'
 import { useApp } from '../context/AppContext'
 import Nav from '../components/Nav'
+import TrailModal from '../components/TrailModal'
 import './DashboardPage.css'
 
 const IconOverview = () => (
@@ -62,6 +63,7 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true)
   const [tab, setTab] = useState('upcoming')
   const [menuOpen, setMenuOpen] = useState(null)
+  const [activeModal, setActiveModal] = useState(null)
   const menuRef = useRef(null)
 
   useEffect(() => {
@@ -86,8 +88,7 @@ export default function DashboardPage() {
   const shown = tab === 'upcoming' ? upcoming : completed
 
   const handleViewMap = (trail) => {
-    setPlannedTrail(trail.trail_data)
-    navigate('/trail')
+    setActiveModal(trail)
   }
 
   const handleRemove = async (trail) => {
@@ -101,6 +102,9 @@ export default function DashboardPage() {
   return (
     <div className="dash-page">
       <Nav activeLink="dashboard" />
+      {activeModal && (
+        <TrailModal trail={activeModal} onClose={() => setActiveModal(null)} />
+      )}
 
       <div className="dash-body">
         {/* Left Sidebar */}
@@ -162,7 +166,7 @@ export default function DashboardPage() {
           ) : (
             <div className="dash-cards">
               {shown.map((t, i) => (
-                <div className="dash-card" key={i}>
+                <div className="dash-card" key={i} onClick={() => handleViewMap(t)} style={{ cursor: 'pointer' }}>
                   {/* Card image / gradient */}
                   <div
                     className="dash-card-img"
@@ -194,7 +198,7 @@ export default function DashboardPage() {
                       </div>
                     </div>
 
-                    <div className="dash-card-actions">
+                    <div className="dash-card-actions" onClick={(e) => e.stopPropagation()}>
                       <button className="dash-view-btn" onClick={() => handleViewMap(t)}>
                         View Trail Map
                       </button>

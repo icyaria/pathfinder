@@ -178,6 +178,55 @@ def trail_pois(payload: POIPayload):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+class WeatherPayload(BaseModel):
+    lat: float
+    lon: float
+    date: str = ""
+
+
+class BiodiversityPayload(BaseModel):
+    lat: float
+    lon: float
+
+
+class RatingPayload(BaseModel):
+    user_id: str
+    trail_name: str
+    rating: int
+
+
+@app.get("/api/trail/rating")
+def api_get_rating(trail_name: str):
+    from backend.ratings import get_rating
+    return get_rating(trail_name)
+
+
+@app.get("/api/trail/my-rating")
+def api_my_rating(user_id: str, trail_name: str):
+    from backend.ratings import get_user_rating
+    return {"rating": get_user_rating(user_id, trail_name)}
+
+
+@app.post("/api/trail/rate")
+def api_rate_trail(payload: RatingPayload):
+    from backend.ratings import submit_rating
+    if not 1 <= payload.rating <= 5:
+        raise HTTPException(status_code=400, detail="Rating must be between 1 and 5")
+    return submit_rating(payload.user_id, payload.trail_name, payload.rating)
+
+
+@app.post("/api/trail/weather")
+def trail_weather(payload: WeatherPayload):
+    from backend.weather import get_weather_for_date
+    return get_weather_for_date(payload.lat, payload.lon, payload.date or None)
+
+
+@app.post("/api/trail/biodiversity")
+def trail_biodiversity(payload: BiodiversityPayload):
+    from backend.biodiversity import get_biodiversity
+    return get_biodiversity(payload.lat, payload.lon)
+
+
 @app.post("/api/chat")
 def trail_chat(payload: ChatPayload):
     try:

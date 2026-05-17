@@ -212,5 +212,40 @@
       "saved_at": "2026-05-16T16:36:32.010303"
     }
   ],
-  "USR-94026724547D": []
+  "USR-94026724547D": [
+    {
+      "trail_name": "Ios Mylopotas Manganari (Ridge Trail)",
+      "region": "Greece",
+      "trail_data": {
+        "name": "Ios Mylopotas Manganari (Ridge Trail)",
+        "region": "Greece",
+        "terrain": "mountain",
+        "difficulty": "hard",
+        "duration_hours": 3.7,
+        "lat": 36.6849361,
+        "lon": 25.3342476,
+        "crowd_level": 1,
+        "local_economy_score": 3,
+        "highlights": [
+          "Kefala ridge traverse",
+          "Remote backcountry",
+          "Challenging terrain"
+        ],
+        "osm_id": 4049120,
+        "osm_source": "relation"
+      },
+      "profile": {
+        "terrain": "mountain",
+        "duration_days": 3,
+        "fitness_level": "low",
+        "difficulty": "hard",
+        "interests": [
+          "photography"
+        ],
+        "group_size": 1
+      },
+      "planned_date": "2026-05-23",
+      "saved_at": "2026-05-17T07:55:34.302925"
+    }
+  ]
 }

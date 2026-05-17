@@ -23,6 +23,16 @@ export const api = {
 
   getTrailPOIs: (lat, lon) => req('POST', '/trail/pois', { lat, lon }),
 
+  getTrailWeather: (lat, lon, date = '') => req('POST', '/trail/weather', { lat, lon, date }),
+
+  getTrailBiodiversity: (lat, lon) => req('POST', '/trail/biodiversity', { lat, lon }),
+
+  getTrailRating: (trail_name) => req('GET', `/trail/rating?trail_name=${encodeURIComponent(trail_name)}`),
+
+  getMyRating: (user_id, trail_name) => req('GET', `/trail/my-rating?user_id=${encodeURIComponent(user_id)}&trail_name=${encodeURIComponent(trail_name)}`),
+
+  rateTrail: (user_id, trail_name, rating) => req('POST', '/trail/rate', { user_id, trail_name, rating }),
+
   chat: (trail, stats, pois, history, message) =>
     req('POST', '/chat', { trail, stats, pois, history, message }),
 

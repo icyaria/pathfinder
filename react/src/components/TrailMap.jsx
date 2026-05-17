@@ -25,8 +25,8 @@ function makeIcon(color) {
   })
 }
 
-export default function TrailMap({ trails = [], pois = [], height = 460 }) {
-  if (!trails.length && !pois.length) return <div style={{ height, background: '#eee', borderRadius: 12 }} />
+export default function TrailMap({ trails = [], pois = [], height = 460, dark = false }) {
+  if (!trails.length && !pois.length) return <div style={{ height, background: dark ? '#1a1a2e' : '#eee', borderRadius: 12 }} />
 
   const points = trails.length ? trails : pois
   const center = [
@@ -37,10 +37,17 @@ export default function TrailMap({ trails = [], pois = [], height = 460 }) {
 
   return (
     <MapContainer center={center} zoom={zoom} style={{ height, borderRadius: 12, zIndex: 0 }}>
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org">OpenStreetMap</a>'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
+      {dark ? (
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+          url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+        />
+      ) : (
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org">OpenStreetMap</a>'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+      )}
       {trails.map((t, i) => {
         const score = t._sustainability?.score || 0
         return (
