@@ -65,6 +65,19 @@ def _generate_unique_id(existing_ids: set) -> str:
             return candidate
 
 
+def authenticate_user_by_email(email: str, password: str) -> Optional[Dict]:
+    """Authenticate user by email and password."""
+    email = (email or "").strip().lower()
+    if not email:
+        return None
+    users = _load_users()
+    for user in users:
+        if user.get("Email", "").strip().lower() == email:
+            if _verify_password(password, user.get("Password", "")):
+                return user
+    return None
+
+
 def create_user(
     name: str,
     surname: str,
@@ -73,6 +86,7 @@ def create_user(
     location: str,
     description: str,
     password: str,
+    email: str = "",
 ) -> Dict:
     """
     Create a user and persist it to data/users.json.
@@ -109,6 +123,7 @@ def create_user(
         "UserUniqieID": user_unique_id,
         "Description": description,
         "Password": password,
+        "Email": email.strip().lower(),
     }
 
     users.append(user)

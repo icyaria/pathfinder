@@ -38,7 +38,7 @@ export const api = {
 
   signup: (data) => req('POST', '/auth/signup', data),
 
-  signin: (user_id, password) => req('POST', '/auth/signin', { user_id, password }),
+  signin: (email, password) => req('POST', '/auth/signin', { email, password }),
 
   registerInterest: (trail_name) => req('POST', '/trails/interest', { trail_name }),
 

@@ -28,5 +28,27 @@
     "UserUniqieID": "USR-114AAE7DB376",
     "Description": "I dont like HUMANS",
     "Password": "password"
+  },
+  {
+    "Name": "Test",
+    "Surname": "User",
+    "Age": 25,
+    "Gender": "Male",
+    "Location": "Athens",
+    "UserUniqieID": "USR-78D972608568",
+    "Description": "",
+    "Password": "test123",
+    "Email": "test@test.com"
+  },
+  {
+    "Name": "test",
+    "Surname": "test",
+    "Age": 19,
+    "Gender": "Female",
+    "Location": "athens",
+    "UserUniqieID": "USR-94026724547D",
+    "Description": "",
+    "Password": "password",
+    "Email": "test@gmail.com"
   }
 ]

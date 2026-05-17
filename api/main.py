@@ -22,7 +22,7 @@ from backend.saved_trails import save_trail, get_saved_trails, remove_saved_trai
 from backend.live_interest import register_interest, get_all_interests
 
 try:
-    from backend.user_db import create_user, list_users, authenticate_user
+    from backend.user_db import create_user, list_users, authenticate_user, authenticate_user_by_email
     HAS_AUTH = True
 except ImportError:
     HAS_AUTH = False
@@ -82,10 +82,11 @@ class SignupPayload(BaseModel):
     location: str
     description: str = ""
     password: str
+    email: str = ""
 
 
 class SigninPayload(BaseModel):
-    user_id: str
+    email: str
     password: str
 
 
@@ -246,6 +247,7 @@ def api_signup(payload: SignupPayload):
             name=payload.name, surname=payload.surname, age=payload.age,
             gender=payload.gender, location=payload.location,
             description=payload.description, password=payload.password,
+            email=payload.email,
         )
         return {"user_id": user["UserUniqieID"], "name": user["Name"], "surname": user["Surname"]}
     except Exception as e:
@@ -256,10 +258,10 @@ def api_signup(payload: SignupPayload):
 def api_signin(payload: SigninPayload):
     if not HAS_AUTH:
         raise HTTPException(status_code=503, detail="Auth not available")
-    user = authenticate_user(payload.user_id, payload.password)
+    user = authenticate_user_by_email(payload.email, payload.password)
     if not user:
         raise HTTPException(status_code=401, detail="Invalid credentials")
-    return {"user_id": payload.user_id, "name": user["Name"], "surname": user["Surname"]}
+    return {"user_id": user["UserUniqieID"], "name": user["Name"], "surname": user["Surname"]}
 
 
 @app.get("/api/trails/discover")
