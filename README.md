@@ -21,6 +21,17 @@ Pathfinder is a full-stack AI application that:
 
 ---
 
+## Team
+
+| Person | Files |
+|--------|-------|
+| Kyriaki Kalamari | Frontend — React pages, UI/UX |
+| Despoina Kampiwti | Frontend — React pages, UI/UX |
+| Konstantinos Katrakis | Backend — pipeline, APIs, sustainability |
+| Maria Kapaki | Backend — pipeline, APIs, sustainability |
+
+---
+
 ## Architecture
 
 ```
@@ -179,13 +190,3 @@ Every trail save registers interest. High-interest trails get a crowd bump in th
 ### Trail detail modal
 Accurate stats via Naismith's Rule, 5-day weather calendar, iNaturalist species, nearby POIs on Leaflet map, 1–5 star ratings, and a multi-turn AI chat with full trail context injected.
 
----
-
-## Team
-
-| Person | Files |
-|--------|-------|
-| Kyriaki Kalamari | Frontend — React pages, UI/UX |
-| Despoina Kampiwti | Frontend — React pages, UI/UX |
-| Konstantinos Katrakis | Backend — pipeline, APIs, sustainability |
-| Maria Kapaki | Backend — pipeline, APIs, sustainability |
