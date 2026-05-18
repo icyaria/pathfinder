@@ -131,13 +131,11 @@ cd react && npm run dev
 
 ## API Keys
 
-| Key | Where to get | Free tier | Required |
-|-----|-------------|-----------|----------|
-| `AWS_ACCESS_KEY_ID` + `AWS_SECRET_ACCESS_KEY` | aws.amazon.com → IAM | Bedrock has pay-per-use | ✅ Yes |
-| `OPENWEATHER_API_KEY` | openweathermap.org/api | 1000 calls/day | ✅ Yes |
-| `OPENROUTESERVICE_API_KEY` | openrouteservice.org/dev | 2000 req/day | ⚪ Optional |
-
-**No key needed for:** OpenStreetMap / Overpass, iNaturalist, NASA SRTM (via OpenTopodata)
+| Key | Source |
+|-----|-------------|
+| `AWS_ACCESS_KEY_ID` + `AWS_SECRET_ACCESS_KEY` | aws.amazon.com |
+| `OPENWEATHER_API_KEY` | openweathermap.org |
+| `OPENROUTESERVICE_API_KEY` | openrouteservice.org |
 
 ---
 
@@ -160,7 +158,6 @@ cd react && npm run dev
 Chat-based profiling across 7 steps (terrain, duration, date, difficulty, fitness, interests, group size). Saves chat history per user.
 
 ### Sustainability scoring (0–100)
-Five real signals — no made-up data:
 - **Crowd avoidance** (25 pts) — live OSM tourism POI count within 3 km
 - **Remoteness** (15 pts) — Haversine distance to nearest major Greek city
 - **Biodiversity** (20 pts) — iNaturalist research-grade observations
@@ -171,7 +168,7 @@ Five real signals — no made-up data:
 Tinder-style trail cards. Swipe right to save, left to skip. Each swipe updates a local preference vector (terrain, difficulty, region weights) used to improve Surprise Me recommendations.
 
 ### Surprise Me
-Mood chips + free text → LLM picks the single best trail match from the database with a personalised explanation.
+Mood chips + free text -> LLM picks the single best trail match from the database with a personalised explanation.
 
 ### Group chats
 Saving a trail auto-joins you to that trail's group chat. Real-time polling (5s interval). Leave at any time.
