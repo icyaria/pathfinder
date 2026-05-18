@@ -25,10 +25,10 @@ Pathfinder is a full-stack AI application that:
 
 | Person | Files |
 |--------|-------|
-| Kyriaki Kalamari | Frontend — React pages, UI/UX |
-| Despoina Kampiwti | Frontend — React pages, UI/UX |
-| Konstantinos Katrakis | Backend — pipeline, APIs, sustainability |
-| Maria Kapaki | Backend — pipeline, APIs, sustainability |
+| Kyriaki Kalamari | Frontend - React pages, UI/UX |
+| Despoina Kampiwti | Frontend - React pages, UI/UX |
+| Konstantinos Katrakis | Backend - pipeline, APIs, sustainability |
+| Maria Kapaki | Backend - pipeline, APIs, sustainability |
 
 ---
 
@@ -38,12 +38,12 @@ Pathfinder is a full-stack AI application that:
 pathfinder/
 │
 ├── api/
-│   └── main.py              # FastAPI backend — all REST endpoints
+│   └── main.py              # FastAPI backend - all REST endpoints
 │
 ├── backend/
 │   ├── profiler.py          # LLM extracts structured profile from user text
 │   ├── trail_engine.py      # Filters and ranks trails against profile
-│   ├── weather.py           # OpenWeatherMap — current + 5-day forecast
+│   ├── weather.py           # OpenWeatherMap - current + 5-day forecast
 │   ├── biodiversity.py      # iNaturalist species observations
 │   ├── sustainability.py    # Composite 0–100 sustainability score
 │   ├── crowd_economy.py     # Real OSM crowd + local economy data
@@ -101,12 +101,12 @@ pip install -r requirements.txt
 ```bash
 cp .env.example .env
 # Fill in .env:
-#   AWS_ACCESS_KEY_ID       — AWS credentials for Bedrock (Claude)
+#   AWS_ACCESS_KEY_ID       - AWS credentials for Bedrock (Claude)
 #   AWS_SECRET_ACCESS_KEY
-#   AWS_REGION              — e.g. us-east-1
-#   BEDROCK_MODEL_ID        — e.g. us.anthropic.claude-sonnet-4-5-20250929-v1:0
-#   OPENWEATHER_API_KEY     — openweathermap.org/api (free tier)
-#   OPENROUTESERVICE_API_KEY — openrouteservice.org/dev (free tier, optional)
+#   AWS_REGION              - e.g. us-east-1
+#   BEDROCK_MODEL_ID        - e.g. us.anthropic.claude-sonnet-4-5-20250929-v1:0
+#   OPENWEATHER_API_KEY     - openweathermap.org/api (free tier)
+#   OPENROUTESERVICE_API_KEY - openrouteservice.org/dev (free tier, optional)
 ```
 
 ### 3. Fetch real trail data from OpenStreetMap
@@ -169,11 +169,11 @@ cd react && npm run dev
 Chat-based profiling across 7 steps (terrain, duration, date, difficulty, fitness, interests, group size). Saves chat history per user.
 
 ### Sustainability scoring (0–100)
-- **Crowd avoidance** (25 pts) — live OSM tourism POI count within 3 km
-- **Remoteness** (15 pts) — Haversine distance to nearest major Greek city
-- **Biodiversity** (20 pts) — iNaturalist research-grade observations
-- **Local economy** (20 pts) — OSM amenity count within 10 km
-- **Weather** (20 pts) — current/forecast conditions weighted by user preferences
+- **Crowd avoidance** (25 pts) - live OSM tourism POI count within 3 km
+- **Remoteness** (15 pts) - Haversine distance to nearest major Greek city
+- **Biodiversity** (20 pts) - iNaturalist research-grade observations
+- **Local economy** (20 pts) - OSM amenity count within 10 km
+- **Weather** (20 pts) - current/forecast conditions weighted by user preferences
 
 ### Discover (swipe)
 Tinder-style trail cards. Swipe right to save, left to skip. Each swipe updates a local preference vector (terrain, difficulty, region weights) used to improve Surprise Me recommendations.
