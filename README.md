@@ -1,244 +1,193 @@
 # 🧭 Pathfinder — AI Trail Companion
 
-> *Find your trail. Leave no trace.*  
+> *Find your trail. Leave no trace.*
 > AI-powered sustainable outdoor discovery for Greece — Deloitte Makeathon 2026.
 
 ---
 
 ## What it does
 
-Pathfinder is a conversational AI that:
-1. **Profiles** the traveller through natural language
-2. **Matches** them to real Greek trails (difficulty, terrain, duration)
-3. **Checks** live weather and flags safety concerns
-4. **Builds route + terrain context** using OpenRouteService and NASA SRTM elevation
-5. **Scores** each trail for sustainability (crowd avoidance, biodiversity, local economy)
-6. **Generates** a personalised day-by-day itinerary
-
-This implementation is aligned to the Makeathon challenge:
-- Conversational AI intake for traveller profiling
-- Open data trail intelligence and route generation
-- Real-time weather and safety checks
-- Sustainability-first ranking to avoid overtouristed hotspots
+Pathfinder is a full-stack AI application that:
+1. **Profiles** the traveller through a conversational chat interface
+2. **Matches** them to real Greek trails from OpenStreetMap (difficulty, terrain, duration)
+3. **Checks** live weather and flags safety concerns (OpenWeatherMap, 5-day forecast)
+4. **Scores** each trail for sustainability using real OSM crowd data, remoteness, biodiversity (iNaturalist), local economy, and weather
+5. **Generates** a personalised day-by-day itinerary (AWS Bedrock / Claude)
+6. **Discovers** trails via a Tinder-style swipe interface with adaptive preference learning
+7. **Surprises** users with mood-based trail matching via LLM
+8. **Connects** hikers headed to the same trail through auto-joined group chats
+9. **Shows** accurate trail stats (distance, ascent via Naismith's Rule, nearby POIs)
 
 ---
 
-## Quickstart (5 steps)
-
-### 1. Clone & enter the project
-```bash
-cd pathfinder
-```
-
-### 2. Create a virtual environment
-```bash
-python -m venv venv
-source venv/bin/activate      # Mac/Linux
-venv\Scripts\activate         # Windows
-```
-
-### 3. Install dependencies
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Set up API keys
-```bash
-cp .env.example .env
-# Edit .env and add your keys:
-#   ANTHROPIC_API_KEY   — get at console.anthropic.com
-#   OPENWEATHER_API_KEY — get at openweathermap.org/api (free tier)
-#   OPENROUTESERVICE_API_KEY — get at openrouteservice.org/dev
-```
-
-### 5. Fetch real trail data from OpenStreetMap
-```bash
-python scripts/fetch_trails.py
-# Takes ~1-2 min. Saves 20-50 real Greek trails to data/trails.json
-```
-
-### 6. Run the app
-```bash
-streamlit run frontend/app.py
-```
-
-Or test the pipeline directly in the terminal:
-```bash
-python pipeline.py
-```
-
----
-
-## Project structure
+## Architecture
 
 ```
 pathfinder/
 │
-├── pipeline.py              # Main entry point — chains all modules
+├── api/
+│   └── main.py              # FastAPI backend — all REST endpoints
 │
 ├── backend/
-│   ├── user_db.py           # JSON user accounts (UserUniqieID generation)
-│   ├── chat_history_db.py   # JSON chat history linked by user ID
 │   ├── profiler.py          # LLM extracts structured profile from user text
 │   ├── trail_engine.py      # Filters and ranks trails against profile
-│   ├── routing.py           # OpenRouteService route estimate/fallback
-│   ├── elevation.py         # NASA SRTM elevation profile
-│   ├── weather.py           # OpenWeatherMap real-time conditions
+│   ├── weather.py           # OpenWeatherMap — current + 5-day forecast
 │   ├── biodiversity.py      # iNaturalist species observations
-│   └── sustainability.py    # Composite 0-100 sustainability score
+│   ├── sustainability.py    # Composite 0–100 sustainability score
+│   ├── crowd_economy.py     # Real OSM crowd + local economy data
+│   ├── elevation.py         # NASA SRTM elevation profiles (OpenTopodata)
+│   ├── routing.py           # OpenRouteService hiking route estimates
+│   ├── trail_details.py     # Accurate OSM stats + nearby POIs
+│   ├── trail_chat.py        # Multi-turn AI chat about a specific trail
+│   ├── surprise.py          # Mood-based trail matching via LLM
+│   ├── live_interest.py     # Real-time trail interest tracking
+│   ├── saved_trails.py      # Per-user saved trail persistence
+│   ├── group_chats.py       # Trail group chat persistence
+│   ├── ratings.py           # 1–5 star trail ratings
+│   ├── region_utils.py      # Classifies trails into Greek regions by coords
+│   ├── user_db.py           # JSON user accounts
+│   └── chat_history_db.py   # JSON chat history per user
 │
-├── frontend/
-│   └── app.py               # Streamlit UI with map
+├── react/                   # React + Vite frontend
+│   └── src/
+│       ├── pages/
+│       │   ├── HomePage.jsx
+│       │   ├── AuthPage.jsx
+│       │   ├── DashboardPage.jsx   # Overview, My Trails, Discover, Community
+│       │   ├── ExplorePage.jsx     # Conversational trail finder
+│       │   ├── ResultsPage.jsx     # Sustainability scores + itinerary
+│       │   ├── TrailDetailPage.jsx # Full trail detail + AI chat
+│       │   ├── SurprisePage.jsx    # Mood-based trail discovery
+│       │   └── AboutPage.jsx
+│       └── components/
+│           ├── Nav.jsx
+│           ├── TrailMap.jsx        # Leaflet map (trails + POIs)
+│           ├── TrailModal.jsx      # Trail detail modal with chat + ratings
+│           └── RegionFilter.jsx    # Filter by Greek administrative region
 │
+├── pipeline.py              # Chains all backend modules end-to-end
 ├── scripts/
-│   └── fetch_trails.py      # One-time: fetches trails from OSM → data/trails.json
-│
-├── data/
-│   ├── trails.json          # Trail database from OSM
-│   ├── users.json           # User account records
-│   └── chat_history.json    # Per-user chatbot history snapshots
-│
+│   └── fetch_trails.py      # One-time: fetch real trails from OSM → data/trails.json
+├── data/                    # JSON databases (generated, not committed)
+├── start.sh                 # Starts both FastAPI + React dev servers
 ├── requirements.txt
-├── .env.example
-└── .gitignore
+└── .env.example
 ```
 
 ---
 
-## API keys needed
+## Quickstart
 
-| Key | Where to get | Free tier |
-|-----|-------------|-----------|
-| `ANTHROPIC_API_KEY` | console.anthropic.com | Yes (limited) |
-| `OPENWEATHER_API_KEY` | openweathermap.org/api | Yes (1000 calls/day) |
-| `OPENROUTESERVICE_API_KEY` | openrouteservice.org/dev | Yes |
+### 1. Clone & set up Python environment
+```bash
+python -m venv venv
+source venv/bin/activate        # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+```
 
-iNaturalist, OpenStreetMap (Overpass), and NASA SRTM (via OpenTopodata) require **no API key**.
+### 2. Set up API keys
+```bash
+cp .env.example .env
+# Fill in .env:
+#   AWS_ACCESS_KEY_ID       — AWS credentials for Bedrock (Claude)
+#   AWS_SECRET_ACCESS_KEY
+#   AWS_REGION              — e.g. us-east-1
+#   BEDROCK_MODEL_ID        — e.g. us.anthropic.claude-sonnet-4-5-20250929-v1:0
+#   OPENWEATHER_API_KEY     — openweathermap.org/api (free tier)
+#   OPENROUTESERVICE_API_KEY — openrouteservice.org/dev (free tier, optional)
+```
+
+### 3. Fetch real trail data from OpenStreetMap
+```bash
+python scripts/fetch_trails.py
+# Takes ~1–2 min. Saves up to 200 real Greek trails to data/trails.json
+```
+
+### 4. Install frontend dependencies
+```bash
+cd react
+npm install
+cd ..
+```
+
+### 5. Start both servers
+```bash
+bash start.sh
+# FastAPI → http://localhost:8001
+# React   → http://localhost:5173
+```
+
+Or start them separately:
+```bash
+# Terminal 1
+uvicorn api.main:app --reload --port 8001
+
+# Terminal 2
+cd react && npm run dev
+```
 
 ---
 
-## Data sources
+## API Keys
+
+| Key | Where to get | Free tier | Required |
+|-----|-------------|-----------|----------|
+| `AWS_ACCESS_KEY_ID` + `AWS_SECRET_ACCESS_KEY` | aws.amazon.com → IAM | Bedrock has pay-per-use | ✅ Yes |
+| `OPENWEATHER_API_KEY` | openweathermap.org/api | 1000 calls/day | ✅ Yes |
+| `OPENROUTESERVICE_API_KEY` | openrouteservice.org/dev | 2000 req/day | ⚪ Optional |
+
+**No key needed for:** OpenStreetMap / Overpass, iNaturalist, NASA SRTM (via OpenTopodata)
+
+---
+
+## Data Sources
 
 | Source | What it provides |
 |--------|-----------------|
-| OpenStreetMap / Overpass API | Trail names, coordinates, distance |
-| OpenRouteService | Hiking route distance and time estimates |
-| OpenWeatherMap | Real-time weather per trail location |
+| OpenStreetMap / Overpass API | Trail names, coordinates, distance, difficulty |
+| OpenWeatherMap | Real-time weather + 5-day forecast per trail |
 | iNaturalist API | Biodiversity observations near each trail |
-| NASA SRTM (OpenTopodata) | Elevation baseline and trail gain |
-| Claude (Anthropic) | Profile extraction, trail enrichment, itinerary generation |
+| NASA SRTM (OpenTopodata) | Elevation profiles and ascent data |
+| OpenRouteService | Hiking route distance and duration estimates |
+| AWS Bedrock (Claude) | Profile extraction, trail enrichment, itinerary generation, surprise matching, trail chat |
 
 ---
 
-## Expected deliverables checklist
+## Features
 
-- Codebase: this repository (or ZIP export) with setup README
-- Presentation/report: use [docs/presentation_outline.md](docs/presentation_outline.md) as a 10-slide template
-- Demo: Streamlit app with real Greek trail data from OSM
-- Optional comparison: sustainability score per trail is shown side-by-side in the UI
+### Conversational trail finder
+Chat-based profiling across 7 steps (terrain, duration, date, difficulty, fitness, interests, group size). Saves chat history per user.
 
----
+### Sustainability scoring (0–100)
+Five real signals — no made-up data:
+- **Crowd avoidance** (25 pts) — live OSM tourism POI count within 3 km
+- **Remoteness** (15 pts) — Haversine distance to nearest major Greek city
+- **Biodiversity** (20 pts) — iNaturalist research-grade observations
+- **Local economy** (20 pts) — OSM amenity count within 10 km
+- **Weather** (20 pts) — current/forecast conditions weighted by user preferences
 
-## Database logic
+### Discover (swipe)
+Tinder-style trail cards. Swipe right to save, left to skip. Each swipe updates a local preference vector (terrain, difficulty, region weights) used to improve Surprise Me recommendations.
 
-Pathfinder uses two lightweight JSON databases in the [data](data) folder.
+### Surprise Me
+Mood chips + free text → LLM picks the single best trail match from the database with a personalised explanation.
 
-### 1) User database
+### Group chats
+Saving a trail auto-joins you to that trail's group chat. Real-time polling (5s interval). Leave at any time.
 
-File: [data/users.json](data/users.json)
+### Live interest tracking
+Every trail save registers interest. High-interest trails get a crowd bump in the sustainability score, steering subsequent users to quieter alternatives.
 
-Managed by: [backend/user_db.py](backend/user_db.py)
-
-Each user record stores:
-- Name
-- Surname
-- Age
-- Gender
-- Location
-- UserUniqieID
-- Description
-
-Core logic:
-- On account creation, the backend generates a unique UserUniqieID in format USR-XXXXXXXXXXXX.
-- UserUniqieID is the stable key used everywhere else in the app.
-- Validation enforces Age range and Description length.
-
-### 2) Chat history database
-
-File: [data/chat_history.json](data/chat_history.json)
-
-Managed by: [backend/chat_history_db.py](backend/chat_history_db.py)
-
-Each history record stores:
-- UserUniqueID
-- HistoryUniqueID
-- KeyData
-- UserMessages
-- QuickSelectPromptsChosen
-- CreatedAt
-
-Core logic:
-- Every chat/session snapshot gets a HistoryUniqueID in format HIS-XXXXXXXXXXXX.
-- UserUniqueID links each history row back to one user account.
-- KeyData stores the form/chatbot values needed to restore app state.
-- UserMessages keeps free-text user turns.
-- QuickSelectPromptsChosen keeps selected quick prompt buttons.
-- CreatedAt supports log/audit ordering and replay.
+### Trail detail modal
+Accurate stats via Naismith's Rule, 5-day weather calendar, iNaturalist species, nearby POIs on Leaflet map, 1–5 star ratings, and a multi-turn AI chat with full trail context injected.
 
 ---
 
-## Frontend-to-backend integration
+## Team
 
-The frontend should follow this sequence when a user interacts with the chatbot:
-
-1. Create or load user account
-- Call create_user(...) once on signup.
-- Persist UserUniqieID in session state after login/signup.
-
-2. Start a history record for a new chat
-- Call create_history_entry(user_uniqie_id, key_data, user_messages, quick_select_prompts_chosen).
-- Keep returned HistoryUniqueID in session state for this chat.
-
-3. Update during conversation
-- Append each typed user message with append_user_message(...).
-- Append each quick-prompt click with append_quick_select_prompt(...).
-- Refresh KeyData snapshots when form selections change.
-
-4. Restore previous state
-- Use list_history_for_user(user_uniqie_id) to show chat history.
-- Load a selected record by HistoryUniqueID and hydrate UI fields from KeyData.
-- Rebuild conversation panel from UserMessages and QuickSelectPromptsChosen.
-
-Minimal usage example:
-
-```python
-from backend.user_db import create_user
-from backend.chat_history_db import create_history_entry
-
-user = create_user(
-	name="Eleni",
-	surname="Papadaki",
-	age=25,
-	gender="Female",
-	location="Athens",
-	description="Student"
-)
-
-history = create_history_entry(
-	user_uniqie_id=user["UserUniqieID"],
-	key_data={"duration_days": 2, "terrain": "forest"},
-	user_messages=["I want a quiet 2-day hike"],
-	quick_select_prompts_chosen=["Moderate forest hike, interested in history and local villages"],
-)
-```
-
----
-
-## Team roles
-
-| Person | File(s) | Focus |
-|--------|---------|-------|
-| Person 1 | `frontend/app.py` | Streamlit UI + Folium map |
-| Person 2 | `backend/profiler.py`, `backend/itinerary.py` | LLM prompts |
-| Person 3 | `backend/trail_engine.py`, `scripts/fetch_trails.py` | Trail data |
-| Person 4 | `backend/weather.py`, `backend/sustainability.py`, `backend/biodiversity.py` | APIs + scoring |
+| Person | Files |
+|--------|-------|
+| Kyriaki Kalamari | Frontend — React pages, UI/UX |
+| Despoina Kampiwti | Frontend — React pages, UI/UX |
+| Konstantinos Katrakis | Backend — pipeline, APIs, sustainability |
+| Maria Kapaki | Backend — pipeline, APIs, sustainability |
