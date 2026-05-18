@@ -1,7 +1,8 @@
-# 🧭 Pathfinder — AI Trail Companion
+# Pathfinder
 
-> *Find your trail. Leave no trace.*
-> AI-powered sustainable outdoor discovery for Greece — Deloitte Makeathon 2026.
+> *Explore Greece's Hidden Trails*  
+> AI-Powered Sustainable Outdoor Discovery for Greece.
+> Built for the Deloitte Makeathon 2026 - Sustainable Tourism Challenge.
 
 ---
 
