@@ -6,7 +6,7 @@
 
 ---
 
-https://canva.link/pathfinder-ghostbusters
+Click [here](https://canva.link/pathfinder-ghostbusters) to view our presentation!
 
 <div>
   <img width="127" height="127" src="https://github.com/user-attachments/assets/d2852585-fd1e-43a7-8e4b-a3e131eafc62" />
