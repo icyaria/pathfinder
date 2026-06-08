@@ -1,8 +1,8 @@
 # Pathfinder - Makeathon 2026 
 
 <div>
-  <img width="4096" height="4096" alt="Deloitte-Logo-PNG-Cutout-1845527513" src="https://github.com/user-attachments/assets/d2852585-fd1e-43a7-8e4b-a3e131eafc62" />
-  <img width="768" height="254" alt="68747470733a2f2f63646e2e736d6172747265702e67722f756e692d61692f756e6961692d6c6f676f2e706e67" src="https://github.com/user-attachments/assets/43430d25-9cbd-4748-aedf-5d25ad5cef1d" />
+  <img width="100" height="100" alt="Deloitte-Logo-PNG-Cutout-1845527513" src="https://github.com/user-attachments/assets/d2852585-fd1e-43a7-8e4b-a3e131eafc62" />
+  <img width="100" height="100" alt="68747470733a2f2f63646e2e736d6172747265702e67722f756e692d61692f756e6961692d6c6f676f2e706e67" src="https://github.com/user-attachments/assets/43430d25-9cbd-4748-aedf-5d25ad5cef1d" />
 </div>
 
 > *Explore Greece's Hidden Trails*  
