@@ -9,8 +9,8 @@
 Click [here](https://canva.link/pathfinder-ghostbusters) to view our presentation!
 
 <div>
-  <img width="240" height="240" src="https://github.com/user-attachments/assets/d2852585-fd1e-43a7-8e4b-a3e131eafc62" />
-  <img width="725" height="240" src="https://github.com/user-attachments/assets/43430d25-9cbd-4748-aedf-5d25ad5cef1d" />
+  <img width="200" height="200" src="https://github.com/user-attachments/assets/d2852585-fd1e-43a7-8e4b-a3e131eafc62" />
+  <img width="604" height="200" src="https://github.com/user-attachments/assets/43430d25-9cbd-4748-aedf-5d25ad5cef1d" />
 </div>
 
 ## What it does
