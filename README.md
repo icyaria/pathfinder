@@ -6,6 +6,8 @@
 
 ---
 
+https://canva.link/pathfinder-ghostbusters
+
 ## What it does
 
 Pathfinder is a full-stack AI application that:
