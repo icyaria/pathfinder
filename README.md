@@ -1,10 +1,5 @@
 # Pathfinder - Makeathon 2026 
 
-<div>
-  <img width="127" height="127" src="https://github.com/user-attachments/assets/d2852585-fd1e-43a7-8e4b-a3e131eafc62" />
-  <img width="384" height="127" src="https://github.com/user-attachments/assets/43430d25-9cbd-4748-aedf-5d25ad5cef1d" />
-</div>
-
 > *Explore Greece's Hidden Trails*  
 > AI-Powered Sustainable Outdoor Discovery for Greece.
 > Built for the Deloitte Makeathon 2026 - Sustainable Tourism Challenge.
@@ -12,6 +7,11 @@
 ---
 
 https://canva.link/pathfinder-ghostbusters
+
+<div>
+  <img width="127" height="127" src="https://github.com/user-attachments/assets/d2852585-fd1e-43a7-8e4b-a3e131eafc62" />
+  <img width="384" height="127" src="https://github.com/user-attachments/assets/43430d25-9cbd-4748-aedf-5d25ad5cef1d" />
+</div>
 
 ## What it does
 
