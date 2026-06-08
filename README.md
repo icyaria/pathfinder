@@ -8,10 +8,6 @@
 
 Click [here](https://canva.link/pathfinder-ghostbusters) to view our presentation!
 
-<div>
-  <img width="200" height="200" src="https://github.com/user-attachments/assets/d2852585-fd1e-43a7-8e4b-a3e131eafc62" />
-  <img width="604" height="200" src="https://github.com/user-attachments/assets/43430d25-9cbd-4748-aedf-5d25ad5cef1d" />
-</div>
 
 ## What it does
 
@@ -197,3 +193,7 @@ Every trail save registers interest. High-interest trails get a crowd bump in th
 ### Trail detail modal
 Accurate stats via Naismith's Rule, 5-day weather calendar, iNaturalist species, nearby POIs on Leaflet map, 1–5 star ratings, and a multi-turn AI chat with full trail context injected.
 
+<div>
+  <img width="200" height="200" src="https://github.com/user-attachments/assets/d2852585-fd1e-43a7-8e4b-a3e131eafc62" />
+  <img width="604" height="200" src="https://github.com/user-attachments/assets/43430d25-9cbd-4748-aedf-5d25ad5cef1d" />
+</div>
